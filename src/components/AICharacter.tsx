@@ -7,6 +7,7 @@ import {
   interpolate,
   staticFile,
   useCurrentFrame,
+  useVideoConfig,
 } from "remotion";
 
 export type CharacterExpression = "normal" | "happy" | "serious" | "thinking";
@@ -25,25 +26,33 @@ const expressionLabel: Record<CharacterExpression, string> = {
 
 export const AICharacter = ({ expression, name = "Haruka" }: AICharacterProps) => {
   const frame = useCurrentFrame();
-  const [isImageAvailable, setIsImageAvailable] = useState(false);
+  const { fps } = useVideoConfig();
+  const [availableImageSrcs, setAvailableImageSrcs] = useState<string[]>([]);
   const [renderHandle] = useState(() => delayRender("Checking character image"));
-  const imageSrc = useMemo(
-    () => staticFile(`characters/${expression}.png`),
+
+  const imageSrcs = useMemo(
+    () => [
+      staticFile(`characters/ryunosuke/${expression}-1.png`),
+      staticFile(`characters/ryunosuke/${expression}-2.png`),
+    ],
     [expression],
   );
 
   useEffect(() => {
     let isMounted = true;
 
-    fetch(imageSrc, { method: "HEAD" })
-      .then((response) => {
+    Promise.all(
+      imageSrcs.map((src) =>
+        fetch(src, { method: "HEAD" })
+          .then((response) => (response.ok ? src : null))
+          .catch(() => null),
+      ),
+    )
+      .then((checkedSrcs) => {
         if (isMounted) {
-          setIsImageAvailable(response.ok);
-        }
-      })
-      .catch(() => {
-        if (isMounted) {
-          setIsImageAvailable(false);
+          setAvailableImageSrcs(
+            checkedSrcs.filter((src): src is string => src !== null),
+          );
         }
       })
       .finally(() => {
@@ -55,7 +64,7 @@ export const AICharacter = ({ expression, name = "Haruka" }: AICharacterProps) =
     return () => {
       isMounted = false;
     };
-  }, [imageSrc, renderHandle]);
+  }, [imageSrcs, renderHandle]);
 
   const enter = interpolate(frame, [0, 24], [34, 0], {
     extrapolateLeft: "clamp",
@@ -64,6 +73,25 @@ export const AICharacter = ({ expression, name = "Haruka" }: AICharacterProps) =
   });
   const float = Math.sin(frame / 24) * 8;
   const shadow = 0.34 + Math.sin(frame / 18) * 0.05;
+  const switchDurationInFrames = fps * 4;
+  const activeImageIndex =
+    availableImageSrcs.length > 0
+      ? Math.floor(frame / switchDurationInFrames) % availableImageSrcs.length
+      : 0;
+  const previousImageIndex =
+    availableImageSrcs.length > 0
+      ? (activeImageIndex + availableImageSrcs.length - 1) %
+        availableImageSrcs.length
+      : 0;
+  const transitionProgress = interpolate(
+    frame % switchDurationInFrames,
+    [0, 12],
+    [0, 1],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
 
   return (
     <div
@@ -97,17 +125,42 @@ export const AICharacter = ({ expression, name = "Haruka" }: AICharacterProps) =
           justifyContent: "center",
         }}
       >
-        {isImageAvailable ? (
-          <Img
-            src={imageSrc}
-            onError={() => setIsImageAvailable(false)}
+        {availableImageSrcs.length > 0 ? (
+          <div
             style={{
-              maxWidth: 430,
-              maxHeight: 590,
-              objectFit: "contain",
-              filter: "drop-shadow(0 28px 48px rgba(0, 0, 0, 0.28))",
+              position: "relative",
+              width: 430,
+              height: 590,
             }}
-          />
+          >
+            {availableImageSrcs.map((src, index) => (
+              <Img
+                key={src}
+                src={src}
+                onError={() =>
+                  setAvailableImageSrcs((currentSrcs) =>
+                    currentSrcs.filter((currentSrc) => currentSrc !== src),
+                  )
+                }
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  opacity:
+                    availableImageSrcs.length === 1
+                      ? 1
+                      : index === activeImageIndex
+                        ? transitionProgress
+                        : index === previousImageIndex
+                          ? 1 - transitionProgress
+                          : 0,
+                  filter: "drop-shadow(0 28px 48px rgba(0, 0, 0, 0.28))",
+                }}
+              />
+            ))}
+          </div>
         ) : (
           <div
             style={{
