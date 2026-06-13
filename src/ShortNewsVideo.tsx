@@ -5,6 +5,7 @@ import {
   Easing,
   Img,
   interpolate,
+  Sequence,
   staticFile,
   useCurrentFrame,
   useVideoConfig,
@@ -24,22 +25,41 @@ type ShortNewsData = {
 const shortNews = shortNewsData as ShortNewsData;
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
 
+const CharacterImage = ({ src, localFrame }: { src: string; localFrame: number }) => {
+  const fadeIn = interpolate(localFrame, [0, 8], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const float = Math.sin(localFrame / 22) * 10;
+
+  return (
+    <Img
+      src={src}
+      style={{
+        maxWidth: 760,
+        maxHeight: 650,
+        objectFit: "contain",
+        opacity: fadeIn,
+        transform: `translateY(${float}px)`,
+        filter: "drop-shadow(0 24px 42px rgba(0,0,0,0.32))",
+      }}
+    />
+  );
+};
+
 const ShortCharacter = ({ images }: { images: string[] }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, durationInFrames } = useVideoConfig();
   const imageSrcs = useMemo(
     () => images.map((image) => staticFile(normalizePublicPath(image))),
     [images],
   );
-  const imageIndex =
-    imageSrcs.length > 0 ? Math.floor(frame / (fps * 4)) % imageSrcs.length : 0;
-  const activeSrc = imageSrcs[imageIndex] ?? "";
+  const characterSwitchFrames = fps * 4;
   const enter = interpolate(frame, [0, 24], [90, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
-  const float = Math.sin(frame / 22) * 10;
 
   return (
     <div
@@ -52,7 +72,7 @@ const ShortCharacter = ({ images }: { images: string[] }) => {
         display: "flex",
         alignItems: "flex-end",
         justifyContent: "center",
-        transform: `translateY(${enter + float}px)`,
+        transform: `translateY(${enter}px)`,
       }}
     >
       <div
@@ -66,16 +86,30 @@ const ShortCharacter = ({ images }: { images: string[] }) => {
           filter: "blur(10px)",
         }}
       />
-      {activeSrc ? (
-        <Img
-          src={activeSrc}
-          style={{
-            maxWidth: 760,
-            maxHeight: 650,
-            objectFit: "contain",
-            filter: "drop-shadow(0 24px 42px rgba(0,0,0,0.32))",
-          }}
-        />
+      {imageSrcs.length > 0 ? (
+        imageSrcs.map((src, index) => {
+          const startFrame = index * characterSwitchFrames;
+          const duration = Math.min(
+            characterSwitchFrames,
+            Math.max(1, durationInFrames - startFrame),
+          );
+
+          if (startFrame >= durationInFrames) {
+            return null;
+          }
+
+          return (
+            <Sequence
+              key={src}
+              from={startFrame}
+              durationInFrames={duration}
+              name={images[index]?.split("/").at(-1) ?? `character-${index + 1}`}
+              layout="none"
+            >
+              <CharacterImage src={src} localFrame={frame - startFrame} />
+            </Sequence>
+          );
+        })
       ) : (
         <div
           style={{
