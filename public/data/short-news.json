@@ -1,16 +1,24 @@
 {
-  "title": "今日の注目ニュース",
-  "summary": "今日は、AIを使ったニュース動画制作について紹介します。",
-  "points": [
-    "ショート動画は30秒で要点を伝えるのが大切です。",
-    "AIキャラクターと音声を使うことで、少ない作業で動画を作れます。"
-  ],
-  "characterComment": "ハルカ的には、まず1本作って改善するのが一番大事だと思います。",
-  "source": "テスト用データ",
-  "audioFile": "/audio/shorts/news-001.wav",
-  "characterImages": [
-    "/characters/short-ryunosuke/normal-1.png",
-    "/characters/short-ryunosuke/serious-1.png",
-    "/characters/short-ryunosuke/thinking-1.png"
+  "title": "今日のAIニュース",
+  "topic": "AI検索サービスの新機能",
+  "slides": [
+    {
+      "text": "AI検索に新機能が追加されました",
+      "caption": "AI検索に新機能",
+      "characterExpression": "normal",
+      "audio": "/audio/short/scene-1.wav"
+    },
+    {
+      "text": "ポイントは、調べ物の流れがより自然になることです",
+      "caption": "調べ物がより自然に",
+      "characterExpression": "thinking",
+      "audio": "/audio/short/scene-2.wav"
+    },
+    {
+      "text": "ただし、情報の正確性は引き続き確認が必要です",
+      "caption": "正確性の確認は必要",
+      "characterExpression": "serious",
+      "audio": "/audio/short/scene-3.wav"
+    }
   ]
 }

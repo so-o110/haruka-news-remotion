@@ -1,7 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AbsoluteFill,
   Audio,
+  continueRender,
+  delayRender,
   Easing,
   Img,
   interpolate,
@@ -12,19 +14,77 @@ import {
 } from "remotion";
 import shortNewsData from "../public/data/short-news.json";
 
+type CharacterExpression = "normal" | "happy" | "serious" | "thinking";
+
+type ShortNewsSlide = {
+  text: string;
+  caption: string;
+  characterExpression: CharacterExpression;
+  audio: string;
+};
+
 type ShortNewsData = {
   title: string;
-  summary: string;
-  points: string[];
-  characterComment: string;
-  source: string;
-  audioFile: string;
-  characterImages: string[];
+  topic: string;
+  slides: ShortNewsSlide[];
+};
+
+type AssetStatus = {
+  exists: boolean;
+  src: string;
 };
 
 const shortNews = shortNewsData as ShortNewsData;
+const fps = 30;
+const characterBasePath = "/characters/short-ryunosuke";
+
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
 const getFileName = (path: string) => path.split("/").pop() ?? path;
+const getCharacterImagePath = (expression: CharacterExpression) =>
+  `${characterBasePath}/${expression}-1.png`;
+
+const usePublicAsset = (path: string): AssetStatus => {
+  const src = useMemo(() => staticFile(normalizePublicPath(path)), [path]);
+  const [exists, setExists] = useState(false);
+  const [handle] = useState(() => delayRender(`Checking ${path}`));
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch(src, { method: "HEAD" })
+      .then((response) => {
+        if (isMounted) {
+          setExists(response.ok);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setExists(false);
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          continueRender(handle);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [handle, src]);
+
+  return { exists, src };
+};
+
+const SafeAudio = ({ path }: { path: string }) => {
+  const { exists, src } = usePublicAsset(path);
+
+  if (!exists) {
+    return null;
+  }
+
+  return <Audio src={src} volume={1} />;
+};
 
 const CharacterShadow = () => {
   return (
@@ -81,12 +141,13 @@ const CharacterPlaceholder = () => {
 };
 
 const CharacterImage = ({
+  imagePath,
   localFrame,
-  src,
 }: {
+  imagePath: string;
   localFrame: number;
-  src: string;
 }) => {
+  const { exists, src } = usePublicAsset(imagePath);
   const fadeIn = interpolate(localFrame, [0, 8], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -97,6 +158,10 @@ const CharacterImage = ({
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
   const float = Math.sin(localFrame / 22) * 10;
+
+  if (!exists) {
+    return <CharacterPlaceholder />;
+  }
 
   return (
     <div
@@ -126,97 +191,97 @@ const CharacterImage = ({
   );
 };
 
-const ShortCharacterSequences = ({ images }: { images: string[] }) => {
-  const frame = useCurrentFrame();
-  const { durationInFrames, fps } = useVideoConfig();
-  const characterSwitchFrames = fps * 4;
-  const characterSegments = useMemo(() => {
-    if (images.length === 0) {
-      return [
-        {
-          durationInFrames,
-          from: 0,
-          imagePath: undefined,
-          name: "AIキャラ",
-          src: undefined,
-        },
-      ];
-    }
-
-    const segmentCount = Math.ceil(durationInFrames / characterSwitchFrames);
-
-    return Array.from({ length: segmentCount }, (_, index) => {
-      const imagePath = images[index % images.length];
-      const from = index * characterSwitchFrames;
-
-      return {
-        durationInFrames: Math.min(
-          characterSwitchFrames,
-          durationInFrames - from,
-        ),
-        from,
-        imagePath,
-        name: getFileName(imagePath),
-        src: staticFile(normalizePublicPath(imagePath)),
-      };
-    });
-  }, [characterSwitchFrames, durationInFrames, images]);
-
-  return (
-    <>
-      <CharacterShadow />
-      {characterSegments.map((segment, index) => (
-        <Sequence
-          key={`${segment.name}-${segment.from}-${index}`}
-          from={segment.from}
-          durationInFrames={segment.durationInFrames}
-          name={segment.name}
-          layout="none"
-        >
-          {segment.src ? (
-            <CharacterImage
-              localFrame={frame - segment.from}
-              src={segment.src}
-            />
-          ) : (
-            <CharacterPlaceholder />
-          )}
-        </Sequence>
-      ))}
-    </>
-  );
-};
-
-const getCurrentTelop = (frame: number, fps: number) => {
-  if (frame < 3 * fps) {
-    return shortNews.title;
-  }
-
-  const telops = [
-    shortNews.summary,
-    ...shortNews.points,
-    shortNews.characterComment,
-  ];
-  const index = Math.min(
-    telops.length - 1,
-    Math.floor((frame - 3 * fps) / (6 * fps)),
-  );
-
-  return telops[index] ?? shortNews.summary;
-};
-
-export const SHORT_NEWS_DURATION_IN_FRAMES = 30 * 30;
-
-export const ShortNewsVideo = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const telop = getCurrentTelop(frame, fps);
-  const titleProgress = interpolate(frame, [0, 26], [0, 1], {
+const SlideText = ({
+  localFrame,
+  slide,
+}: {
+  localFrame: number;
+  slide: ShortNewsSlide;
+}) => {
+  const enter = interpolate(localFrame, [0, 12], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
-  const telopProgress = interpolate(frame % (6 * fps), [0, 12], [0, 1], {
+
+  return (
+    <>
+      <section
+        style={{
+          position: "absolute",
+          top: 470,
+          left: 58,
+          right: 58,
+          minHeight: 300,
+          padding: "44px 46px",
+          borderRadius: 8,
+          backgroundColor: "rgba(255,255,255,0.94)",
+          color: "#14213d",
+          boxShadow: "0 28px 80px rgba(0,0,0,0.2)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: enter,
+          transform: `translateY(${interpolate(enter, [0, 1], [34, 0])}px)`,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 54,
+            lineHeight: 1.34,
+            fontWeight: 900,
+            textAlign: "center",
+          }}
+        >
+          {slide.text}
+        </div>
+      </section>
+      <section
+        style={{
+          position: "absolute",
+          left: 58,
+          right: 58,
+          top: 820,
+          minHeight: 210,
+          padding: "36px 42px",
+          borderRadius: 8,
+          backgroundColor: "#071727",
+          borderTop: "8px solid #f5b84b",
+          boxShadow: "0 18px 54px rgba(0,0,0,0.22)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: enter,
+        }}
+      >
+        <div
+          style={{
+            color: "white",
+            fontSize: 72,
+            lineHeight: 1.18,
+            fontWeight: 950,
+            textAlign: "center",
+            textShadow: "0 5px 20px rgba(0,0,0,0.3)",
+          }}
+        >
+          {slide.caption}
+        </div>
+      </section>
+    </>
+  );
+};
+
+export const SHORT_NEWS_DURATION_IN_FRAMES = 30 * fps;
+
+export const ShortNewsVideo = () => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const slides = shortNews.slides.length > 0 ? shortNews.slides : [];
+  const slideDuration =
+    slides.length > 0
+      ? Math.max(1, Math.floor(durationInFrames / slides.length))
+      : durationInFrames;
+  const titleProgress = interpolate(frame, [0, 26], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
@@ -237,10 +302,6 @@ export const ShortNewsVideo = () => {
           "'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif",
       }}
     >
-      <Audio
-        src={staticFile(normalizePublicPath(shortNews.audioFile))}
-        volume={1}
-      />
       <div
         style={{
           position: "absolute",
@@ -283,6 +344,16 @@ export const ShortNewsVideo = () => {
         </h1>
         <div
           style={{
+            marginTop: 18,
+            color: "rgba(255,255,255,0.86)",
+            fontSize: 36,
+            fontWeight: 850,
+          }}
+        >
+          {shortNews.topic}
+        </div>
+        <div
+          style={{
             marginTop: 28,
             width: 240,
             height: 9,
@@ -290,56 +361,36 @@ export const ShortNewsVideo = () => {
           }}
         />
       </header>
-      <section
-        style={{
-          position: "absolute",
-          top: 510,
-          left: 58,
-          right: 58,
-          minHeight: 440,
-          padding: "54px 52px",
-          borderRadius: 8,
-          backgroundColor: "rgba(255,255,255,0.94)",
-          color: "#14213d",
-          boxShadow: "0 28px 80px rgba(0,0,0,0.2)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: telopProgress,
-          transform: `translateY(${interpolate(telopProgress, [0, 1], [34, 0])}px)`,
-        }}
-      >
-        <div
-          style={{
-            fontSize: 64,
-            lineHeight: 1.28,
-            fontWeight: 950,
-            textAlign: "center",
-          }}
-        >
-          {telop}
-        </div>
-      </section>
-      <div
-        style={{
-          position: "absolute",
-          left: 74,
-          right: 74,
-          top: 1020,
-          padding: "22px 32px",
-          borderRadius: 8,
-          backgroundColor: "rgba(7,23,39,0.82)",
-          border: "1px solid rgba(255,255,255,0.28)",
-          color: "rgba(255,255,255,0.9)",
-          fontSize: 34,
-          lineHeight: 1.38,
-          fontWeight: 800,
-          textAlign: "center",
-        }}
-      >
-        {shortNews.source}
-      </div>
-      <ShortCharacterSequences images={shortNews.characterImages} />
+      <CharacterShadow />
+      {slides.map((slide, index) => {
+        const from = index * slideDuration;
+        const duration =
+          index === slides.length - 1 ? durationInFrames - from : slideDuration;
+        const characterImagePath = getCharacterImagePath(
+          slide.characterExpression,
+        );
+
+        return (
+          <Sequence
+            key={`${slide.caption}-${from}`}
+            from={from}
+            durationInFrames={duration}
+            name={`slide-${index + 1}`}
+          >
+            <Sequence name={getFileName(slide.audio)} layout="none">
+              <SafeAudio path={slide.audio} />
+            </Sequence>
+            <SlideText localFrame={frame - from} slide={slide} />
+            <Sequence name={getFileName(characterImagePath)} layout="none">
+              <CharacterImage
+                imagePath={characterImagePath}
+                localFrame={frame - from}
+              />
+            </Sequence>
+          </Sequence>
+        );
+      })}
+      {slides.length === 0 ? <CharacterPlaceholder /> : null}
       <div
         style={{
           position: "absolute",
