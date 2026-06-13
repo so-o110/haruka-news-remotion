@@ -25,41 +25,34 @@ type ShortNewsData = {
 const shortNews = shortNewsData as ShortNewsData;
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
 
-const CharacterImage = ({ src, localFrame }: { src: string; localFrame: number }) => {
-  const fadeIn = interpolate(localFrame, [0, 8], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const float = Math.sin(localFrame / 22) * 10;
-
+const CharacterShadow = () => {
   return (
-    <Img
-      src={src}
+    <div
       style={{
-        maxWidth: 760,
-        maxHeight: 650,
-        objectFit: "contain",
-        opacity: fadeIn,
-        transform: `translateY(${float}px)`,
-        filter: "drop-shadow(0 24px 42px rgba(0,0,0,0.32))",
+        position: "absolute",
+        left: 305,
+        right: 305,
+        bottom: 86,
+        height: 54,
+        borderRadius: "50%",
+        backgroundColor: "rgba(0,0,0,0.28)",
+        filter: "blur(10px)",
       }}
     />
   );
 };
 
-const ShortCharacter = ({ images }: { images: string[] }) => {
-  const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
-  const imageSrcs = useMemo(
-    () => images.map((image) => staticFile(normalizePublicPath(image))),
-    [images],
-  );
-  const characterSwitchFrames = fps * 4;
-  const enter = interpolate(frame, [0, 24], [90, 0], {
+const CharacterImage = ({ src, localFrame }: { src: string; localFrame: number }) => {
+  const fadeIn = interpolate(localFrame, [0, 8], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const enter = interpolate(localFrame, [0, 24], [90, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
+  const float = Math.sin(localFrame / 22) * 10;
 
   return (
     <div
@@ -72,45 +65,46 @@ const ShortCharacter = ({ images }: { images: string[] }) => {
         display: "flex",
         alignItems: "flex-end",
         justifyContent: "center",
-        transform: `translateY(${enter}px)`,
+        transform: `translateY(${enter + float}px)`,
       }}
     >
+      <Img
+        src={src}
+        style={{
+          maxWidth: 760,
+          maxHeight: 650,
+          objectFit: "contain",
+          opacity: fadeIn,
+          filter: "drop-shadow(0 24px 42px rgba(0,0,0,0.32))",
+        }}
+      />
+    </div>
+  );
+};
+
+const ShortCharacterSequences = ({ images }: { images: string[] }) => {
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames } = useVideoConfig();
+  const imageSrcs = useMemo(
+    () => images.map((image) => staticFile(normalizePublicPath(image))),
+    [images],
+  );
+  const characterSwitchFrames = fps * 4;
+
+  if (imageSrcs.length === 0) {
+    return (
       <div
         style={{
           position: "absolute",
-          bottom: 10,
-          width: 470,
-          height: 54,
-          borderRadius: "50%",
-          backgroundColor: "rgba(0,0,0,0.28)",
-          filter: "blur(10px)",
+          left: 140,
+          right: 140,
+          bottom: 76,
+          height: 650,
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "center",
         }}
-      />
-      {imageSrcs.length > 0 ? (
-        imageSrcs.map((src, index) => {
-          const startFrame = index * characterSwitchFrames;
-          const duration = Math.min(
-            characterSwitchFrames,
-            Math.max(1, durationInFrames - startFrame),
-          );
-
-          if (startFrame >= durationInFrames) {
-            return null;
-          }
-
-          return (
-            <Sequence
-              key={src}
-              from={startFrame}
-              durationInFrames={duration}
-              name={images[index]?.split("/").at(-1) ?? `character-${index + 1}`}
-              layout="none"
-            >
-              <CharacterImage src={src} localFrame={frame - startFrame} />
-            </Sequence>
-          );
-        })
-      ) : (
+      >
         <div
           style={{
             width: 420,
@@ -130,8 +124,36 @@ const ShortCharacter = ({ images }: { images: string[] }) => {
         >
           AIキャラ
         </div>
-      )}
-    </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <CharacterShadow />
+      {imageSrcs.map((src, index) => {
+        const startFrame = index * characterSwitchFrames;
+        const duration = Math.min(
+          characterSwitchFrames,
+          Math.max(1, durationInFrames - startFrame),
+        );
+
+        if (startFrame >= durationInFrames) {
+          return null;
+        }
+
+        return (
+          <Sequence
+            key={src}
+            from={startFrame}
+            durationInFrames={duration}
+            name={images[index]?.split("/").at(-1) ?? `character-${index + 1}`}
+          >
+            <CharacterImage src={src} localFrame={frame - startFrame} />
+          </Sequence>
+        );
+      })}
+    </>
   );
 };
 
@@ -284,7 +306,7 @@ export const ShortNewsVideo = () => {
       >
         {shortNews.source}
       </div>
-      <ShortCharacter images={shortNews.characterImages} />
+      <ShortCharacterSequences images={shortNews.characterImages} />
       <div
         style={{
           position: "absolute",
