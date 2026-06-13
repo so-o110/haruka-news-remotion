@@ -9,8 +9,8 @@
   "source": "テスト用データ",
   "audioFile": "/audio/shorts/news-001.wav",
   "characterImages": [
-    "/characters/haruka/normal-1.png",
-    "/characters/haruka/serious-1.png",
-    "/characters/haruka/thinking-1.png"
+    "/characters/short/normal-1.png",
+    "/characters/short/serious-1.png",
+    "/characters/short/thinking-1.png"
   ]
 }
