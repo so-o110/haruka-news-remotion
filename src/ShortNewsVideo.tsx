@@ -24,6 +24,7 @@ type ShortNewsData = {
 
 const shortNews = shortNewsData as ShortNewsData;
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
+const getFileName = (path: string) => path.split("/").pop() ?? path;
 
 const CharacterShadow = () => {
   return (
@@ -42,7 +43,50 @@ const CharacterShadow = () => {
   );
 };
 
-const CharacterImage = ({ src, localFrame }: { src: string; localFrame: number }) => {
+const CharacterPlaceholder = () => {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: 140,
+        right: 140,
+        bottom: 76,
+        height: 650,
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: 420,
+          height: 420,
+          borderRadius: "50%",
+          background:
+            "linear-gradient(145deg, #ffffff 0%, #d8f2ff 48%, #ffd7df 100%)",
+          border: "12px solid rgba(255,255,255,0.86)",
+          boxShadow: "0 22px 60px rgba(0, 0, 0, 0.26)",
+          color: "#19324d",
+          fontSize: 58,
+          fontWeight: 900,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        AIキャラ
+      </div>
+    </div>
+  );
+};
+
+const CharacterImage = ({
+  localFrame,
+  src,
+}: {
+  localFrame: number;
+  src: string;
+}) => {
   const fadeIn = interpolate(localFrame, [0, 8], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -84,75 +128,61 @@ const CharacterImage = ({ src, localFrame }: { src: string; localFrame: number }
 
 const ShortCharacterSequences = ({ images }: { images: string[] }) => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
-  const imageSrcs = useMemo(
-    () => images.map((image) => staticFile(normalizePublicPath(image))),
-    [images],
-  );
+  const { durationInFrames, fps } = useVideoConfig();
   const characterSwitchFrames = fps * 4;
+  const characterSegments = useMemo(() => {
+    if (images.length === 0) {
+      return [
+        {
+          durationInFrames,
+          from: 0,
+          imagePath: undefined,
+          name: "AIキャラ",
+          src: undefined,
+        },
+      ];
+    }
 
-  if (imageSrcs.length === 0) {
-    return (
-      <div
-        style={{
-          position: "absolute",
-          left: 140,
-          right: 140,
-          bottom: 76,
-          height: 650,
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{
-            width: 420,
-            height: 420,
-            borderRadius: "50%",
-            background:
-              "linear-gradient(145deg, #ffffff 0%, #d8f2ff 48%, #ffd7df 100%)",
-            border: "12px solid rgba(255,255,255,0.86)",
-            boxShadow: "0 22px 60px rgba(0, 0, 0, 0.26)",
-            color: "#19324d",
-            fontSize: 58,
-            fontWeight: 900,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          AIキャラ
-        </div>
-      </div>
-    );
-  }
+    const segmentCount = Math.ceil(durationInFrames / characterSwitchFrames);
+
+    return Array.from({ length: segmentCount }, (_, index) => {
+      const imagePath = images[index % images.length];
+      const from = index * characterSwitchFrames;
+
+      return {
+        durationInFrames: Math.min(
+          characterSwitchFrames,
+          durationInFrames - from,
+        ),
+        from,
+        imagePath,
+        name: getFileName(imagePath),
+        src: staticFile(normalizePublicPath(imagePath)),
+      };
+    });
+  }, [characterSwitchFrames, durationInFrames, images]);
 
   return (
     <>
       <CharacterShadow />
-      {imageSrcs.map((src, index) => {
-        const startFrame = index * characterSwitchFrames;
-        const duration = Math.min(
-          characterSwitchFrames,
-          Math.max(1, durationInFrames - startFrame),
-        );
-
-        if (startFrame >= durationInFrames) {
-          return null;
-        }
-
-        return (
-          <Sequence
-            key={src}
-            from={startFrame}
-            durationInFrames={duration}
-            name={images[index]?.split("/").at(-1) ?? `character-${index + 1}`}
-          >
-            <CharacterImage src={src} localFrame={frame - startFrame} />
-          </Sequence>
-        );
-      })}
+      {characterSegments.map((segment, index) => (
+        <Sequence
+          key={`${segment.name}-${segment.from}-${index}`}
+          from={segment.from}
+          durationInFrames={segment.durationInFrames}
+          name={segment.name}
+          layout="none"
+        >
+          {segment.src ? (
+            <CharacterImage
+              localFrame={frame - segment.from}
+              src={segment.src}
+            />
+          ) : (
+            <CharacterPlaceholder />
+          )}
+        </Sequence>
+      ))}
     </>
   );
 };
@@ -207,7 +237,10 @@ export const ShortNewsVideo = () => {
           "'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif",
       }}
     >
-      <Audio src={staticFile(normalizePublicPath(shortNews.audioFile))} volume={1} />
+      <Audio
+        src={staticFile(normalizePublicPath(shortNews.audioFile))}
+        volume={1}
+      />
       <div
         style={{
           position: "absolute",
