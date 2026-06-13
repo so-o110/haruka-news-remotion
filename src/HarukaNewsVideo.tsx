@@ -1,4 +1,4 @@
-import { AbsoluteFill, Sequence } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
 import newsData from "./data/news.json";
 import { Opening } from "./components/Opening";
 import { NewsTopic, TopicSection } from "./components/TopicSection";
@@ -30,6 +30,7 @@ export const HarukaNewsVideo = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#071727" }}>
+      <Audio src={staticFile("audio/haruka-news-test.wav")} volume={1} />
       <Sequence durationInFrames={openingFrames}>
         <Opening
           title={news.programTitle}
