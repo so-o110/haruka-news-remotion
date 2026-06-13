@@ -1,0 +1,16 @@
+{
+  "title": "今日の注目ニュース",
+  "summary": "今日は、AIを使ったニュース動画制作について紹介します。",
+  "points": [
+    "ショート動画は30秒で要点を伝えるのが大切です。",
+    "AIキャラクターと音声を使うことで、少ない作業で動画を作れます。"
+  ],
+  "characterComment": "ハルカ的には、まず1本作って改善するのが一番大事だと思います。",
+  "source": "テスト用データ",
+  "audioFile": "/audio/shorts/news-001.wav",
+  "characterImages": [
+    "/characters/haruka/normal-1.png",
+    "/characters/haruka/serious-1.png",
+    "/characters/haruka/thinking-1.png"
+  ]
+}
