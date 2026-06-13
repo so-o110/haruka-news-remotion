@@ -25,6 +25,7 @@ type ShortNewsData = {
 
 const shortNews = shortNewsData as ShortNewsData;
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
+
 const usePublicAssetExists = (path: string) => {
   const src = useMemo(() => staticFile(normalizePublicPath(path)), [path]);
   const [exists, setExists] = useState(false);
@@ -75,47 +76,15 @@ const ShortCharacter = ({ images }: { images: string[] }) => {
     () => images.map((image) => staticFile(normalizePublicPath(image))),
     [images],
   );
-  const [availableSrcs, setAvailableSrcs] = useState<string[]>([]);
-  const [handle] = useState(() => delayRender("Checking short character images"));
   const imageIndex =
-    availableSrcs.length > 0
-      ? Math.floor(frame / (fps * 4)) % availableSrcs.length
-      : 0;
-  const activeSrc = availableSrcs[imageIndex] ?? "";
+    imageSrcs.length > 0 ? Math.floor(frame / (fps * 4)) % imageSrcs.length : 0;
+  const activeSrc = imageSrcs[imageIndex] ?? "";
   const enter = interpolate(frame, [0, 24], [90, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
   const float = Math.sin(frame / 22) * 10;
-
-  useEffect(() => {
-    let isMounted = true;
-
-    Promise.all(
-      imageSrcs.map((src) =>
-        fetch(src, { method: "HEAD" })
-          .then((response) => (response.ok ? src : null))
-          .catch(() => null),
-      ),
-    )
-      .then((checkedSrcs) => {
-        if (isMounted) {
-          setAvailableSrcs(
-            checkedSrcs.filter((src): src is string => src !== null),
-          );
-        }
-      })
-      .finally(() => {
-        if (isMounted) {
-          continueRender(handle);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [handle, imageSrcs]);
 
   return (
     <div
