@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   AbsoluteFill,
   Audio,
-  continueRender,
-  delayRender,
   Easing,
   Img,
   interpolate,
@@ -25,49 +23,6 @@ type ShortNewsData = {
 
 const shortNews = shortNewsData as ShortNewsData;
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
-
-const usePublicAssetExists = (path: string) => {
-  const src = useMemo(() => staticFile(normalizePublicPath(path)), [path]);
-  const [exists, setExists] = useState(false);
-  const [handle] = useState(() => delayRender(`Checking ${path}`));
-
-  useEffect(() => {
-    let isMounted = true;
-
-    fetch(src, { method: "HEAD" })
-      .then((response) => {
-        if (isMounted) {
-          setExists(response.ok);
-        }
-      })
-      .catch(() => {
-        if (isMounted) {
-          setExists(false);
-        }
-      })
-      .finally(() => {
-        if (isMounted) {
-          continueRender(handle);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [handle, src]);
-
-  return { exists, src };
-};
-
-const SafeAudio = ({ path }: { path: string }) => {
-  const { exists, src } = usePublicAssetExists(path);
-
-  if (!exists) {
-    return null;
-  }
-
-  return <Audio src={src} volume={1} />;
-};
 
 const ShortCharacter = ({ images }: { images: string[] }) => {
   const frame = useCurrentFrame();
@@ -196,7 +151,7 @@ export const ShortNewsVideo = () => {
           "'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif",
       }}
     >
-      <SafeAudio path={shortNews.audioFile} />
+      <Audio src={staticFile(normalizePublicPath(shortNews.audioFile))} volume={1} />
       <div
         style={{
           position: "absolute",
