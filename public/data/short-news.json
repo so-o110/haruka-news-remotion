@@ -9,8 +9,8 @@
   "source": "テスト用データ",
   "audioFile": "/audio/shorts/news-001.wav",
   "characterImages": [
-    "/characters/short ryunosuke/normal-1.png",
-    "/characters/short ryunosuke/serious-1.png",
-    "/characters/short ryunosuke/thinking-1.png"
+    "/characters/short-ryunosuke/normal-1.png",
+    "/characters/short-ryunosuke/serious-1.png",
+    "/characters/short-ryunosuke/thinking-1.png"
   ]
 }
