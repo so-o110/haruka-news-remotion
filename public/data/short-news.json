@@ -37,6 +37,47 @@
         "objectFit": "cover",
         "borderRadius": 12
       },
+      "slides": [
+        {
+          "src": "/slides/h3-rocket-1.png",
+          "start": 0,
+          "duration": 2,
+          "x": 58,
+          "y": 470,
+          "width": 964,
+          "height": 300,
+          "objectFit": "cover",
+          "opacity": 1,
+          "borderRadius": 12,
+          "zIndex": 10
+        },
+        {
+          "src": "/slides/h3-rocket-2.png",
+          "start": 2,
+          "duration": 2,
+          "x": 58,
+          "y": 470,
+          "width": 964,
+          "height": 300,
+          "objectFit": "cover",
+          "opacity": 1,
+          "borderRadius": 12,
+          "zIndex": 10
+        },
+        {
+          "src": "/slides/h3-rocket-3.png",
+          "start": 4,
+          "duration": 6,
+          "x": 58,
+          "y": 470,
+          "width": 964,
+          "height": 300,
+          "objectFit": "contain",
+          "opacity": 1,
+          "borderRadius": 12,
+          "zIndex": 10
+        }
+      ],
       "slideImages": [
         {
           "src": "/slides/h3-rocket-1.png",

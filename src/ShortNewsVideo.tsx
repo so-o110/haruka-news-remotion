@@ -69,6 +69,20 @@ type ShortNewsSlideInnerImage = {
   zIndex?: number;
 };
 
+type ShortNewsTimedSlide = {
+  src: string;
+  start: number;
+  duration: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  objectFit?: "cover" | "contain";
+  opacity?: number;
+  borderRadius?: number;
+  zIndex?: number;
+};
+
 type ShortNewsSlide = {
   text: string;
   caption: string;
@@ -82,6 +96,7 @@ type ShortNewsSlide = {
   textStyle?: ShortNewsTextStyle;
   slideStyle?: ShortNewsSlideStyle;
   slideImages?: ShortNewsSlideInnerImage[];
+  slides?: ShortNewsTimedSlide[];
   images?: ShortNewsSlideImage[];
 };
 
@@ -428,6 +443,51 @@ const SlideInnerImages = ({
   );
 };
 
+const TimedSlideImages = ({ slides }: { slides: ShortNewsTimedSlide[] }) => {
+  return (
+    <>
+      {slides.map((slide, index) => {
+        const from = Math.round(slide.start * fps);
+        const durationInFrames = Math.max(1, Math.round(slide.duration * fps));
+
+        return (
+          <Sequence
+            key={`timed-slide-${index}-${slide.src}`}
+            from={from}
+            durationInFrames={durationInFrames}
+            name={`timed-slide-${index + 1}-${getFileName(slide.src)}`}
+            layout="none"
+          >
+            <section
+              style={{
+                position: "absolute",
+                left: slide.x,
+                top: slide.y,
+                width: slide.width,
+                height: slide.height,
+                borderRadius: slide.borderRadius ?? 0,
+                overflow: "hidden",
+                opacity: slide.opacity ?? 1,
+                zIndex: slide.zIndex ?? 10,
+                boxShadow: "0 20px 54px rgba(0,0,0,0.42)",
+              }}
+            >
+              <Img
+                src={staticFile(normalizePublicPath(slide.src))}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: slide.objectFit ?? "cover",
+                }}
+              />
+            </section>
+          </Sequence>
+        );
+      })}
+    </>
+  );
+};
+
 const SlideCard = ({
   enter,
   slide,
@@ -435,6 +495,10 @@ const SlideCard = ({
   enter: number;
   slide: ShortNewsSlide;
 }) => {
+  if (slide.slides && slide.slides.length > 0) {
+    return <TimedSlideImages slides={slide.slides} />;
+  }
+
   const style = slide.slideStyle;
   const imageStyle = slide.slideImageStyle;
   const x = style?.x ?? imageStyle?.x ?? 58;
@@ -461,8 +525,7 @@ const SlideCard = ({
           zIndex,
           border: "6px solid #ffd22e",
           backgroundColor: "rgba(5,5,8,0.88)",
-          boxShadow:
-            "12px 12px 0 #ff1744, 0 28px 80px rgba(0,0,0,0.46)",
+          boxShadow: "12px 12px 0 #ff1744, 0 28px 80px rgba(0,0,0,0.46)",
           opacity: enter,
           transform: `translateY(${interpolate(enter, [0, 1], [34, 0])}px)`,
         }}
