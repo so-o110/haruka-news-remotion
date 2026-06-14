@@ -9,6 +9,7 @@
       "audio": "/audio/shorts/scene-1.wav",
       "startFrame": 0,
       "durationFrames": 300,
+      "characterDurationSeconds": 10,
       "audioStartFrame": 0,
       "textStyle": {
         "x": 58,
@@ -148,6 +149,7 @@
       "audio": "/audio/shorts/scene-2.wav",
       "startFrame": 300,
       "durationFrames": 300,
+      "characterDurationSeconds": 10,
       "audioStartFrame": 300,
       "captionStyle": {
         "x": 65,
@@ -204,6 +206,7 @@
       "audio": "/audio/shorts/scene-3.wav",
       "startFrame": 600,
       "durationFrames": 300,
+      "characterDurationSeconds": 10,
       "audioStartFrame": 600,
       "captionStyle": {
         "x": 65,
