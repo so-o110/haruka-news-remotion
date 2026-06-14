@@ -66,46 +66,25 @@
       },
       "slides": [
         {
-          "src": "/slides/h3-rocket-1.png",
+          "src": "/slides/h3-slide-1-launch.png",
           "start": 0,
-          "duration": 2,
-          "x": 58,
-          "y": 470,
-          "width": 964,
-          "height": 300,
+          "duration": 3,
           "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "borderRadius": 12,
-          "zIndex": 10
+          "objectPosition": "center"
         },
         {
-          "src": "/slides/h3-rocket-2.png",
-          "start": 2,
-          "duration": 2,
-          "x": 58,
-          "y": 470,
-          "width": 964,
-          "height": 300,
+          "src": "/slides/h3-slide-2-satellite.png",
+          "start": 3,
+          "duration": 3,
           "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "borderRadius": 12,
-          "zIndex": 10
+          "objectPosition": "center"
         },
         {
-          "src": "/slides/h3-rocket-3.png",
-          "start": 4,
-          "duration": 6,
-          "x": 58,
-          "y": 470,
-          "width": 964,
-          "height": 300,
+          "src": "/slides/h3-slide-3-cost.png",
+          "start": 6,
+          "duration": 4,
           "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "borderRadius": 12,
-          "zIndex": 10
+          "objectPosition": "center"
         }
       ],
       "slideImages": [
