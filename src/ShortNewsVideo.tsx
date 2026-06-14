@@ -79,6 +79,8 @@ type ShortNewsSlideStyle = {
   zIndex?: number;
 };
 
+type ShortNewsSlideFrameStyle = ShortNewsSlideStyle;
+
 type ShortNewsSlideInnerImage = {
   src: string;
   x: number;
@@ -97,10 +99,10 @@ type ShortNewsTimedSlide = {
   src: string;
   start: number;
   duration: number;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
   objectFit?: ShortNewsObjectFit;
   objectPosition?: ShortNewsObjectPosition;
   opacity?: number;
@@ -121,6 +123,7 @@ type ShortNewsSlide = {
   textStyle?: ShortNewsTextStyle;
   captionStyle?: ShortNewsCaptionStyle;
   slideStyle?: ShortNewsSlideStyle;
+  slideFrameStyle?: ShortNewsSlideFrameStyle;
   slideImages?: ShortNewsSlideInnerImage[];
   slides?: ShortNewsTimedSlide[];
   images?: ShortNewsSlideImage[];
@@ -470,12 +473,25 @@ const SlideInnerImages = ({
   );
 };
 
-const TimedSlideImages = ({ slides }: { slides: ShortNewsTimedSlide[] }) => {
+const TimedSlideImages = ({
+  slides,
+  frameStyle,
+}: {
+  slides: ShortNewsTimedSlide[];
+  frameStyle?: ShortNewsSlideFrameStyle;
+}) => {
   return (
     <>
       {slides.map((slide, index) => {
         const from = Math.round(slide.start * fps);
         const durationInFrames = Math.max(1, Math.round(slide.duration * fps));
+        const x = frameStyle?.x ?? slide.x ?? 58;
+        const y = frameStyle?.y ?? slide.y ?? 470;
+        const width = frameStyle?.width ?? slide.width ?? 964;
+        const height = frameStyle?.height ?? slide.height ?? 300;
+        const borderRadius = frameStyle?.borderRadius ?? slide.borderRadius ?? 0;
+        const overflow = frameStyle?.overflow ?? "hidden";
+        const zIndex = frameStyle?.zIndex ?? slide.zIndex ?? 10;
 
         return (
           <Sequence
@@ -488,14 +504,14 @@ const TimedSlideImages = ({ slides }: { slides: ShortNewsTimedSlide[] }) => {
             <section
               style={{
                 position: "absolute",
-                left: slide.x,
-                top: slide.y,
-                width: slide.width,
-                height: slide.height,
-                borderRadius: slide.borderRadius ?? 0,
-                overflow: "hidden",
+                left: x,
+                top: y,
+                width,
+                height,
+                borderRadius,
+                overflow,
                 opacity: slide.opacity ?? 1,
-                zIndex: slide.zIndex ?? 10,
+                zIndex,
                 boxShadow: "0 20px 54px rgba(0,0,0,0.42)",
               }}
             >
@@ -524,7 +540,12 @@ const SlideCard = ({
   slide: ShortNewsSlide;
 }) => {
   if (slide.slides && slide.slides.length > 0) {
-    return <TimedSlideImages slides={slide.slides} />;
+    return (
+      <TimedSlideImages
+        slides={slide.slides}
+        frameStyle={slide.slideFrameStyle}
+      />
+    );
   }
 
   const style = slide.slideStyle;

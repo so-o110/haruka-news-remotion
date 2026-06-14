@@ -45,6 +45,15 @@
         "overflow": "hidden",
         "zIndex": 10
       },
+      "slideFrameStyle": {
+        "x": 58,
+        "y": 470,
+        "width": 964,
+        "height": 300,
+        "borderRadius": 12,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
       "slideImage": "/slides/h3-rocket-slide-1.png",
       "slideImageStyle": {
         "x": 58,
