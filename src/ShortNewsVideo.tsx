@@ -36,6 +36,39 @@ type ShortNewsSlideImageStyle = {
   borderRadius?: number;
 };
 
+type ShortNewsTextStyle = {
+  x?: number;
+  y?: number;
+  width?: number;
+  fontSize?: number;
+  lineHeight?: number;
+  textAlign?: "left" | "center" | "right";
+  color?: string;
+  zIndex?: number;
+};
+
+type ShortNewsSlideStyle = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  borderRadius?: number;
+  zIndex?: number;
+};
+
+type ShortNewsSlideInnerImage = {
+  src: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  objectFit?: "cover" | "contain";
+  opacity?: number;
+  rotate?: number;
+  borderRadius?: number;
+  zIndex?: number;
+};
+
 type ShortNewsSlide = {
   text: string;
   caption: string;
@@ -46,6 +79,9 @@ type ShortNewsSlide = {
   audioStartFrame?: number;
   slideImage?: string;
   slideImageStyle?: ShortNewsSlideImageStyle;
+  textStyle?: ShortNewsTextStyle;
+  slideStyle?: ShortNewsSlideStyle;
+  slideImages?: ShortNewsSlideInnerImage[];
   images?: ShortNewsSlideImage[];
 };
 
@@ -359,6 +395,39 @@ const SlideImages = ({ images }: { images?: ShortNewsSlideImage[] }) => {
   );
 };
 
+const SlideInnerImages = ({
+  images,
+}: {
+  images?: ShortNewsSlideInnerImage[];
+}) => {
+  if (!images || images.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      {images.map((image, index) => (
+        <Img
+          key={`${image.src}-${index}`}
+          src={staticFile(normalizePublicPath(image.src))}
+          style={{
+            position: "absolute",
+            left: image.x,
+            top: image.y,
+            width: image.width,
+            height: image.height,
+            objectFit: image.objectFit ?? "cover",
+            opacity: image.opacity ?? 1,
+            borderRadius: image.borderRadius ?? 0,
+            transform: `rotate(${image.rotate ?? 0}deg)`,
+            zIndex: image.zIndex ?? 1,
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
 const SlideCard = ({
   enter,
   slide,
@@ -366,14 +435,19 @@ const SlideCard = ({
   enter: number;
   slide: ShortNewsSlide;
 }) => {
-  const style = slide.slideImageStyle;
-  const x = style?.x ?? 58;
-  const y = style?.y ?? 470;
-  const width = style?.width ?? 964;
-  const height = style?.height ?? 300;
-  const borderRadius = style?.borderRadius ?? 8;
+  const style = slide.slideStyle;
+  const imageStyle = slide.slideImageStyle;
+  const x = style?.x ?? imageStyle?.x ?? 58;
+  const y = style?.y ?? imageStyle?.y ?? 470;
+  const width = style?.width ?? imageStyle?.width ?? 964;
+  const height = style?.height ?? imageStyle?.height ?? 300;
+  const borderRadius = style?.borderRadius ?? imageStyle?.borderRadius ?? 8;
+  const zIndex = style?.zIndex ?? 2;
+  const hasCustomSlideContent =
+    Boolean(slide.slideImage) ||
+    Boolean(slide.slideImages && slide.slideImages.length > 0);
 
-  if (slide.slideImage) {
+  if (hasCustomSlideContent) {
     return (
       <section
         style={{
@@ -384,6 +458,7 @@ const SlideCard = ({
           height,
           borderRadius,
           overflow: "hidden",
+          zIndex,
           border: "6px solid #ffd22e",
           backgroundColor: "rgba(5,5,8,0.88)",
           boxShadow:
@@ -392,14 +467,17 @@ const SlideCard = ({
           transform: `translateY(${interpolate(enter, [0, 1], [34, 0])}px)`,
         }}
       >
-        <Img
-          src={staticFile(normalizePublicPath(slide.slideImage))}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: style?.objectFit ?? "cover",
-          }}
-        />
+        {slide.slideImage ? (
+          <Img
+            src={staticFile(normalizePublicPath(slide.slideImage))}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: imageStyle?.objectFit ?? "cover",
+            }}
+          />
+        ) : null}
+        <SlideInnerImages images={slide.slideImages} />
       </section>
     );
   }
@@ -412,6 +490,7 @@ const SlideCard = ({
         left: 58,
         right: 58,
         minHeight: 300,
+        zIndex,
         padding: "42px 46px",
         borderRadius: 8,
         backgroundColor: "rgba(255,255,255,0.96)",
@@ -452,6 +531,7 @@ const SlideText = ({
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
+  const textStyle = slide.textStyle;
 
   return (
     <>
@@ -459,10 +539,12 @@ const SlideText = ({
       <section
         style={{
           position: "absolute",
-          left: 58,
-          right: 58,
-          top: 820,
+          left: textStyle?.x ?? 58,
+          top: textStyle?.y ?? 820,
+          width: textStyle?.width,
+          right: textStyle?.width === undefined ? 58 : undefined,
           minHeight: 210,
+          zIndex: textStyle?.zIndex ?? 20,
           padding: "36px 42px",
           borderRadius: 8,
           background:
@@ -479,11 +561,11 @@ const SlideText = ({
       >
         <div
           style={{
-            color: "white",
-            fontSize: 72,
-            lineHeight: 1.18,
+            color: textStyle?.color ?? "white",
+            fontSize: textStyle?.fontSize ?? 72,
+            lineHeight: textStyle?.lineHeight ?? 1.18,
             fontWeight: 950,
-            textAlign: "center",
+            textAlign: textStyle?.textAlign ?? "center",
             textShadow:
               "4px 4px 0 #ff1744, -3px -3px 0 rgba(255, 210, 46, 0.72), 0 5px 20px rgba(0,0,0,0.52)",
           }}
