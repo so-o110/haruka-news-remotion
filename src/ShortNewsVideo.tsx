@@ -27,6 +27,15 @@ type ShortNewsSlideImage = {
   zIndex?: number;
 };
 
+type ShortNewsSlideImageStyle = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  objectFit?: "cover" | "contain";
+  borderRadius?: number;
+};
+
 type ShortNewsSlide = {
   text: string;
   caption: string;
@@ -35,6 +44,8 @@ type ShortNewsSlide = {
   startFrame?: number;
   durationFrames?: number;
   audioStartFrame?: number;
+  slideImage?: string;
+  slideImageStyle?: ShortNewsSlideImageStyle;
   images?: ShortNewsSlideImage[];
 };
 
@@ -348,6 +359,87 @@ const SlideImages = ({ images }: { images?: ShortNewsSlideImage[] }) => {
   );
 };
 
+const SlideCard = ({
+  enter,
+  slide,
+}: {
+  enter: number;
+  slide: ShortNewsSlide;
+}) => {
+  const style = slide.slideImageStyle;
+  const x = style?.x ?? 58;
+  const y = style?.y ?? 470;
+  const width = style?.width ?? 964;
+  const height = style?.height ?? 300;
+  const borderRadius = style?.borderRadius ?? 8;
+
+  if (slide.slideImage) {
+    return (
+      <section
+        style={{
+          position: "absolute",
+          left: x,
+          top: y,
+          width,
+          height,
+          borderRadius,
+          overflow: "hidden",
+          border: "6px solid #ffd22e",
+          backgroundColor: "rgba(5,5,8,0.88)",
+          boxShadow:
+            "12px 12px 0 #ff1744, 0 28px 80px rgba(0,0,0,0.46)",
+          opacity: enter,
+          transform: `translateY(${interpolate(enter, [0, 1], [34, 0])}px)`,
+        }}
+      >
+        <Img
+          src={staticFile(normalizePublicPath(slide.slideImage))}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: style?.objectFit ?? "cover",
+          }}
+        />
+      </section>
+    );
+  }
+
+  return (
+    <section
+      style={{
+        position: "absolute",
+        top: 470,
+        left: 58,
+        right: 58,
+        minHeight: 300,
+        padding: "42px 46px",
+        borderRadius: 8,
+        backgroundColor: "rgba(255,255,255,0.96)",
+        color: "#08080d",
+        border: "6px solid #ffd22e",
+        boxShadow: "12px 12px 0 #ff1744, 0 28px 80px rgba(0,0,0,0.46)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: enter,
+        transform: `translateY(${interpolate(enter, [0, 1], [34, 0])}px)`,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 54,
+          lineHeight: 1.34,
+          fontWeight: 900,
+          textAlign: "center",
+          textShadow: "0 2px 0 rgba(255, 210, 46, 0.22)",
+        }}
+      >
+        {slide.text}
+      </div>
+    </section>
+  );
+};
+
 const SlideText = ({
   localFrame,
   slide,
@@ -363,38 +455,7 @@ const SlideText = ({
 
   return (
     <>
-      <section
-        style={{
-          position: "absolute",
-          top: 470,
-          left: 58,
-          right: 58,
-          minHeight: 300,
-          padding: "42px 46px",
-          borderRadius: 8,
-          backgroundColor: "rgba(255,255,255,0.96)",
-          color: "#08080d",
-          border: "6px solid #ffd22e",
-          boxShadow: "12px 12px 0 #ff1744, 0 28px 80px rgba(0,0,0,0.46)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: enter,
-          transform: `translateY(${interpolate(enter, [0, 1], [34, 0])}px)`,
-        }}
-      >
-        <div
-          style={{
-            fontSize: 54,
-            lineHeight: 1.34,
-            fontWeight: 900,
-            textAlign: "center",
-            textShadow: "0 2px 0 rgba(255, 210, 46, 0.22)",
-          }}
-        >
-          {slide.text}
-        </div>
-      </section>
+      <SlideCard enter={enter} slide={slide} />
       <section
         style={{
           position: "absolute",
