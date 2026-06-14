@@ -117,6 +117,8 @@ type ShortNewsSlide = {
   audio: string;
   startFrame?: number;
   durationFrames?: number;
+  characterDurationFrames?: number;
+  characterDurationSeconds?: number;
   audioStartFrame?: number;
   slideImage?: string;
   slideImageStyle?: ShortNewsSlideImageStyle;
@@ -892,6 +894,13 @@ export const ShortNewsVideo = () => {
           (index === slides.length - 1
             ? durationInFrames - from
             : slideDuration);
+        const characterDuration = Math.max(
+          1,
+          slide.characterDurationFrames ??
+            (slide.characterDurationSeconds !== undefined
+              ? Math.round(slide.characterDurationSeconds * fps)
+              : duration),
+        );
         const characterImagePath = getCharacterImagePath(
           slide.characterExpression,
         );
@@ -910,8 +919,7 @@ export const ShortNewsVideo = () => {
               key={`character-${index}-${characterFileName}`}
               name={`character-${index + 1}-${characterFileName}`}
               layout="none"
-              from={-8}
-              durationInFrames={311}
+              durationInFrames={characterDuration}
             >
               <CharacterImage
                 imagePath={characterImagePath}
