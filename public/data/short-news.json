@@ -42,6 +42,7 @@
         "width": 964,
         "height": 300,
         "borderRadius": 12,
+        "overflow": "hidden",
         "zIndex": 10
       },
       "slideImage": "/slides/h3-rocket-slide-1.png",
@@ -50,7 +51,8 @@
         "y": 470,
         "width": 964,
         "height": 300,
-        "objectFit": "cover",
+        "objectFit": "contain",
+        "objectPosition": "center",
         "borderRadius": 12
       },
       "slides": [
@@ -62,7 +64,8 @@
           "y": 470,
           "width": 964,
           "height": 300,
-          "objectFit": "cover",
+          "objectFit": "contain",
+          "objectPosition": "center",
           "opacity": 1,
           "borderRadius": 12,
           "zIndex": 10
@@ -75,7 +78,8 @@
           "y": 470,
           "width": 964,
           "height": 300,
-          "objectFit": "cover",
+          "objectFit": "contain",
+          "objectPosition": "center",
           "opacity": 1,
           "borderRadius": 12,
           "zIndex": 10
@@ -89,6 +93,7 @@
           "width": 964,
           "height": 300,
           "objectFit": "contain",
+          "objectPosition": "center",
           "opacity": 1,
           "borderRadius": 12,
           "zIndex": 10
@@ -101,7 +106,8 @@
           "y": 44,
           "width": 250,
           "height": 160,
-          "objectFit": "cover",
+          "objectFit": "contain",
+          "objectPosition": "center",
           "opacity": 1,
           "rotate": -4,
           "borderRadius": 12,
@@ -113,7 +119,8 @@
           "y": 44,
           "width": 250,
           "height": 160,
-          "objectFit": "cover",
+          "objectFit": "contain",
+          "objectPosition": "center",
           "opacity": 1,
           "rotate": 4,
           "borderRadius": 12,
@@ -126,6 +133,7 @@
           "width": 170,
           "height": 70,
           "objectFit": "contain",
+          "objectPosition": "center",
           "opacity": 0.96,
           "rotate": 0,
           "borderRadius": 0,

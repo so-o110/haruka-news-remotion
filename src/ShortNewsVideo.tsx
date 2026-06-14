@@ -16,6 +16,10 @@ import shortNewsData from "../public/data/short-news.json";
 
 type CharacterExpression = "normal" | "happy" | "serious" | "thinking";
 
+type ShortNewsObjectFit = "cover" | "contain" | "fill";
+type ShortNewsObjectPosition = "center" | "top" | "bottom" | "left" | "right";
+type ShortNewsOverflow = "hidden" | "visible";
+
 type ShortNewsSlideImage = {
   src: string;
   x: number;
@@ -32,7 +36,8 @@ type ShortNewsSlideImageStyle = {
   y?: number;
   width?: number;
   height?: number;
-  objectFit?: "cover" | "contain";
+  objectFit?: ShortNewsObjectFit;
+  objectPosition?: ShortNewsObjectPosition;
   borderRadius?: number;
 };
 
@@ -70,6 +75,7 @@ type ShortNewsSlideStyle = {
   width?: number;
   height?: number;
   borderRadius?: number;
+  overflow?: ShortNewsOverflow;
   zIndex?: number;
 };
 
@@ -79,7 +85,8 @@ type ShortNewsSlideInnerImage = {
   y: number;
   width: number;
   height: number;
-  objectFit?: "cover" | "contain";
+  objectFit?: ShortNewsObjectFit;
+  objectPosition?: ShortNewsObjectPosition;
   opacity?: number;
   rotate?: number;
   borderRadius?: number;
@@ -94,7 +101,8 @@ type ShortNewsTimedSlide = {
   y: number;
   width: number;
   height: number;
-  objectFit?: "cover" | "contain";
+  objectFit?: ShortNewsObjectFit;
+  objectPosition?: ShortNewsObjectPosition;
   opacity?: number;
   borderRadius?: number;
   zIndex?: number;
@@ -449,7 +457,8 @@ const SlideInnerImages = ({
             top: image.y,
             width: image.width,
             height: image.height,
-            objectFit: image.objectFit ?? "cover",
+            objectFit: image.objectFit ?? "contain",
+            objectPosition: image.objectPosition ?? "center",
             opacity: image.opacity ?? 1,
             borderRadius: image.borderRadius ?? 0,
             transform: `rotate(${image.rotate ?? 0}deg)`,
@@ -495,7 +504,8 @@ const TimedSlideImages = ({ slides }: { slides: ShortNewsTimedSlide[] }) => {
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: slide.objectFit ?? "cover",
+                  objectFit: slide.objectFit ?? "contain",
+                  objectPosition: slide.objectPosition ?? "center",
                 }}
               />
             </section>
@@ -524,6 +534,7 @@ const SlideCard = ({
   const width = style?.width ?? imageStyle?.width ?? 964;
   const height = style?.height ?? imageStyle?.height ?? 300;
   const borderRadius = style?.borderRadius ?? imageStyle?.borderRadius ?? 8;
+  const overflow = style?.overflow ?? "hidden";
   const zIndex = style?.zIndex ?? 2;
   const hasCustomSlideContent =
     Boolean(slide.slideImage) ||
@@ -539,7 +550,7 @@ const SlideCard = ({
           width,
           height,
           borderRadius,
-          overflow: "hidden",
+          overflow,
           zIndex,
           border: "6px solid #ffd22e",
           backgroundColor: "rgba(5,5,8,0.88)",
@@ -554,7 +565,8 @@ const SlideCard = ({
             style={{
               width: "100%",
               height: "100%",
-              objectFit: imageStyle?.objectFit ?? "cover",
+              objectFit: imageStyle?.objectFit ?? "contain",
+              objectPosition: imageStyle?.objectPosition ?? "center",
             }}
           />
         ) : null}
