@@ -47,6 +47,23 @@ type ShortNewsTextStyle = {
   zIndex?: number;
 };
 
+type ShortNewsCaptionStyle = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  padding?: number;
+  fontSize?: number;
+  lineHeight?: number;
+  textAlign?: "left" | "center" | "right";
+  color?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  borderWidth?: number;
+  borderRadius?: number;
+  zIndex?: number;
+};
+
 type ShortNewsSlideStyle = {
   x?: number;
   y?: number;
@@ -94,6 +111,7 @@ type ShortNewsSlide = {
   slideImage?: string;
   slideImageStyle?: ShortNewsSlideImageStyle;
   textStyle?: ShortNewsTextStyle;
+  captionStyle?: ShortNewsCaptionStyle;
   slideStyle?: ShortNewsSlideStyle;
   slideImages?: ShortNewsSlideInnerImage[];
   slides?: ShortNewsTimedSlide[];
@@ -595,6 +613,10 @@ const SlideText = ({
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
   const textStyle = slide.textStyle;
+  const captionStyle = slide.captionStyle;
+  const captionWidth = captionStyle?.width ?? textStyle?.width;
+  const captionBorderWidth = captionStyle?.borderWidth ?? 5;
+  const captionBorderColor = captionStyle?.borderColor ?? "#ff4fb8";
 
   return (
     <>
@@ -602,18 +624,24 @@ const SlideText = ({
       <section
         style={{
           position: "absolute",
-          left: textStyle?.x ?? 58,
-          top: textStyle?.y ?? 820,
-          width: textStyle?.width,
-          right: textStyle?.width === undefined ? 58 : undefined,
-          minHeight: 210,
-          zIndex: textStyle?.zIndex ?? 20,
-          padding: "36px 42px",
-          borderRadius: 8,
+          left: captionStyle?.x ?? textStyle?.x ?? 58,
+          top: captionStyle?.y ?? textStyle?.y ?? 820,
+          width: captionWidth,
+          right: captionWidth === undefined ? 58 : undefined,
+          height: captionStyle?.height,
+          minHeight: captionStyle?.height === undefined ? 210 : undefined,
+          zIndex: captionStyle?.zIndex ?? textStyle?.zIndex ?? 20,
+          boxSizing: "border-box",
+          padding: captionStyle?.padding ?? "36px 42px",
+          borderRadius: captionStyle?.borderRadius ?? 8,
           background:
+            captionStyle?.backgroundColor ??
             "linear-gradient(135deg, rgba(6,6,10,0.96) 0%, rgba(36,0,22,0.96) 100%)",
-          border: "5px solid #ff4fb8",
-          borderTop: "12px solid #ff1744",
+          border: `${captionBorderWidth}px solid ${captionBorderColor}`,
+          borderTop:
+            captionStyle === undefined
+              ? "12px solid #ff1744"
+              : `${captionBorderWidth}px solid ${captionBorderColor}`,
           boxShadow:
             "10px 10px 0 #ffd22e, 0 18px 54px rgba(0,0,0,0.45), 0 0 36px rgba(255,79,184,0.32)",
           display: "flex",
@@ -624,11 +652,12 @@ const SlideText = ({
       >
         <div
           style={{
-            color: textStyle?.color ?? "white",
-            fontSize: textStyle?.fontSize ?? 72,
-            lineHeight: textStyle?.lineHeight ?? 1.18,
+            width: "100%",
+            color: captionStyle?.color ?? textStyle?.color ?? "white",
+            fontSize: captionStyle?.fontSize ?? textStyle?.fontSize ?? 72,
+            lineHeight: captionStyle?.lineHeight ?? textStyle?.lineHeight ?? 1.18,
             fontWeight: 950,
-            textAlign: textStyle?.textAlign ?? "center",
+            textAlign: captionStyle?.textAlign ?? textStyle?.textAlign ?? "center",
             textShadow:
               "4px 4px 0 #ff1744, -3px -3px 0 rgba(255, 210, 46, 0.72), 0 5px 20px rgba(0,0,0,0.52)",
           }}
