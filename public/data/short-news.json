@@ -1,24 +1,45 @@
 {
-  "title": "今日のAIニュース",
-  "topic": "AI検索サービスの新機能",
+  "title": "H3ロケット6号機打ち上げ成功",
+  "topic": "H3ロケット6号機の打ち上げ成功",
   "slides": [
     {
-      "text": "AI検索に新機能が追加されました",
-      "caption": "AI検索に新機能",
+      "text": "H3ロケット6号機打ち上げ成功",
+      "caption": "ハルカニュースです。H3ロケット6号機の打ち上げ成功が話題です。",
       "characterExpression": "normal",
-      "audio": "/audio/short/scene-1.wav"
+      "audio": "/audio/shorts/scene-1.wav",
+      "startFrame": 0,
+      "durationFrames": 300,
+      "audioStartFrame": 0,
+      "images": [
+        {
+          "src": "/images/h3-rocket.png",
+          "x": 720,
+          "y": 485,
+          "width": 250,
+          "height": 190,
+          "opacity": 1,
+          "rotate": -8,
+          "zIndex": 5
+        }
+      ]
     },
     {
-      "text": "ポイントは、調べ物の流れがより自然になることです",
-      "caption": "調べ物がより自然に",
+      "text": "衛星投入に成功",
+      "caption": "日本の主力ロケット、H3ロケット6号機の打ち上げが成功しました。衛星を予定通りの軌道へ投入し、順調な運用実績を積み重ねています。",
       "characterExpression": "thinking",
-      "audio": "/audio/short/scene-2.wav"
+      "audio": "/audio/shorts/scene-2.wav",
+      "startFrame": 300,
+      "durationFrames": 300,
+      "audioStartFrame": 300
     },
     {
-      "text": "ただし、情報の正確性は引き続き確認が必要です",
-      "caption": "正確性の確認は必要",
+      "text": "夢が広がる成功",
+      "caption": "ロケットが空へ飛んでいく映像ってやっぱりワクワクしますよね。感想は、俺もロケット飛ばしてえ！",
       "characterExpression": "serious",
-      "audio": "/audio/short/scene-3.wav"
+      "audio": "/audio/shorts/scene-3.wav",
+      "startFrame": 600,
+      "durationFrames": 300,
+      "audioStartFrame": 600
     }
   ]
 }
