@@ -14,11 +14,19 @@ import {
 } from "remotion";
 import shortNewsData from "../public/data/short-news.json";
 
-type CharacterExpression = "normal" | "happy" | "serious" | "thinking";
-
 type ShortNewsObjectFit = "cover" | "contain" | "fill";
 type ShortNewsObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 type ShortNewsOverflow = "hidden" | "visible";
+type CharacterExpression = "normal" | "happy" | "serious" | "thinking";
+type CharacterImageName =
+  | "normal-1.png"
+  | "normal-2.png"
+  | "happy-1.png"
+  | "happy-2.png"
+  | "serious-1.png"
+  | "serious-2.png"
+  | "thinking-1.png"
+  | "thinking-2.png";
 
 type ShortNewsSlideImage = {
   src: string;
@@ -81,6 +89,29 @@ type ShortNewsSlideStyle = {
 
 type ShortNewsSlideFrameStyle = ShortNewsSlideStyle;
 
+type ShortNewsEndingStyle = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  fontSize?: number;
+  lineHeight?: number;
+  textAlign?: "left" | "center" | "right";
+  color?: string;
+  backgroundColor?: string;
+  zIndex?: number;
+};
+
+type ShortNewsEnding = {
+  enabled?: boolean;
+  startFrame?: number;
+  durationFrames?: number;
+  text?: string;
+  audio?: string;
+  audioStartFrame?: number;
+  style?: ShortNewsEndingStyle;
+};
+
 type ShortNewsSlideInnerImage = {
   src: string;
   x: number;
@@ -113,7 +144,9 @@ type ShortNewsTimedSlide = {
 type ShortNewsSlide = {
   text: string;
   caption: string;
-  characterExpression: CharacterExpression;
+  characterExpression?: CharacterExpression;
+  character?: string;
+  characterImage?: string;
   audio: string;
   startFrame?: number;
   durationFrames?: number;
@@ -134,6 +167,7 @@ type ShortNewsSlide = {
 type ShortNewsData = {
   title: string;
   topic: string;
+  ending?: ShortNewsEnding;
   slides: ShortNewsSlide[];
 };
 
@@ -144,12 +178,53 @@ type AssetStatus = {
 
 const shortNews = shortNewsData as ShortNewsData;
 const fps = 30;
-const characterBasePath = "/characters/short-ryunosuke";
+const characterBasePath = "/characters/ryunosuke";
+const defaultCharacterImage: CharacterImageName = "normal-1.png";
+const availableCharacterImages = new Set<CharacterImageName>([
+  "normal-1.png",
+  "normal-2.png",
+  "happy-1.png",
+  "happy-2.png",
+  "serious-1.png",
+  "serious-2.png",
+  "thinking-1.png",
+  "thinking-2.png",
+]);
 
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
 const getFileName = (path: string) => path.split("/").pop() ?? path;
-const getCharacterImagePath = (expression: CharacterExpression) =>
-  `${characterBasePath}/${expression}-1.png`;
+const normalizeCharacterImageName = (imageName: string | undefined) => {
+  if (!imageName) {
+    return defaultCharacterImage;
+  }
+
+  const fileName = getFileName(imageName).endsWith(".png")
+    ? getFileName(imageName)
+    : `${getFileName(imageName)}.png`;
+
+  if (availableCharacterImages.has(fileName as CharacterImageName)) {
+    return fileName as CharacterImageName;
+  }
+
+  return defaultCharacterImage;
+};
+const getCharacterImagePath = (slide: ShortNewsSlide) =>
+  `${characterBasePath}/${normalizeCharacterImageName(
+    slide.characterImage ?? slide.character,
+  )}`;
+
+// fps=30: 3秒=90フレーム、5秒=150フレーム、10秒=300フレーム。
+const getEndingTiming = (ending: ShortNewsEnding | undefined, totalFrames: number) => {
+  const fallbackStartFrame = 26 * fps;
+  const startFrame = ending?.startFrame ?? fallbackStartFrame;
+  const durationFrames =
+    ending?.durationFrames ?? Math.max(1, totalFrames - startFrame);
+
+  return {
+    startFrame,
+    durationFrames: Math.max(1, durationFrames),
+  };
+};
 
 const ShortsBackground = ({ frame }: { frame: number }) => {
   const sweep = (frame % 120) * 5;
@@ -313,6 +388,57 @@ const SafeAudio = ({ path }: { path: string }) => {
   return <Audio src={src} volume={1} />;
 };
 
+const EndingScreen = ({
+  localFrame,
+  durationFrames,
+  ending,
+}: {
+  localFrame: number;
+  durationFrames: number;
+  ending?: ShortNewsEnding;
+}) => {
+  const style = ending?.style;
+  const fadeFrames = Math.min(2 * fps, durationFrames);
+  const opacity = interpolate(localFrame, [0, fadeFrames], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        backgroundColor: style?.backgroundColor ?? "rgba(7,23,39,0.9)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        opacity,
+        pointerEvents: "none",
+        zIndex: style?.zIndex ?? 100,
+      }}
+    >
+      <div
+        style={{
+          position: style?.x !== undefined || style?.y !== undefined ? "absolute" : "relative",
+          left: style?.x,
+          top: style?.y,
+          width: style?.width,
+          height: style?.height,
+          fontSize: style?.fontSize ?? 92,
+          lineHeight: style?.lineHeight ?? 1.1,
+          fontWeight: 950,
+          color: style?.color ?? "white",
+          textAlign: style?.textAlign ?? "center",
+          textShadow: "0 18px 60px rgba(0,0,0,0.38)",
+        }}
+      >
+        {ending?.text ?? "ハルカニュース"}
+      </div>
+    </div>
+  );
+};
+
 const CharacterShadow = () => {
   return (
     <div
@@ -405,6 +531,7 @@ const CharacterImage = ({
           objectFit: "contain",
           opacity: fadeIn,
           filter: "drop-shadow(0 24px 42px rgba(0,0,0,0.32))",
+          translate: "-6.3px 118.7px",
         }}
         durationInFrames={311}
       />
@@ -491,7 +618,8 @@ const TimedSlideImages = ({
         const y = frameStyle?.y ?? slide.y ?? 470;
         const width = frameStyle?.width ?? slide.width ?? 964;
         const height = frameStyle?.height ?? slide.height ?? 300;
-        const borderRadius = frameStyle?.borderRadius ?? slide.borderRadius ?? 0;
+        const borderRadius =
+          frameStyle?.borderRadius ?? slide.borderRadius ?? 0;
         const overflow = frameStyle?.overflow ?? "hidden";
         const zIndex = frameStyle?.zIndex ?? slide.zIndex ?? 10;
 
@@ -524,6 +652,7 @@ const TimedSlideImages = ({
                   height: "100%",
                   objectFit: slide.objectFit ?? "contain",
                   objectPosition: slide.objectPosition ?? "center",
+                  translate: "17.4px -19px",
                 }}
               />
             </section>
@@ -690,9 +819,11 @@ const SlideText = ({
             width: "100%",
             color: captionStyle?.color ?? textStyle?.color ?? "white",
             fontSize: captionStyle?.fontSize ?? textStyle?.fontSize ?? 72,
-            lineHeight: captionStyle?.lineHeight ?? textStyle?.lineHeight ?? 1.18,
+            lineHeight:
+              captionStyle?.lineHeight ?? textStyle?.lineHeight ?? 1.18,
             fontWeight: 950,
-            textAlign: captionStyle?.textAlign ?? textStyle?.textAlign ?? "center",
+            textAlign:
+              captionStyle?.textAlign ?? textStyle?.textAlign ?? "center",
             textShadow:
               "4px 4px 0 #ff1744, -3px -3px 0 rgba(255, 210, 46, 0.72), 0 5px 20px rgba(0,0,0,0.52)",
           }}
@@ -704,7 +835,7 @@ const SlideText = ({
   );
 };
 
-export const SHORT_NEWS_DURATION_IN_FRAMES = 30 * fps;
+export const SHORT_NEWS_DURATION_IN_FRAMES = 27 * fps;
 
 export const ShortNewsVideo = () => {
   const frame = useCurrentFrame();
@@ -719,10 +850,9 @@ export const ShortNewsVideo = () => {
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
-  const endingOpacity = interpolate(frame, [26 * fps, 28 * fps], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const ending = shortNews.ending;
+  const shouldShowEnding = ending?.enabled ?? true;
+  const endingTiming = getEndingTiming(ending, durationInFrames);
 
   return (
     <AbsoluteFill
@@ -901,9 +1031,7 @@ export const ShortNewsVideo = () => {
               ? Math.round(slide.characterDurationSeconds * fps)
               : duration),
         );
-        const characterImagePath = getCharacterImagePath(
-          slide.characterExpression,
-        );
+        const characterImagePath = getCharacterImagePath(slide);
         const characterFileName = getFileName(characterImagePath);
 
         return (
@@ -947,29 +1075,29 @@ export const ShortNewsVideo = () => {
         );
       })}
       {slides.length === 0 ? <CharacterPlaceholder /> : null}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: "rgba(7,23,39,0.9)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: endingOpacity,
-          pointerEvents: "none",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 92,
-            fontWeight: 950,
-            color: "white",
-            textShadow: "0 18px 60px rgba(0,0,0,0.38)",
-          }}
+      {shouldShowEnding ? (
+        <Sequence
+          from={endingTiming.startFrame}
+          durationInFrames={endingTiming.durationFrames}
+          name="ending-screen"
         >
-          ハルカニュース
-        </div>
-      </div>
+          <EndingScreen
+            localFrame={frame - endingTiming.startFrame}
+            durationFrames={endingTiming.durationFrames}
+            ending={ending}
+          />
+        </Sequence>
+      ) : null}
+      {shouldShowEnding && ending?.audio ? (
+        <Sequence
+          from={ending.audioStartFrame ?? endingTiming.startFrame}
+          durationInFrames={endingTiming.durationFrames}
+          name={`ending-audio-${getFileName(ending.audio)}`}
+          layout="none"
+        >
+          <SafeAudio path={ending.audio} />
+        </Sequence>
+      ) : null}
     </AbsoluteFill>
   );
 };

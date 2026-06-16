@@ -31,7 +31,7 @@ export const HarukaNewsVideo = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#071727" }}>
       <Audio src={staticFile("audio/haruka-news-test.wav")} volume={1} />
-      <Sequence durationInFrames={openingFrames}>
+      <Sequence durationInFrames={openingFrames} from={-2}>
         <Opening
           title={news.programTitle}
           dateLabel={news.dateLabel}

@@ -1,15 +1,32 @@
 {
-  "title": "H3ロケット6号機打ち上げ成功",
-  "topic": "H3ロケット6号機の打ち上げ成功",
+  "title": "日本代表 vs オランダ代表",
+  "topic": "劇的な開幕戦",
+  "ending": {
+    "enabled": true,
+    "startFrame": 720,
+    "durationFrames": 90,
+    "text": "ハルカニュース",
+    "audio": "/audio/shorts/ending.wav",
+    "audioStartFrame": 810,
+    "style": {
+      "x": 210,
+      "y": 800,
+      "fontSize": 100,
+      "color": "#ffffff",
+      "zIndex": 100
+    }
+  },
   "slides": [
     {
-      "text": "H3ロケット6号機打ち上げ成功",
-      "caption": "ハルカニュースです。H3ロケット6号機の打ち上げ成功が話題です。",
-      "characterExpression": "normal",
+      "src": "/slides/A.png",
+      "text": "",
+      "caption": "サッカー日本代表、ワールドカップ初戦で強豪オランダと激突！なんと、2対2の引き分けです！。",
+      "characterExpression": "thinking",
+      "character": "thinking-2",
       "audio": "/audio/shorts/scene-1.wav",
       "startFrame": 0,
-      "durationFrames": 300,
-      "characterDurationSeconds": 10,
+      "durationFrames": 150,
+      "characterDurationSeconds": 5,
       "audioStartFrame": 0,
       "textStyle": {
         "x": 58,
@@ -23,7 +40,7 @@
       },
       "captionStyle": {
         "x": 65,
-        "y": 820,
+        "y": 1200,
         "width": 950,
         "height": 220,
         "padding": 32,
@@ -48,109 +65,25 @@
       },
       "slideFrameStyle": {
         "x": 58,
-        "y": 470,
+        "y": 600,
         "width": 964,
-        "height": 300,
+        "height": 600,
         "borderRadius": 12,
         "overflow": "hidden",
         "zIndex": 10
-      },
-      "slideImage": "/slides/h3-rocket-slide-1.png",
-      "slideImageStyle": {
-        "x": 58,
-        "y": 470,
-        "width": 964,
-        "height": 300,
-        "objectFit": "contain",
-        "objectPosition": "center",
-        "borderRadius": 12
-      },
-      "slides": [
-        {
-          "src": "/slides/h3-slide-1-launch.png",
-          "start": 0,
-          "duration": 3,
-          "objectFit": "contain",
-          "objectPosition": "center"
-        },
-        {
-          "src": "/slides/h3-slide-2-satellite.png",
-          "start": 3,
-          "duration": 3,
-          "objectFit": "contain",
-          "objectPosition": "center"
-        },
-        {
-          "src": "/slides/h3-slide-3-cost.png",
-          "start": 6,
-          "duration": 4,
-          "objectFit": "contain",
-          "objectPosition": "center"
-        }
-      ],
-      "slideImages": [
-        {
-          "src": "/slides/h3-rocket-1.png",
-          "x": 42,
-          "y": 44,
-          "width": 250,
-          "height": 160,
-          "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "rotate": -4,
-          "borderRadius": 12,
-          "zIndex": 1
-        },
-        {
-          "src": "/slides/h3-rocket-2.png",
-          "x": 330,
-          "y": 44,
-          "width": 250,
-          "height": 160,
-          "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "rotate": 4,
-          "borderRadius": 12,
-          "zIndex": 2
-        },
-        {
-          "src": "/slides/jaxa-logo.png",
-          "x": 704,
-          "y": 210,
-          "width": 170,
-          "height": 70,
-          "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 0.96,
-          "rotate": 0,
-          "borderRadius": 0,
-          "zIndex": 3
-        }
-      ],
-      "images": [
-        {
-          "src": "/images/h3-rocket.png",
-          "x": 720,
-          "y": 485,
-          "width": 250,
-          "height": 190,
-          "opacity": 1,
-          "rotate": -8,
-          "zIndex": 5
-        }
-      ]
+      }
     },
     {
-      "text": "衛星投入に成功",
-      "caption": "日本の主力ロケット、H3ロケット6号機の打ち上げが成功しました。衛星を予定通りの軌道へ投入し、順調な運用実績を積み重ねています。",
-      "characterExpression": "thinking",
+      "src": "/slides/B.png",
+      "text": "",
+      "caption": "試合はオランダが先制する展開でしたが、日本も粘り強く反撃。最後まで諦めずに戦い抜き、強豪相手から貴重な勝ち点1を獲得しました。",
+      "characterExpression": "happy",
+      "character": "happy-1",
       "audio": "/audio/shorts/scene-2.wav",
-      "startFrame": 300,
-      "durationFrames": 300,
-      "characterDurationSeconds": 10,
-      "audioStartFrame": 300,
+      "startFrame": 150,
+      "durationFrames": 330,
+      "characterDurationSeconds": 12,
+      "audioStartFrame": 150,
       "captionStyle": {
         "x": 65,
         "y": 1200,
@@ -175,39 +108,19 @@
         "borderRadius": 12,
         "overflow": "hidden",
         "zIndex": 10
-      },
-      "slides": [
-        {
-          "src": "/slides/h3-rocket-2.png",
-          "start": 0,
-          "duration": 4,
-          "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "borderRadius": 12,
-          "zIndex": 10
-        },
-        {
-          "src": "/slides/h3-rocket-3.png",
-          "start": 4,
-          "duration": 6,
-          "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "borderRadius": 12,
-          "zIndex": 10
-        }
-      ]
+      }
     },
     {
-      "text": "夢が広がる成功",
-      "caption": "ロケットが空へ飛んでいく映像ってやっぱりワクワクしますよね。感想は、俺もロケット飛ばしてえ！",
-      "characterExpression": "serious",
+      "src": "/slides/C.png",
+      "text": "",
+      "caption": "頑張れニッポン！",
+      "characterExpression": "happy",
+      "character": "happy-2",
       "audio": "/audio/shorts/scene-3.wav",
-      "startFrame": 600,
+      "startFrame": 470,
       "durationFrames": 300,
       "characterDurationSeconds": 10,
-      "audioStartFrame": 600,
+      "audioStartFrame": 470,
       "captionStyle": {
         "x": 65,
         "y": 1200,
@@ -232,29 +145,7 @@
         "borderRadius": 12,
         "overflow": "hidden",
         "zIndex": 10
-      },
-      "slides": [
-        {
-          "src": "/slides/h3-rocket-3.png",
-          "start": 0,
-          "duration": 5,
-          "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "borderRadius": 12,
-          "zIndex": 10
-        },
-        {
-          "src": "/slides/h3-rocket-1.png",
-          "start": 5,
-          "duration": 5,
-          "objectFit": "contain",
-          "objectPosition": "center",
-          "opacity": 1,
-          "borderRadius": 12,
-          "zIndex": 10
-        }
-      ]
+      }
     }
   ]
 }

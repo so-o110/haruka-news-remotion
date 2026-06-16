@@ -24,11 +24,16 @@ const expressionLabel: Record<CharacterExpression, string> = {
   thinking: "思考中",
 };
 
-export const AICharacter = ({ expression, name = "Haruka" }: AICharacterProps) => {
+export const AICharacter = ({
+  expression,
+  name = "Haruka",
+}: AICharacterProps) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const [availableImageSrcs, setAvailableImageSrcs] = useState<string[]>([]);
-  const [renderHandle] = useState(() => delayRender("Checking character image"));
+  const [renderHandle] = useState(() =>
+    delayRender("Checking character image"),
+  );
 
   const imageSrcs = useMemo(
     () => [
@@ -158,6 +163,7 @@ export const AICharacter = ({ expression, name = "Haruka" }: AICharacterProps) =
                           : 0,
                   filter: "drop-shadow(0 28px 48px rgba(0, 0, 0, 0.28))",
                 }}
+                from={-41}
               />
             ))}
           </div>
