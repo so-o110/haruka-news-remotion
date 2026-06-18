@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import {
   AbsoluteFill,
   Audio,
@@ -180,6 +180,13 @@ const shortNews = shortNewsData as ShortNewsData;
 const fps = 30;
 const characterBasePath = "/characters/ryunosuke";
 const defaultCharacterImage: CharacterImageName = "normal-1.png";
+const newsTheme = {
+  sky: "#dff5ff",
+  skyLight: "#f8fdff",
+  blue: "#123b63",
+  blueAccent: "#145d99",
+  brown: "#7a3f17",
+};
 const availableCharacterImages = new Set<CharacterImageName>([
   "normal-1.png",
   "normal-2.png",
@@ -192,6 +199,15 @@ const availableCharacterImages = new Set<CharacterImageName>([
 ]);
 
 const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
+const getSlideAssetPath = (path: string) => {
+  const normalized = normalizePublicPath(path);
+
+  if (normalized.includes("/")) {
+    return normalized;
+  }
+
+  return `slides/${normalized}`;
+};
 const getFileName = (path: string) => path.split("/").pop() ?? path;
 const normalizeCharacterImageName = (imageName: string | undefined) => {
   if (!imageName) {
@@ -213,8 +229,34 @@ const getCharacterImagePath = (slide: ShortNewsSlide) =>
     slide.characterImage ?? slide.character,
   )}`;
 
+const HighlightedNewsText = ({ text }: { text: string }) => {
+  const parts = text.split(/(\d+億人|\d+万人|\d+人|\d+億|\d+万)/g);
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        const isHighlight = /\d+(億人|万人|人|億|万)/.test(part);
+
+        return (
+          <span
+            key={`${part}-${index}`}
+            style={{
+              color: isHighlight ? newsTheme.brown : "inherit",
+            }}
+          >
+            {part}
+          </span>
+        );
+      })}
+    </>
+  );
+};
+
 // fps=30: 3秒=90フレーム、5秒=150フレーム、10秒=300フレーム。
-const getEndingTiming = (ending: ShortNewsEnding | undefined, totalFrames: number) => {
+const getEndingTiming = (
+  ending: ShortNewsEnding | undefined,
+  totalFrames: number,
+) => {
   const fallbackStartFrame = 26 * fps;
   const startFrame = ending?.startFrame ?? fallbackStartFrame;
   const durationFrames =
@@ -226,122 +268,22 @@ const getEndingTiming = (ending: ShortNewsEnding | undefined, totalFrames: numbe
   };
 };
 
-const ShortsBackground = ({ frame }: { frame: number }) => {
-  const sweep = (frame % 120) * 5;
-
+const ShortsBackground = () => {
   return (
-    <>
-      <div
+    <AbsoluteFill style={{ zIndex: 0 }}>
+      <AbsoluteFill
         style={{
-          position: "absolute",
-          inset: 0,
           background:
-            "radial-gradient(circle at 18% 8%, rgba(255, 45, 85, 0.36) 0%, transparent 32%), radial-gradient(circle at 88% 18%, rgba(255, 202, 40, 0.28) 0%, transparent 28%), radial-gradient(circle at 58% 82%, rgba(255, 0, 128, 0.22) 0%, transparent 30%), linear-gradient(180deg, #020204 0%, #07060b 50%, #020204 100%)",
+            "linear-gradient(180deg, #fafdff 0%, #eaf8ff 42%, #dff5ff 100%)",
         }}
       />
-      <div
+      <AbsoluteFill
         style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(115deg, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(25deg, rgba(255,45,85,0.16) 1px, transparent 1px)",
-          backgroundSize: "84px 84px, 132px 132px",
-          transform: `translate3d(${-sweep * 0.18}px, ${sweep * 0.1}px, 0)`,
-          opacity: 0.9,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 210,
-          left: -210,
-          width: 820,
-          height: 58,
-          background: "linear-gradient(90deg, #ff1744 0%, #ff4fb8 100%)",
-          transform: "rotate(-18deg)",
-          boxShadow: "0 0 44px rgba(255, 23, 68, 0.45)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 330,
-          right: -280,
-          width: 920,
-          height: 46,
-          background: "linear-gradient(90deg, #ffd22e 0%, #ff1744 100%)",
-          transform: "rotate(-18deg)",
-          boxShadow: "0 0 42px rgba(255, 210, 46, 0.35)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: -260,
-          bottom: 310,
-          width: 760,
-          height: 38,
-          background: "rgba(255,255,255,0.86)",
-          transform: "rotate(-18deg)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          right: 52,
-          top: 520,
-          width: 210,
-          height: 210,
-          border: "12px solid rgba(255, 210, 46, 0.86)",
-          transform: `rotate(${frame * 0.18}deg)`,
-          opacity: 0.58,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 42,
-          top: 1020,
-          width: 170,
-          height: 170,
-          border: "10px solid rgba(255, 45, 160, 0.72)",
-          borderRadius: "50%",
-          boxShadow: "0 0 38px rgba(255, 45, 160, 0.34)",
-        }}
-      />
-      {Array.from({ length: 7 }, (_, index) => (
-        <div
-          key={`speed-line-${index}`}
-          style={{
-            position: "absolute",
-            right: -48,
-            top: 730 + index * 58,
-            width: 300 - index * 18,
-            height: 12,
-            backgroundColor:
-              index % 3 === 0
-                ? "#ff1744"
-                : index % 3 === 1
-                  ? "#ff4fb8"
-                  : "#ffd22e",
-            transform: "skewX(-24deg)",
-            opacity: 0.72,
-          }}
-        />
-      ))}
-      <div
-        style={{
-          position: "absolute",
-          left: 128,
-          right: 128,
-          bottom: 60,
-          height: 760,
-          borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(5,5,8,0.72) 0%, rgba(5,5,8,0.46) 45%, transparent 72%)",
+            "radial-gradient(circle at 50% 35%, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0) 52%)",
         }}
       />
-    </>
+    </AbsoluteFill>
   );
 };
 
@@ -388,6 +330,22 @@ const SafeAudio = ({ path }: { path: string }) => {
   return <Audio src={src} volume={1} />;
 };
 
+const SafeSlideImage = ({
+  path,
+  style,
+}: {
+  path: string;
+  style: CSSProperties;
+}) => {
+  const { exists, src } = usePublicAsset(path);
+
+  if (!exists) {
+    return null;
+  }
+
+  return <Img src={src} style={style} />;
+};
+
 const EndingScreen = ({
   localFrame,
   durationFrames,
@@ -409,7 +367,7 @@ const EndingScreen = ({
       style={{
         position: "absolute",
         inset: 0,
-        backgroundColor: style?.backgroundColor ?? "rgba(7,23,39,0.9)",
+        backgroundColor: style?.backgroundColor ?? "rgba(248,253,255,0.94)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -420,7 +378,10 @@ const EndingScreen = ({
     >
       <div
         style={{
-          position: style?.x !== undefined || style?.y !== undefined ? "absolute" : "relative",
+          position:
+            style?.x !== undefined || style?.y !== undefined
+              ? "absolute"
+              : "relative",
           left: style?.x,
           top: style?.y,
           width: style?.width,
@@ -428,9 +389,9 @@ const EndingScreen = ({
           fontSize: style?.fontSize ?? 92,
           lineHeight: style?.lineHeight ?? 1.1,
           fontWeight: 950,
-          color: style?.color ?? "white",
+          color: newsTheme.blue,
           textAlign: style?.textAlign ?? "center",
-          textShadow: "0 18px 60px rgba(0,0,0,0.38)",
+          textShadow: "none",
         }}
       >
         {ending?.text ?? "ハルカニュース"}
@@ -449,8 +410,9 @@ const CharacterShadow = () => {
         bottom: 86,
         height: 54,
         borderRadius: "50%",
-        backgroundColor: "rgba(0,0,0,0.28)",
-        filter: "blur(10px)",
+        backgroundColor: "rgba(18,59,99,0.12)",
+        filter: "blur(8px)",
+        zIndex: 35,
       }}
     />
   );
@@ -468,6 +430,7 @@ const CharacterPlaceholder = () => {
         display: "flex",
         alignItems: "flex-end",
         justifyContent: "center",
+        zIndex: 40,
       }}
     >
       <div
@@ -475,11 +438,10 @@ const CharacterPlaceholder = () => {
           width: 420,
           height: 420,
           borderRadius: "50%",
-          background:
-            "linear-gradient(145deg, #ffffff 0%, #d8f2ff 48%, #ffd7df 100%)",
-          border: "12px solid rgba(255,255,255,0.86)",
-          boxShadow: "0 22px 60px rgba(0, 0, 0, 0.26)",
-          color: "#19324d",
+          background: newsTheme.skyLight,
+          border: `8px solid ${newsTheme.brown}`,
+          boxShadow: "0 18px 34px rgba(18,59,99,0.16)",
+          color: newsTheme.blue,
           fontSize: 58,
           fontWeight: 900,
           display: "flex",
@@ -530,10 +492,10 @@ const CharacterImage = ({
           maxHeight: 650,
           objectFit: "contain",
           opacity: fadeIn,
-          filter: "drop-shadow(0 24px 42px rgba(0,0,0,0.32))",
+          filter: "drop-shadow(0 20px 28px rgba(18,59,99,0.22))",
           translate: "-6.3px 118.7px",
         }}
-        durationInFrames={311}
+        durationInFrames={358}
       />
     </div>
   );
@@ -547,9 +509,9 @@ const SlideImages = ({ images }: { images?: ShortNewsSlideImage[] }) => {
   return (
     <>
       {images.map((image, index) => (
-        <Img
+        <SafeSlideImage
           key={`${image.src}-${index}`}
-          src={staticFile(normalizePublicPath(image.src))}
+          path={getSlideAssetPath(image.src)}
           style={{
             position: "absolute",
             left: image.x,
@@ -560,7 +522,7 @@ const SlideImages = ({ images }: { images?: ShortNewsSlideImage[] }) => {
             opacity: image.opacity ?? 1,
             transform: `rotate(${image.rotate ?? 0}deg)`,
             zIndex: image.zIndex ?? 1,
-            filter: "drop-shadow(0 14px 24px rgba(0,0,0,0.38))",
+            filter: "drop-shadow(0 12px 18px rgba(18,59,99,0.16))",
           }}
         />
       ))}
@@ -580,9 +542,9 @@ const SlideInnerImages = ({
   return (
     <>
       {images.map((image, index) => (
-        <Img
+        <SafeSlideImage
           key={`${image.src}-${index}`}
-          src={staticFile(normalizePublicPath(image.src))}
+          path={getSlideAssetPath(image.src)}
           style={{
             position: "absolute",
             left: image.x,
@@ -618,8 +580,7 @@ const TimedSlideImages = ({
         const y = frameStyle?.y ?? slide.y ?? 470;
         const width = frameStyle?.width ?? slide.width ?? 964;
         const height = frameStyle?.height ?? slide.height ?? 300;
-        const borderRadius =
-          frameStyle?.borderRadius ?? slide.borderRadius ?? 0;
+        const borderRadius = 0;
         const overflow = frameStyle?.overflow ?? "hidden";
         const zIndex = frameStyle?.zIndex ?? slide.zIndex ?? 10;
 
@@ -642,11 +603,14 @@ const TimedSlideImages = ({
                 overflow,
                 opacity: slide.opacity ?? 1,
                 zIndex,
-                boxShadow: "0 20px 54px rgba(0,0,0,0.42)",
+                border: `5px solid ${newsTheme.brown}`,
+                boxSizing: "border-box",
+                backgroundColor: "rgba(255,255,255,0.68)",
+                boxShadow: "0 14px 28px rgba(18,59,99,0.13)",
               }}
             >
-              <Img
-                src={staticFile(normalizePublicPath(slide.src))}
+              <SafeSlideImage
+                path={getSlideAssetPath(slide.src)}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -685,7 +649,7 @@ const SlideCard = ({
   const y = style?.y ?? imageStyle?.y ?? 470;
   const width = style?.width ?? imageStyle?.width ?? 964;
   const height = style?.height ?? imageStyle?.height ?? 300;
-  const borderRadius = style?.borderRadius ?? imageStyle?.borderRadius ?? 8;
+  const borderRadius = 0;
   const overflow = style?.overflow ?? "hidden";
   const zIndex = style?.zIndex ?? 2;
   const hasCustomSlideContent =
@@ -704,16 +668,17 @@ const SlideCard = ({
           borderRadius,
           overflow,
           zIndex,
-          border: "6px solid #ffd22e",
-          backgroundColor: "rgba(5,5,8,0.88)",
-          boxShadow: "12px 12px 0 #ff1744, 0 28px 80px rgba(0,0,0,0.46)",
+          border: `5px solid ${newsTheme.brown}`,
+          boxSizing: "border-box",
+          backgroundColor: "rgba(255,255,255,0.72)",
+          boxShadow: "0 14px 28px rgba(18,59,99,0.13)",
           opacity: enter,
           transform: `translateY(${interpolate(enter, [0, 1], [34, 0])}px)`,
         }}
       >
         {slide.slideImage ? (
-          <Img
-            src={staticFile(normalizePublicPath(slide.slideImage))}
+          <SafeSlideImage
+            path={getSlideAssetPath(slide.slideImage)}
             style={{
               width: "100%",
               height: "100%",
@@ -737,11 +702,11 @@ const SlideCard = ({
         minHeight: 300,
         zIndex,
         padding: "42px 46px",
-        borderRadius: 8,
-        backgroundColor: "rgba(255,255,255,0.96)",
-        color: "#08080d",
-        border: "6px solid #ffd22e",
-        boxShadow: "12px 12px 0 #ff1744, 0 28px 80px rgba(0,0,0,0.46)",
+        borderRadius: 0,
+        backgroundColor: "rgba(255,255,255,0.84)",
+        color: newsTheme.blue,
+        border: `5px solid ${newsTheme.brown}`,
+        boxShadow: "0 14px 28px rgba(18,59,99,0.13)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -755,7 +720,7 @@ const SlideCard = ({
           lineHeight: 1.34,
           fontWeight: 900,
           textAlign: "center",
-          textShadow: "0 2px 0 rgba(255, 210, 46, 0.22)",
+          textShadow: "none",
         }}
       >
         {slide.text}
@@ -780,7 +745,7 @@ const SlideText = ({
   const captionStyle = slide.captionStyle;
   const captionWidth = captionStyle?.width ?? textStyle?.width;
   const captionBorderWidth = captionStyle?.borderWidth ?? 5;
-  const captionBorderColor = captionStyle?.borderColor ?? "#ff4fb8";
+  const captionBorderColor = newsTheme.brown;
 
   return (
     <>
@@ -797,17 +762,10 @@ const SlideText = ({
           zIndex: captionStyle?.zIndex ?? textStyle?.zIndex ?? 20,
           boxSizing: "border-box",
           padding: captionStyle?.padding ?? "36px 42px",
-          borderRadius: captionStyle?.borderRadius ?? 8,
-          background:
-            captionStyle?.backgroundColor ??
-            "linear-gradient(135deg, rgba(6,6,10,0.96) 0%, rgba(36,0,22,0.96) 100%)",
+          borderRadius: 0,
+          background: "rgba(255,255,255,0.9)",
           border: `${captionBorderWidth}px solid ${captionBorderColor}`,
-          borderTop:
-            captionStyle === undefined
-              ? "12px solid #ff1744"
-              : `${captionBorderWidth}px solid ${captionBorderColor}`,
-          boxShadow:
-            "10px 10px 0 #ffd22e, 0 18px 54px rgba(0,0,0,0.45), 0 0 36px rgba(255,79,184,0.32)",
+          boxShadow: "0 14px 28px rgba(18,59,99,0.13)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -817,15 +775,14 @@ const SlideText = ({
         <div
           style={{
             width: "100%",
-            color: captionStyle?.color ?? textStyle?.color ?? "white",
+            color: newsTheme.blue,
             fontSize: captionStyle?.fontSize ?? textStyle?.fontSize ?? 72,
             lineHeight:
               captionStyle?.lineHeight ?? textStyle?.lineHeight ?? 1.18,
             fontWeight: 950,
             textAlign:
               captionStyle?.textAlign ?? textStyle?.textAlign ?? "center",
-            textShadow:
-              "4px 4px 0 #ff1744, -3px -3px 0 rgba(255, 210, 46, 0.72), 0 5px 20px rgba(0,0,0,0.52)",
+            textShadow: "none",
           }}
         >
           {slide.caption}
@@ -835,7 +792,7 @@ const SlideText = ({
   );
 };
 
-export const SHORT_NEWS_DURATION_IN_FRAMES = 27 * fps;
+export const SHORT_NEWS_DURATION_IN_FRAMES = 30 * fps;
 
 export const ShortNewsVideo = () => {
   const frame = useCurrentFrame();
@@ -857,20 +814,29 @@ export const ShortNewsVideo = () => {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: "#020204",
-        color: "white",
+        backgroundColor: newsTheme.sky,
+        color: newsTheme.blue,
         overflow: "hidden",
         fontFamily:
           "'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif",
       }}
     >
-      <ShortsBackground frame={frame} />
+      <ShortsBackground />
+      <AbsoluteFill
+        style={{
+          border: `5px solid ${newsTheme.brown}`,
+          boxSizing: "border-box",
+          zIndex: 25,
+          pointerEvents: "none",
+        }}
+      />
       <header
         style={{
           position: "absolute",
           top: 86,
           left: 64,
           right: 64,
+          zIndex: 30,
           opacity: titleProgress,
           transform: `translateY(${interpolate(titleProgress, [0, 1], [-34, 0])}px)`,
         }}
@@ -881,40 +847,20 @@ export const ShortNewsVideo = () => {
             alignItems: "center",
             gap: 18,
             padding: "18px 32px 20px",
-            background:
-              "linear-gradient(110deg, rgba(8,8,12,0.98) 0%, rgba(34,34,40,0.96) 54%, rgba(10,10,14,0.98) 100%)",
-            border: "4px solid #ff1744",
-            borderRightColor: "#ffd22e",
-            borderBottomColor: "#ff4fb8",
-            boxShadow:
-              "8px 8px 0 rgba(0,0,0,0.92), 0 0 28px rgba(255, 23, 68, 0.72), 0 0 46px rgba(255, 79, 184, 0.38)",
-            transform: "skewX(-12deg)",
+            backgroundColor: "rgba(255,255,255,0.72)",
+            border: `5px solid ${newsTheme.brown}`,
+            boxShadow: "0 10px 22px rgba(18,59,99,0.1)",
             position: "relative",
             overflow: "hidden",
           }}
         >
           <div
             style={{
-              position: "absolute",
-              left: -80,
-              top: 0,
-              bottom: 0,
-              width: 150,
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%)",
-              transform: "skewX(-18deg)",
-            }}
-          />
-          <div
-            style={{
               width: 0,
               height: 0,
               borderTop: "21px solid transparent",
               borderBottom: "21px solid transparent",
-              borderLeft: "35px solid #ff1744",
-              filter:
-                "drop-shadow(0 0 10px rgba(255,23,68,0.88)) drop-shadow(0 0 18px rgba(255,210,46,0.38))",
-              transform: "skewX(12deg)",
+              borderLeft: `35px solid ${newsTheme.blueAccent}`,
               flexShrink: 0,
             }}
           />
@@ -923,19 +869,17 @@ export const ShortNewsVideo = () => {
               display: "flex",
               alignItems: "baseline",
               gap: 20,
-              transform: "skewX(12deg)",
               position: "relative",
               zIndex: 1,
             }}
           >
             <span
               style={{
-                color: "#ffffff",
+                color: newsTheme.brown,
                 fontSize: 56,
                 lineHeight: 1,
                 fontWeight: 950,
-                textShadow:
-                  "3px 3px 0 #ff1744, -2px -2px 0 rgba(255,210,46,0.82), 0 0 18px rgba(255,255,255,0.42), 0 0 32px rgba(0,174,255,0.34)",
+                textShadow: "none",
                 whiteSpace: "nowrap",
               }}
             >
@@ -943,15 +887,12 @@ export const ShortNewsVideo = () => {
             </span>
             <span
               style={{
-                background:
-                  "linear-gradient(90deg, #ff1744 0%, #ff4fb8 58%, #ffd22e 100%)",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
+                color: newsTheme.blueAccent,
                 fontSize: 36,
                 lineHeight: 1,
                 fontWeight: 950,
                 letterSpacing: 0,
-                textShadow: "0 0 18px rgba(255,79,184,0.62)",
+                textShadow: "none",
                 whiteSpace: "nowrap",
               }}
             >
@@ -965,10 +906,7 @@ export const ShortNewsVideo = () => {
               right: 28,
               bottom: 8,
               height: 5,
-              background:
-                "linear-gradient(90deg, #ffd22e 0%, #ff1744 42%, #ff4fb8 76%, #2ed4ff 100%)",
-              boxShadow:
-                "0 0 12px rgba(255,210,46,0.78), 0 0 22px rgba(255,79,184,0.52)",
+              background: newsTheme.blueAccent,
             }}
           />
         </div>
@@ -978,12 +916,11 @@ export const ShortNewsVideo = () => {
             fontSize: 76,
             lineHeight: 1.12,
             fontWeight: 950,
-            color: "#ffffff",
-            textShadow:
-              "5px 5px 0 #ff1744, -3px -3px 0 rgba(255,210,46,0.72), 0 12px 34px rgba(0,0,0,0.76)",
+            color: newsTheme.blue,
+            textShadow: "none",
           }}
         >
-          {shortNews.title}
+          <HighlightedNewsText text={shortNews.title} />
         </h1>
         <div
           style={{
@@ -991,16 +928,15 @@ export const ShortNewsVideo = () => {
             display: "inline-flex",
             maxWidth: "100%",
             padding: "18px 28px",
-            background:
-              "linear-gradient(90deg, rgba(255,23,68,0.96) 0%, rgba(123,0,38,0.96) 100%)",
-            borderLeft: "12px solid #ffd22e",
-            borderRight: "6px solid #ff4fb8",
-            color: "#ffffff",
+            backgroundColor: "rgba(255,255,255,0.72)",
+            border: `4px solid ${newsTheme.brown}`,
+            borderLeft: `12px solid ${newsTheme.blueAccent}`,
+            color: newsTheme.blue,
             fontSize: 36,
             lineHeight: 1.22,
             fontWeight: 900,
-            boxShadow: "8px 8px 0 rgba(0,0,0,0.72)",
-            textShadow: "2px 2px 0 rgba(0,0,0,0.58)",
+            boxShadow: "0 8px 18px rgba(18,59,99,0.09)",
+            textShadow: "none",
           }}
         >
           {shortNews.topic}
@@ -1010,9 +946,7 @@ export const ShortNewsVideo = () => {
             marginTop: 28,
             width: 320,
             height: 11,
-            background:
-              "linear-gradient(90deg, #ffd22e 0%, #ff1744 46%, #ff4fb8 100%)",
-            boxShadow: "0 0 28px rgba(255, 210, 46, 0.44)",
+            background: `linear-gradient(90deg, ${newsTheme.brown} 0%, ${newsTheme.brown} 76%, ${newsTheme.blueAccent} 76%, ${newsTheme.blueAccent} 100%)`,
           }}
         />
       </header>
@@ -1068,7 +1002,7 @@ export const ShortNewsVideo = () => {
             from={audioFrom}
             name={`audio-${index + 1}-${audioFileName}`}
             layout="none"
-            durationInFrames={317}
+            durationInFrames={351}
           >
             <SafeAudio path={slide.audio} />
           </Sequence>
