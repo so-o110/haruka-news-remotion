@@ -887,54 +887,22 @@ export const ShortNewsVideo = () => {
               flexShrink: 0,
               position: "relative",
               zIndex: 1,
+              overflow: "hidden",
+              borderRadius: 14,
             }}
           >
-            <svg
-              viewBox="0 0 88 72"
-              width="72"
-              height="58"
-              aria-hidden="true"
+            <Img
+              src={staticFile("branding/haruka-star-arrow.png")}
               style={{
                 position: "absolute",
                 left: 0,
-                top: 0,
-                overflow: "visible",
+                top: 1,
+                width: 72,
+                height: 56,
+                objectFit: "contain",
                 filter: "drop-shadow(0 4px 6px rgba(18,59,99,0.16))",
               }}
-            >
-              <path
-                d="M17 35 L34 35 L43 10 L51 38 L73 21"
-                fill="none"
-                stroke={newsTheme.blueAccent}
-                strokeWidth="9"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <path
-                d="M70 21 L79 16 L76 28"
-                fill="none"
-                stroke={newsTheme.blueAccent}
-                strokeWidth="9"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <path
-                d="M13 48 Q24 57 38 49 L47 56 L64 46"
-                fill="none"
-                stroke={newsTheme.brown}
-                strokeWidth="8"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <path
-                d="M17 35 L34 35 L43 10 L51 38 L67 26"
-                fill="none"
-                stroke="rgba(255,255,255,0.88)"
-                strokeWidth="3"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-            </svg>
+            />
           </div>
           <div
             style={{
