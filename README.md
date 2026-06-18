@@ -31,6 +31,23 @@ npm run dev
 npx remotion render
 ```
 
+## Short News Data
+
+The short vertical video composition `ShortNewsVideo` reads its data from:
+
+```text
+public/data/short-news.json
+```
+
+Edit this JSON file when changing the short video title, captions, slide timing, or slide layout.
+
+For slide position and size:
+
+- `slideFrameStyle` controls the visible image frame when a slide uses the timed `slides` array, for example `{ "slides": [{ "src": "A.png", ... }] }`.
+- `slideStyle` controls the single slide card/image frame when `slideImage` or text-only slide content is used.
+- If `slideFrameStyle` is omitted for timed `slides`, `slideStyle` is used as a fallback.
+- `x` maps to CSS `left`, `y` maps to CSS `top`, and `width`, `height`, `borderRadius`, `overflow`, and `zIndex` are applied directly to the frame.
+
 **Upgrade Remotion**
 
 ```console

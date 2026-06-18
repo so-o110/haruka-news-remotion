@@ -580,7 +580,8 @@ const TimedSlideImages = ({
         const y = frameStyle?.y ?? slide.y ?? 470;
         const width = frameStyle?.width ?? slide.width ?? 964;
         const height = frameStyle?.height ?? slide.height ?? 300;
-        const borderRadius = 0;
+        const borderRadius =
+          frameStyle?.borderRadius ?? slide.borderRadius ?? 0;
         const overflow = frameStyle?.overflow ?? "hidden";
         const zIndex = frameStyle?.zIndex ?? slide.zIndex ?? 10;
 
@@ -616,7 +617,6 @@ const TimedSlideImages = ({
                   height: "100%",
                   objectFit: slide.objectFit ?? "contain",
                   objectPosition: slide.objectPosition ?? "center",
-                  translate: "17.4px -19px",
                 }}
               />
             </section>
@@ -638,7 +638,7 @@ const SlideCard = ({
     return (
       <TimedSlideImages
         slides={slide.slides}
-        frameStyle={slide.slideFrameStyle}
+        frameStyle={slide.slideFrameStyle ?? slide.slideStyle}
       />
     );
   }
@@ -649,7 +649,7 @@ const SlideCard = ({
   const y = style?.y ?? imageStyle?.y ?? 470;
   const width = style?.width ?? imageStyle?.width ?? 964;
   const height = style?.height ?? imageStyle?.height ?? 300;
-  const borderRadius = 0;
+  const borderRadius = style?.borderRadius ?? imageStyle?.borderRadius ?? 0;
   const overflow = style?.overflow ?? "hidden";
   const zIndex = style?.zIndex ?? 2;
   const hasCustomSlideContent =
@@ -696,16 +696,18 @@ const SlideCard = ({
     <section
       style={{
         position: "absolute",
-        top: 470,
-        left: 58,
-        right: 58,
-        minHeight: 300,
+        left: x,
+        top: y,
+        width,
+        height,
         zIndex,
         padding: "42px 46px",
-        borderRadius: 0,
+        borderRadius,
+        overflow,
         backgroundColor: "rgba(255,255,255,0.84)",
         color: newsTheme.blue,
         border: `5px solid ${newsTheme.brown}`,
+        boxSizing: "border-box",
         boxShadow: "0 14px 28px rgba(18,59,99,0.13)",
         display: "flex",
         alignItems: "center",
