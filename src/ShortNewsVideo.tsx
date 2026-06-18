@@ -845,41 +845,86 @@ export const ShortNewsVideo = () => {
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 18,
-            padding: "18px 32px 20px",
-            backgroundColor: "rgba(255,255,255,0.72)",
-            border: `5px solid ${newsTheme.brown}`,
-            boxShadow: "0 10px 22px rgba(18,59,99,0.1)",
+            gap: 16,
+            maxWidth: "100%",
+            padding: "16px 30px 18px 24px",
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(231,248,255,0.94) 54%, rgba(190,230,255,0.88) 100%)",
+            border: "4px solid rgba(255,255,255,0.92)",
+            borderRadius: 26,
+            boxShadow:
+              "0 12px 26px rgba(20,93,153,0.16), inset 0 0 0 2px rgba(20,93,153,0.12)",
             position: "relative",
             overflow: "hidden",
           }}
         >
           <div
             style={{
-              width: 0,
-              height: 0,
-              borderTop: "21px solid transparent",
-              borderBottom: "21px solid transparent",
-              borderLeft: `35px solid ${newsTheme.blueAccent}`,
-              flexShrink: 0,
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(circle at 18% 18%, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0) 34%), radial-gradient(circle at 92% 12%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 28%)",
+              pointerEvents: "none",
             }}
           />
           <div
             style={{
+              position: "absolute",
+              left: 64,
+              top: 12,
+              width: 12,
+              height: 12,
+              backgroundColor: "rgba(255,255,255,0.92)",
+              transform: "rotate(45deg)",
+              boxShadow:
+                "172px 12px 0 rgba(255,255,255,0.72), 242px -2px 0 rgba(20,93,153,0.18)",
+            }}
+          />
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: "50%",
+              background:
+                "linear-gradient(145deg, #ffffff 0%, #d8f2ff 45%, #87cfff 100%)",
+              border: "3px solid rgba(255,255,255,0.95)",
+              boxShadow: "0 8px 16px rgba(20,93,153,0.18)",
+              flexShrink: 0,
+              position: "relative",
+              zIndex: 1,
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: 21,
+                top: 14,
+                width: 0,
+                height: 0,
+                borderTop: "13px solid transparent",
+                borderBottom: "13px solid transparent",
+                borderLeft: `21px solid ${newsTheme.blueAccent}`,
+                filter: "drop-shadow(0 2px 3px rgba(18,59,99,0.18))",
+              }}
+            />
+          </div>
+          <div
+            style={{
               display: "flex",
               alignItems: "baseline",
-              gap: 20,
+              gap: 18,
+              minWidth: 0,
               position: "relative",
               zIndex: 1,
             }}
           >
             <span
               style={{
-                color: newsTheme.brown,
-                fontSize: 56,
+                color: newsTheme.blueAccent,
+                fontSize: 52,
                 lineHeight: 1,
                 fontWeight: 950,
-                textShadow: "none",
+                textShadow: "0 3px 0 rgba(255,255,255,0.96)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -888,11 +933,11 @@ export const ShortNewsVideo = () => {
             <span
               style={{
                 color: newsTheme.blueAccent,
-                fontSize: 36,
+                fontSize: 32,
                 lineHeight: 1,
                 fontWeight: 950,
                 letterSpacing: 0,
-                textShadow: "none",
+                textShadow: "0 2px 0 rgba(255,255,255,0.96)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -903,10 +948,13 @@ export const ShortNewsVideo = () => {
             style={{
               position: "absolute",
               left: 76,
-              right: 28,
-              bottom: 8,
-              height: 5,
-              background: newsTheme.blueAccent,
+              right: 30,
+              bottom: 9,
+              height: 6,
+              borderRadius: 999,
+              background:
+                "linear-gradient(90deg, rgba(20,93,153,0.24) 0%, rgba(20,93,153,0.84) 58%, rgba(126,202,248,0.2) 100%)",
+              zIndex: 1,
             }}
           />
         </div>
