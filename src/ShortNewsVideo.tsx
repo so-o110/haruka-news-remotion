@@ -850,10 +850,10 @@ export const ShortNewsVideo = () => {
             padding: "16px 30px 18px 24px",
             background:
               "linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(231,248,255,0.94) 54%, rgba(190,230,255,0.88) 100%)",
-            border: "4px solid rgba(255,255,255,0.92)",
+            border: `3px solid ${newsTheme.brown}`,
             borderRadius: 26,
             boxShadow:
-              "0 12px 26px rgba(20,93,153,0.16), inset 0 0 0 2px rgba(20,93,153,0.12)",
+              "0 12px 26px rgba(20,93,153,0.15), inset 0 0 0 2px rgba(255,255,255,0.82)",
             position: "relative",
             overflow: "hidden",
           }}
@@ -882,31 +882,59 @@ export const ShortNewsVideo = () => {
           />
           <div
             style={{
-              width: 54,
-              height: 54,
-              borderRadius: "50%",
-              background:
-                "linear-gradient(145deg, #ffffff 0%, #d8f2ff 45%, #87cfff 100%)",
-              border: "3px solid rgba(255,255,255,0.95)",
-              boxShadow: "0 8px 16px rgba(20,93,153,0.18)",
+              width: 72,
+              height: 58,
               flexShrink: 0,
               position: "relative",
               zIndex: 1,
             }}
           >
-            <div
+            <svg
+              viewBox="0 0 88 72"
+              width="72"
+              height="58"
+              aria-hidden="true"
               style={{
                 position: "absolute",
-                left: 21,
-                top: 14,
-                width: 0,
-                height: 0,
-                borderTop: "13px solid transparent",
-                borderBottom: "13px solid transparent",
-                borderLeft: `21px solid ${newsTheme.blueAccent}`,
-                filter: "drop-shadow(0 2px 3px rgba(18,59,99,0.18))",
+                left: 0,
+                top: 0,
+                overflow: "visible",
+                filter: "drop-shadow(0 4px 6px rgba(18,59,99,0.16))",
               }}
-            />
+            >
+              <path
+                d="M17 35 L34 35 L43 10 L51 38 L73 21"
+                fill="none"
+                stroke={newsTheme.blueAccent}
+                strokeWidth="9"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              <path
+                d="M70 21 L79 16 L76 28"
+                fill="none"
+                stroke={newsTheme.blueAccent}
+                strokeWidth="9"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              <path
+                d="M13 48 Q24 57 38 49 L47 56 L64 46"
+                fill="none"
+                stroke={newsTheme.brown}
+                strokeWidth="8"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              <path
+                d="M17 35 L34 35 L43 10 L51 38 L67 26"
+                fill="none"
+                stroke="rgba(255,255,255,0.88)"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+            </svg>
           </div>
           <div
             style={{
@@ -947,7 +975,7 @@ export const ShortNewsVideo = () => {
           <div
             style={{
               position: "absolute",
-              left: 76,
+              left: 104,
               right: 30,
               bottom: 9,
               height: 6,
