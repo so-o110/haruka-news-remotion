@@ -49,6 +49,18 @@ For slide position and size:
 - `x` maps to CSS `left`, `y` maps to CSS `top`, and `width`, `height`, `borderRadius`, `overflow`, and `zIndex` are applied directly to the frame.
 - `textStyle` controls the lower body caption text box position (`x`, `y`, `width`, `zIndex`) and text appearance (`fontSize`, `lineHeight`, `textAlign`, `color`). When both `captionStyle` and `textStyle` set the same field, `textStyle` wins for these values.
 
+## Landscape News Data
+
+The landscape composition `HarukaNews` reads its data from:
+
+```text
+src/data/news.json
+```
+
+`HarukaNews` uses the same slide-oriented fields as the short template where possible: `title`, `slides`, `caption`, `text`, `character`, `characterImage`, `characterExpression`, `audio`, `startFrame`, `durationFrames`, `durationSeconds`, `audioStartFrame`, `characterDurationFrames`, `characterDurationSeconds`, `slideImage`, `slideImageStyle`, `slideImages`, `slides` for timed images, `slideStyle`, `slideFrameStyle`, `captionStyle`, `textStyle`, and `ending`.
+
+Older `topics` JSON is still accepted as a fallback, but new landscape videos should use the `slides` array so timing, captions, character images, audio, and slide frames can be adjusted the same way as `ShortNewsVideo`.
+
 **Upgrade Remotion**
 
 ```console

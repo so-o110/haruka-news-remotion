@@ -1,76 +1,159 @@
 {
+  "title": "米津玄師、新曲発表！",
   "programTitle": "ハルカニュース",
-  "dateLabel": "2026年6月11日",
+  "dateLabel": "2026年6月19日",
   "anchorName": "西村龍之介",
-  "opening": {
-    "headline": "AIが読み解く、今日の注目ニュース",
-    "subtitle": "テクノロジー、経済、社会の動きを3分で整理します。"
+  "ending": {
+    "enabled": true,
+    "startFrame": 780,
+    "durationFrames": 90,
+    "text": "ハルカニュース",
+    "audio": "/audio/shorts/ending.wav",
+    "audioStartFrame": 780,
+    "style": {
+      "fontSize": 96,
+      "color": "#123b63",
+      "zIndex": 100
+    }
   },
-  "topics": [
+  "slides": [
     {
-      "title": "生成AI、現場活用が次の段階へ",
-      "category": "Technology",
-      "durationSeconds": 34,
-      "expression": "normal",
-      "summary": "企業では、文章作成だけでなく調査、設計、顧客対応までAI活用が広がっています。",
-      "bullets": [
-        "小さな自動化から業務全体の再設計へ",
-        "人が確認する運用ルールの整備が重要",
-        "成果指標は時間短縮から品質向上へ"
-      ],
-      "telop": "AI活用は「試す」から「組み込む」段階へ"
+      "caption": "米津玄師、新曲発表！サッカーファンも音楽ファンも注目です！",
+      "characterExpression": "happy",
+      "character": "happy-1",
+      "audio": "/audio/shorts/A.wav",
+      "startFrame": 0,
+      "durationFrames": 150,
+      "characterDurationSeconds": 5,
+      "audioStartFrame": 0,
+      "text": "米津玄師さんが新曲を発表。\nスポーツと音楽の話題として注目が集まっています。",
+      "textStyle": {
+        "x": 650,
+        "y": 820,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 820,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      },
+      "slideStyle": {
+        "x": 760,
+        "y": 260,
+        "width": 1040,
+        "height": 510,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "slideFrameStyle": {
+        "x": 760,
+        "y": 260,
+        "width": 1040,
+        "height": 510,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      }
     },
     {
-      "title": "マーケットは慎重姿勢を維持",
-      "category": "Business",
-      "durationSeconds": 34,
-      "expression": "serious",
-      "summary": "金利、為替、企業決算を見極めたい投資家が多く、相場は材料待ちの展開です。",
-      "bullets": [
-        "短期の値動きより決算内容に注目",
-        "為替変動が輸出企業の見通しを左右",
-        "個人消費の強さが今後の焦点"
-      ],
-      "telop": "市場は方向感を探る展開"
+      "caption": "米津玄師さんが新曲『烏（からす）』を発表しました。",
+      "characterExpression": "thinking",
+      "character": "thinking-1",
+      "audio": "/audio/shorts/B.wav",
+      "startFrame": 150,
+      "durationFrames": 530,
+      "characterDurationSeconds": 19,
+      "audioStartFrame": 150,
+      "text": "楽曲の世界観や映像表現にも注目。\nSNSでも反響が広がりそうです。",
+      "textStyle": {
+        "x": 650,
+        "y": 820,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 820,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      },
+      "slideStyle": {
+        "x": 760,
+        "y": 260,
+        "width": 1040,
+        "height": 510,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      }
     },
     {
-      "title": "暮らしのデジタル化、自治体でも加速",
-      "category": "Society",
-      "durationSeconds": 33,
-      "expression": "thinking",
-      "summary": "行政手続きのオンライン化が進み、住民サービスの使いやすさが競争力になっています。",
-      "bullets": [
-        "窓口手続きの待ち時間を削減",
-        "高齢者にも使いやすい導線が課題",
-        "データ連携で防災や福祉にも応用"
-      ],
-      "telop": "便利さとわかりやすさの両立が鍵"
-    },
-    {
-      "title": "学び直し、キャリア戦略の中心に",
-      "category": "Career",
-      "durationSeconds": 33,
-      "expression": "happy",
-      "summary": "AI時代に合わせて、社会人のスキル更新や社内教育への投資が増えています。",
-      "bullets": [
-        "短時間で学べる実務型講座が人気",
-        "部署を越えた知識共有が進む",
-        "学習履歴を人事評価へ活用する動き"
-      ],
-      "telop": "学び続ける力がキャリアの土台に"
-    },
-    {
-      "title": "今日のまとめ",
-      "category": "Summary",
-      "durationSeconds": 34,
-      "expression": "normal",
-      "summary": "変化の速い時代ほど、情報を整理し、行動に移す判断力が求められます。",
-      "bullets": [
-        "AIは現場で使える形へ",
-        "市場は丁寧な見極めが必要",
-        "社会の仕組みもデジタル前提に"
-      ],
-      "telop": "ハルカニュース、また次回お会いしましょう"
+      "caption": "あなたはもう聴いた？コメントで教えて！",
+      "characterExpression": "happy",
+      "character": "happy-2",
+      "audio": "/audio/shorts/C.wav",
+      "startFrame": 680,
+      "durationFrames": 300,
+      "characterDurationSeconds": 10,
+      "audioStartFrame": 680,
+      "text": "気になるポイントを短く整理。\n続報もハルカニュースでお届けします。",
+      "textStyle": {
+        "x": 650,
+        "y": 820,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 820,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      },
+      "slideStyle": {
+        "x": 760,
+        "y": 260,
+        "width": 1040,
+        "height": 510,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      }
     }
   ]
 }
