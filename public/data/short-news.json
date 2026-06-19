@@ -1,9 +1,9 @@
 {
-  "title": "Threads利用者5億人突破",
-  "topic": "SNS市場の変化",
+  "title": "米津玄師、新曲発表！",
+  "topic": "サッカーと音楽",
   "ending": {
     "enabled": true,
-    "startFrame": 810,
+    "startFrame": 780,
     "durationFrames": 90,
     "text": "ハルカニュース",
     "audio": "/audio/shorts/ending.wav",
@@ -19,17 +19,17 @@
   "slides": [
     {
       "text": "aas",
-      "caption": "Threads利用者、ついに5億人突破！SNS勢力図が変わるかもしれません！",
-      "characterExpression": "thinking",
-      "character": "thinking-1",
+      "caption": "米津玄師、新曲発表！サッカーファンも音楽ファンも注目です！",
+      "characterExpression": "happy",
+      "character": "happy-1",
       "audio": "/audio/shorts/A.wav",
       "startFrame": 0,
-      "durationFrames": 360,
-      "characterDurationSeconds": 13,
+      "durationFrames": 150,
+      "characterDurationSeconds": 5,
       "audioStartFrame": 0,
       "textStyle": {
         "x": 58,
-        "y": 820,
+        "y": 800,
         "width": 964,
         "fontSize": 56,
         "lineHeight": 1.2,
@@ -63,9 +63,9 @@
         "zIndex": 10
       },
       "slideFrameStyle": {
-        "x": 58,
-        "y": 600,
-        "width": 964,
+        "x": 90,
+        "y": 500,
+        "width": 890,
         "height": 600,
         "borderRadius": 0,
         "overflow": "hidden",
@@ -75,7 +75,7 @@
         {
           "src": "A.png",
           "start": 0,
-          "duration": 12,
+          "duration": 5,
           "objectFit": "contain",
           "objectPosition": "center"
         }
@@ -83,14 +83,14 @@
     },
     {
       "text": "",
-      "caption": "2023年のサービス開始から急成長を続け、Xの対抗サービスとして存在感を強めています。",
-      "characterExpression": "happy",
-      "character": "happy-2",
+      "caption": "米津玄師さんが新曲『烏（からす）』を発表しました。",
+      "characterExpression": "thinking",
+      "character": "thinking-1",
       "audio": "/audio/shorts/B.wav",
-      "startFrame": 360,
-      "durationFrames": 360,
-      "characterDurationSeconds": 12,
-      "audioStartFrame": 360,
+      "startFrame": 150,
+      "durationFrames": 530,
+      "characterDurationSeconds": 19,
+      "audioStartFrame": 150,
       "captionStyle": {
         "x": 65,
         "y": 1200,
@@ -108,9 +108,9 @@
         "zIndex": 30
       },
       "slideFrameStyle": {
-        "x": 58,
-        "y": 600,
-        "width": 964,
+        "x": 90,
+        "y": 500,
+        "width": 890,
         "height": 600,
         "borderRadius": 0,
         "overflow": "hidden",
@@ -120,7 +120,7 @@
         {
           "src": "B.png",
           "start": 0,
-          "duration": 12,
+          "duration": 19,
           "objectFit": "contain",
           "objectPosition": "center"
         }
@@ -128,14 +128,14 @@
     },
     {
       "text": "",
-      "caption": "Threadsの波に乗り遅れるな！",
+      "caption": "あなたはもう聴いた？コメントで教えて！",
       "characterExpression": "happy",
-      "character": "serious-1",
+      "character": "happy-2",
       "audio": "/audio/shorts/C.wav",
-      "startFrame": 720,
+      "startFrame": 680,
       "durationFrames": 300,
       "characterDurationSeconds": 10,
-      "audioStartFrame": 720,
+      "audioStartFrame": 680,
       "captionStyle": {
         "x": 65,
         "y": 1200,
@@ -153,9 +153,9 @@
         "zIndex": 30
       },
       "slideFrameStyle": {
-        "x": 58,
-        "y": 600,
-        "width": 964,
+        "x": 90,
+        "y": 500,
+        "width": 890,
         "height": 600,
         "borderRadius": 0,
         "overflow": "hidden",

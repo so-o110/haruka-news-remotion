@@ -343,7 +343,7 @@ const SafeSlideImage = ({
     return null;
   }
 
-  return <Img src={src} style={style} />;
+  return <Img src={src} style={style} durationInFrames={571} />;
 };
 
 const EndingScreen = ({
@@ -495,7 +495,7 @@ const CharacterImage = ({
           filter: "drop-shadow(0 20px 28px rgba(18,59,99,0.22))",
           translate: "-6.3px 118.7px",
         }}
-        durationInFrames={358}
+        durationInFrames={573}
       />
     </div>
   );
@@ -794,7 +794,7 @@ const SlideText = ({
   );
 };
 
-export const SHORT_NEWS_DURATION_IN_FRAMES = 30 * fps;
+export const SHORT_NEWS_DURATION_IN_FRAMES = 29 * fps;
 
 export const ShortNewsVideo = () => {
   const frame = useCurrentFrame();
@@ -968,33 +968,6 @@ export const ShortNewsVideo = () => {
         >
           <HighlightedNewsText text={shortNews.title} />
         </h1>
-        <div
-          style={{
-            marginTop: 24,
-            display: "inline-flex",
-            maxWidth: "100%",
-            padding: "18px 28px",
-            backgroundColor: "rgba(255,255,255,0.72)",
-            border: `4px solid ${newsTheme.brown}`,
-            borderLeft: `12px solid ${newsTheme.blueAccent}`,
-            color: newsTheme.blue,
-            fontSize: 36,
-            lineHeight: 1.22,
-            fontWeight: 900,
-            boxShadow: "0 8px 18px rgba(18,59,99,0.09)",
-            textShadow: "none",
-          }}
-        >
-          {shortNews.topic}
-        </div>
-        <div
-          style={{
-            marginTop: 28,
-            width: 320,
-            height: 11,
-            background: `linear-gradient(90deg, ${newsTheme.brown} 0%, ${newsTheme.brown} 76%, ${newsTheme.blueAccent} 76%, ${newsTheme.blueAccent} 100%)`,
-          }}
-        />
       </header>
       <CharacterShadow />
       {slides.map((slide, index) => {
@@ -1048,7 +1021,7 @@ export const ShortNewsVideo = () => {
             from={audioFrom}
             name={`audio-${index + 1}-${audioFileName}`}
             layout="none"
-            durationInFrames={351}
+            durationInFrames={527}
           >
             <SafeAudio path={slide.audio} />
           </Sequence>
