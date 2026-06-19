@@ -3,6 +3,15 @@
   "programTitle": "ハルカニュース",
   "dateLabel": "2026年6月19日",
   "anchorName": "西村龍之介",
+  "opening": {
+    "enabled": true,
+    "duration": 4,
+    "title": "ハルカニュース",
+    "subtitle": "AI NEWS REPORT",
+    "label": "今日のニュース",
+    "showCharacter": true,
+    "characterImage": "/characters/ryunosuke/normal-1.png"
+  },
   "ending": {
     "enabled": true,
     "startFrame": 780,

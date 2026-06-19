@@ -61,6 +61,8 @@ src/data/news.json
 
 Older `topics` JSON is still accepted as a fallback, but new landscape videos should use the `slides` array so timing, captions, character images, audio, and slide frames can be adjusted the same way as `ShortNewsVideo`.
 
+`opening` controls the landscape intro. Use `enabled: false` to skip it. `duration` is in seconds and defaults to `4`. `title`, `subtitle`, `label`, `showCharacter`, `characterImage`, and optional `audio` can be set per video. Slide `startFrame` and `audioStartFrame` remain relative to the main story; the renderer automatically offsets them by the opening duration.
+
 **Upgrade Remotion**
 
 ```console

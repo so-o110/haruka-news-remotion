@@ -108,6 +108,17 @@ type Ending = {
   style?: TextStyle;
 };
 
+type OpeningConfig = {
+  enabled?: boolean;
+  duration?: number;
+  title?: string;
+  subtitle?: string;
+  label?: string;
+  showCharacter?: boolean;
+  characterImage?: string;
+  audio?: string;
+};
+
 type LegacyTopic = {
   title: string;
   category?: string;
@@ -124,9 +135,8 @@ type NewsData = {
   dateLabel?: string;
   anchorName?: string;
   audio?: string;
-  opening?: {
+  opening?: OpeningConfig & {
     headline?: string;
-    subtitle?: string;
   };
   ending?: Ending;
   slides?: NewsSlide[];
@@ -195,6 +205,22 @@ const getCharacterImagePath = (slide: NewsSlide) =>
   `${characterBasePath}/${normalizeCharacterImageName(
     slide.characterImage ?? slide.character ?? slide.characterExpression,
   )}`;
+const getOpeningCharacterImagePath = (imagePath: string | undefined) => {
+  if (!imagePath) {
+    return `${characterBasePath}/${defaultCharacterImage}`;
+  }
+
+  const normalized = normalizePublicPath(imagePath);
+
+  if (
+    normalized.startsWith("characters/ryunosuke/") ||
+    normalized.startsWith("characters/short-ryunosuke/")
+  ) {
+    return normalized;
+  }
+
+  return `${characterBasePath}/${normalizeCharacterImageName(normalized)}`;
+};
 
 const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
   (topics ?? []).map((topic, index) => ({
@@ -245,7 +271,19 @@ const getSlideDuration = (slide: NewsSlide) =>
         : 8 * fps),
   );
 
+const getOpeningConfig = () => news.opening;
+const getOpeningDurationFrames = () => {
+  const opening = getOpeningConfig();
+
+  if (opening?.enabled === false) {
+    return 0;
+  }
+
+  return Math.max(1, Math.round((opening?.duration ?? 4) * fps));
+};
+
 const getTotalFrames = () => {
+  const openingFrames = getOpeningDurationFrames();
   const slideEnd =
     slides.length === 0
       ? 12 * fps
@@ -265,7 +303,7 @@ const getTotalFrames = () => {
       ? 0
       : (ending?.startFrame ?? slideEnd) + (ending?.durationFrames ?? 0);
 
-  return Math.max(slideEnd, endingEnd, 1);
+  return Math.max(openingFrames + Math.max(slideEnd, endingEnd), 1);
 };
 
 export const HARUKA_NEWS_DURATION_IN_FRAMES = getTotalFrames();
@@ -756,10 +794,210 @@ const EndingScreen = ({
   );
 };
 
+const OpeningScreen = ({
+  opening,
+  durationFrames,
+}: {
+  opening?: OpeningConfig;
+  durationFrames: number;
+}) => {
+  const frame = useCurrentFrame();
+  const title = opening?.title ?? news.programTitle ?? "ハルカニュース";
+  const subtitle = opening?.subtitle ?? "AI NEWS REPORT";
+  const label = opening?.label ?? news.dateLabel ?? "今日のニュース";
+  const showCharacter = opening?.showCharacter ?? true;
+  const fade = interpolate(frame, [0, 24], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+  });
+  const titleScale = interpolate(frame, [8, 48], [0.92, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+  });
+  const lineWidth = interpolate(frame, [18, 58], [0, 560], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+  });
+  const cardSlide = interpolate(frame, [16, 52], [52, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+  });
+  const characterEnter = interpolate(frame, [22, 68], [90, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+  });
+  const exitOpacity = interpolate(
+    frame,
+    [durationFrames - 18, durationFrames],
+    [1, 0],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
+
+  return (
+    <AbsoluteFill
+      style={{
+        background:
+          "linear-gradient(180deg, #fafdff 0%, #eaf8ff 46%, #dff5ff 100%)",
+        opacity: exitOpacity,
+        overflow: "hidden",
+        color: theme.blue,
+        zIndex: 80,
+      }}
+    >
+      <AbsoluteFill
+        style={{
+          border: `5px solid ${theme.brown}`,
+          boxSizing: "border-box",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: fade,
+          background:
+            "radial-gradient(circle at 50% 34%, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0) 42%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          right: 92,
+          top: 62,
+          padding: "12px 26px",
+          border: `3px solid ${theme.brown}`,
+          borderRadius: 18,
+          backgroundColor: "rgba(255,255,255,0.72)",
+          color: theme.blueAccent,
+          fontSize: 28,
+          fontWeight: 900,
+          opacity: fade,
+          transform: `translateX(${cardSlide}px)`,
+          boxShadow: "0 10px 24px rgba(18,59,99,0.12)",
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: 248,
+          right: 248,
+          top: 260,
+          height: 420,
+          border: `4px solid ${theme.brown}`,
+          backgroundColor: "rgba(255,255,255,0.62)",
+          boxShadow: "0 20px 42px rgba(18,59,99,0.12)",
+          opacity: fade,
+          transform: `translateY(${cardSlide}px)`,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 370,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          opacity: fade,
+          transform: `scale(${titleScale})`,
+          zIndex: 5,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 112,
+            lineHeight: 1,
+            fontWeight: 950,
+            color: theme.blue,
+            textShadow: "0 5px 0 rgba(255,255,255,0.96)",
+          }}
+        >
+          {title}
+        </div>
+        <div
+          style={{
+            marginTop: 24,
+            fontSize: 34,
+            letterSpacing: 0,
+            fontWeight: 900,
+            color: theme.blueAccent,
+          }}
+        >
+          {subtitle}
+        </div>
+        <div
+          style={{
+            marginTop: 34,
+            width: lineWidth,
+            height: 8,
+            borderRadius: 999,
+            background: `linear-gradient(90deg, ${theme.brown} 0%, ${theme.brown} 60%, ${theme.blueAccent} 60%, ${theme.blueAccent} 100%)`,
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: 178,
+          right: 178,
+          bottom: 118,
+          height: 4,
+          backgroundColor: "rgba(122,63,23,0.5)",
+          transform: `scaleX(${interpolate(frame, [24, 64], [0, 1], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          })})`,
+        }}
+      />
+      {showCharacter ? (
+        <div
+          style={{
+            position: "absolute",
+            left: 96,
+            bottom: -8,
+            width: 390,
+            height: 520,
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "center",
+            opacity: fade,
+            transform: `translateY(${characterEnter}px)`,
+            zIndex: 6,
+          }}
+        >
+          <SafeImage
+            path={getOpeningCharacterImagePath(opening?.characterImage)}
+            style={{
+              maxWidth: 390,
+              maxHeight: 520,
+              objectFit: "contain",
+              filter: "drop-shadow(0 18px 26px rgba(18,59,99,0.2))",
+            }}
+          />
+        </div>
+      ) : null}
+      {opening?.audio ? <SafeAudio path={opening.audio} /> : null}
+    </AbsoluteFill>
+  );
+};
+
 export const HarukaNewsVideo = () => {
   const frame = useCurrentFrame();
   let cursor = 0;
   const title = news.title ?? news.programTitle ?? "ハルカニュース";
+  const opening = getOpeningConfig();
+  const openingFrames = getOpeningDurationFrames();
   const ending = news.ending;
   const shouldShowEnding = ending?.enabled ?? Boolean(ending);
   const endingStart =
@@ -795,7 +1033,24 @@ export const HarukaNewsVideo = () => {
       >
         <HighlightedTitle text={title} />
       </h1>
-      {news.audio ? <SafeAudio path={news.audio} /> : null}
+      {openingFrames > 0 ? (
+        <Sequence
+          durationInFrames={openingFrames}
+          name="landscape-opening"
+        >
+          <OpeningScreen opening={opening} durationFrames={openingFrames} />
+        </Sequence>
+      ) : null}
+      {news.audio ? (
+        <Sequence
+          from={openingFrames}
+          durationInFrames={HARUKA_NEWS_DURATION_IN_FRAMES - openingFrames}
+          layout="none"
+          name={`landscape-main-audio-${getFileName(news.audio)}`}
+        >
+          <SafeAudio path={news.audio} />
+        </Sequence>
+      ) : null}
       {slides.map((slide, index) => {
         const from = slide.startFrame ?? cursor;
         const duration = getSlideDuration(slide);
@@ -804,7 +1059,7 @@ export const HarukaNewsVideo = () => {
         return (
           <Sequence
             key={`landscape-visual-${index}-${slide.caption ?? slide.text ?? ""}`}
-            from={from}
+            from={openingFrames + from}
             durationInFrames={duration}
             name={`landscape-slide-${index + 1}`}
           >
@@ -827,7 +1082,7 @@ export const HarukaNewsVideo = () => {
         return (
           <Sequence
             key={`landscape-audio-${index}-${slide.audio}`}
-            from={audioFrom}
+            from={openingFrames + audioFrom}
             durationInFrames={getSlideDuration(slide)}
             layout="none"
             name={`landscape-audio-${index + 1}-${getFileName(slide.audio)}`}
@@ -838,12 +1093,12 @@ export const HarukaNewsVideo = () => {
       })}
       {shouldShowEnding ? (
         <Sequence
-          from={endingStart}
+          from={openingFrames + endingStart}
           durationInFrames={endingDuration}
           name="landscape-ending-screen"
         >
           <EndingScreen
-            localFrame={frame - endingStart}
+            localFrame={frame - openingFrames - endingStart}
             durationFrames={endingDuration}
             ending={ending}
           />
@@ -851,7 +1106,7 @@ export const HarukaNewsVideo = () => {
       ) : null}
       {shouldShowEnding && ending?.audio ? (
         <Sequence
-          from={ending.audioStartFrame ?? endingStart}
+          from={openingFrames + (ending.audioStartFrame ?? endingStart)}
           durationInFrames={endingDuration}
           layout="none"
           name={`landscape-ending-audio-${getFileName(ending.audio)}`}
