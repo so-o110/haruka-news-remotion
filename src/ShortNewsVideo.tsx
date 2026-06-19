@@ -745,7 +745,7 @@ const SlideText = ({
   });
   const textStyle = slide.textStyle;
   const captionStyle = slide.captionStyle;
-  const captionWidth = captionStyle?.width ?? textStyle?.width;
+  const captionWidth = textStyle?.width ?? captionStyle?.width;
   const captionBorderWidth = captionStyle?.borderWidth ?? 5;
   const captionBorderColor = newsTheme.brown;
 
@@ -755,13 +755,13 @@ const SlideText = ({
       <section
         style={{
           position: "absolute",
-          left: captionStyle?.x ?? textStyle?.x ?? 58,
-          top: captionStyle?.y ?? textStyle?.y ?? 820,
+          left: textStyle?.x ?? captionStyle?.x ?? 58,
+          top: textStyle?.y ?? captionStyle?.y ?? 820,
           width: captionWidth,
           right: captionWidth === undefined ? 58 : undefined,
           height: captionStyle?.height,
           minHeight: captionStyle?.height === undefined ? 210 : undefined,
-          zIndex: captionStyle?.zIndex ?? textStyle?.zIndex ?? 20,
+          zIndex: textStyle?.zIndex ?? captionStyle?.zIndex ?? 20,
           boxSizing: "border-box",
           padding: captionStyle?.padding ?? "36px 42px",
           borderRadius: 0,
@@ -777,13 +777,13 @@ const SlideText = ({
         <div
           style={{
             width: "100%",
-            color: newsTheme.blue,
-            fontSize: captionStyle?.fontSize ?? textStyle?.fontSize ?? 72,
+            color: textStyle?.color ?? captionStyle?.color ?? newsTheme.blue,
+            fontSize: textStyle?.fontSize ?? captionStyle?.fontSize ?? 72,
             lineHeight:
-              captionStyle?.lineHeight ?? textStyle?.lineHeight ?? 1.18,
+              textStyle?.lineHeight ?? captionStyle?.lineHeight ?? 1.18,
             fontWeight: 950,
             textAlign:
-              captionStyle?.textAlign ?? textStyle?.textAlign ?? "center",
+              textStyle?.textAlign ?? captionStyle?.textAlign ?? "center",
             textShadow: "none",
           }}
         >

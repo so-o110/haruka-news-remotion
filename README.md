@@ -47,6 +47,7 @@ For slide position and size:
 - `slideStyle` controls the single slide card/image frame when `slideImage` or text-only slide content is used.
 - If `slideFrameStyle` is omitted for timed `slides`, `slideStyle` is used as a fallback.
 - `x` maps to CSS `left`, `y` maps to CSS `top`, and `width`, `height`, `borderRadius`, `overflow`, and `zIndex` are applied directly to the frame.
+- `textStyle` controls the lower body caption text box position (`x`, `y`, `width`, `zIndex`) and text appearance (`fontSize`, `lineHeight`, `textAlign`, `color`). When both `captionStyle` and `textStyle` set the same field, `textStyle` wins for these values.
 
 **Upgrade Remotion**
 
