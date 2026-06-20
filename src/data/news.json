@@ -1,7 +1,11 @@
 {
-  "title": "米津玄師、新曲発表！",
+  "video": {
+    "duration": 540,
+    "fps": 30
+  },
+  "title": "日本代表・任天堂・米不足を深掘り",
   "programTitle": "ハルカニュース",
-  "dateLabel": "2026年6月19日",
+  "dateLabel": "2026年6月20日",
   "anchorName": "西村龍之介",
   "opening": {
     "enabled": true,
@@ -12,157 +16,484 @@
     "showCharacter": true,
     "characterImage": "/characters/ryunosuke/normal-1.png"
   },
+  "scenes": [
+    {
+      "id": "opening-talk",
+      "start": 4,
+      "duration": 36,
+      "title": "今日のテーマ",
+      "caption": "今日のテーマはこちら！3つの話題を深掘りします。",
+      "characterImage": "/characters/ryunosuke/normal-1.png",
+      "audio": "/audio/long/long-opening.wav",
+      "text": "こんにちは、ハルカニュースです！\n今日のテーマはこちら！\n日本代表はベスト8に行けるのか？\n任天堂はなぜ勝ち続けるのか？\nなぜ日本は米不足になったのか？\n今話題のニュースを、事実だけでなく“なぜそうなっているのか”まで見ていきましょう！",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic1-opening",
+      "start": 40,
+      "duration": 45,
+      "title": "日本代表はベスト8に行けるのか？",
+      "caption": "日本代表、ベスト8へ前進？",
+      "characterImage": "/characters/ryunosuke/happy-1.png",
+      "slideImage": "/slides/topic1-opening.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-01.wav",
+      "text": "サッカー日本代表がワールドカップで強豪オランダと2対2で引き分けました！\n日本は初戦で勝利し、オランダ戦でも勝ち点を獲得。グループリーグ突破へ大きく前進しています。\nSNSでは「日本強すぎる」「今回はベスト8あるぞ」という声も増えています。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic1-middle",
+      "start": 85,
+      "duration": 70,
+      "title": "日本代表はベスト8に行けるのか？",
+      "caption": "過去最高クラスの戦力で、壁に挑む",
+      "characterImage": "/characters/ryunosuke/serious-1.png",
+      "slideImage": "/slides/topic1-middle.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-02.wav",
+      "text": "これまで日本代表は何度もベスト16まで進んできましたが、ベスト8の壁を突破したことはありません。\nしかし今回の代表は、欧州の強豪クラブで活躍する選手が過去最多クラスです。\n実際にオランダ相手にも互角の試合を見せており、世界との差は確実に縮まっています。\nただし決勝トーナメントではフランスやアルゼンチンなど世界トップクラスとの対戦も予想されます。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 40,
+        "lineHeight": 1.18,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic1-ending",
+      "start": 155,
+      "duration": 45,
+      "title": "日本代表はベスト8に行けるのか？",
+      "caption": "出場する時代から、勝ち進む時代へ",
+      "characterImage": "/characters/ryunosuke/thinking-1.png",
+      "slideImage": "/slides/topic1-ending.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-03.wav",
+      "text": "昔は「ワールドカップに出るだけですごい」と言われていましたが、今は「どこまで勝てるか」を語る時代になりました。\n今回こそ日本サッカーの歴史が変わる瞬間を見てみたいですね。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic2-opening",
+      "start": 200,
+      "duration": 45,
+      "title": "任天堂はなぜ勝ち続けるのか？",
+      "caption": "Switch 2で、任天堂の強さに再注目",
+      "characterImage": "/characters/ryunosuke/normal-1.png",
+      "slideImage": "/slides/topic2-opening.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-04.wav",
+      "text": "Nintendo Switch 2の発売が大きな話題になっています。\nゲーム業界では「Switch2は成功するのか」という議論が続いています。\n一方で任天堂は20年以上にわたり、マリオやポケモンなどの人気シリーズを生み出し続けています。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic2-middle",
+      "start": 245,
+      "duration": 70,
+      "title": "任天堂はなぜ勝ち続けるのか？",
+      "caption": "強さの理由は、性能よりも体験づくり",
+      "characterImage": "/characters/ryunosuke/serious-2.png",
+      "slideImage": "/slides/topic2-middle.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-05.wav",
+      "text": "任天堂の強さは、性能競争をあまりしないことです。\nソニーやPCゲームが高性能化を進める中、任天堂は“誰でも楽しめるゲーム体験”を重視しています。\nさらにマリオ、ゼルダ、ポケモンなど世界的なIPを多数保有しています。\nゲーム機を売るだけでなく、映画やテーマパークなどにも展開しているのが大きな強みです。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 40,
+        "lineHeight": 1.18,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic2-ending",
+      "start": 315,
+      "duration": 45,
+      "title": "任天堂はなぜ勝ち続けるのか？",
+      "caption": "変わらない中心は「面白さ」",
+      "characterImage": "/characters/ryunosuke/happy-2.png",
+      "slideImage": "/slides/topic2-ending.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-06.wav",
+      "text": "ゲーム業界は流行の変化が激しいですが、任天堂は「面白さ」を中心に考え続けています。\nだからこそ何十年も世界中のファンを獲得し続けているのかもしれません。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic3-opening",
+      "start": 360,
+      "duration": 45,
+      "title": "なぜ日本は米不足になったのか？",
+      "caption": "お米の価格上昇が、家庭に影響",
+      "characterImage": "/characters/ryunosuke/thinking-2.png",
+      "slideImage": "/slides/topic3-opening.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-07.wav",
+      "text": "最近、お米の価格上昇が大きなニュースになっています。\nスーパーでは以前より高い価格で販売されるケースが増え、多くの家庭に影響が出ています。\nSNSでも「お米高すぎる」という声が相次いでいます。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic3-middle",
+      "start": 405,
+      "duration": 70,
+      "title": "なぜ日本は米不足になったのか？",
+      "caption": "不作だけでなく、農業全体の課題も",
+      "characterImage": "/characters/ryunosuke/serious-1.png",
+      "slideImage": "/slides/topic3-middle.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-08.wav",
+      "text": "米価格上昇の背景には複数の理由があります。\n猛暑による収穫量への影響、生産コストの上昇、農家の高齢化などです。\nさらに長年続いてきた農業政策や、国内の生産体制の問題も指摘されています。\nつまり単純な不作だけではなく、日本の農業全体が抱える課題が表面化しているとも言えます。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 40,
+        "lineHeight": 1.18,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    },
+    {
+      "id": "topic3-ending",
+      "start": 475,
+      "duration": 45,
+      "title": "なぜ日本は米不足になったのか？",
+      "caption": "お米から、日本の農業の未来を考える",
+      "characterImage": "/characters/ryunosuke/normal-2.png",
+      "slideImage": "/slides/topic3-ending.png",
+      "slideImageStyle": {
+        "objectFit": "contain",
+        "objectPosition": "center"
+      },
+      "audio": "/audio/long/long-09.wav",
+      "text": "普段当たり前に食べているお米ですが、その裏では多くの課題が積み重なっています。\n今回の問題をきっかけに、日本の農業の未来について考える人が増えるかもしれません。",
+      "slideStyle": {
+        "x": 650,
+        "y": 230,
+        "width": 1120,
+        "height": 570,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "textStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "fontSize": 42,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 650,
+        "y": 830,
+        "width": 1120,
+        "height": 150,
+        "padding": 28,
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      }
+    }
+  ],
   "ending": {
     "enabled": true,
-    "startFrame": 780,
-    "durationFrames": 90,
-    "text": "ハルカニュース",
-    "audio": "/audio/shorts/ending.wav",
-    "audioStartFrame": 780,
+    "start": 520,
+    "duration": 20,
+    "title": "みなさんはどう思いましたか？\n日本代表はベスト8に行けると思う？\nSwitch2は成功すると思う？\n米不足問題はどう解決すべきだと思う？\nぜひコメントで教えてください！\nそれではまた次回のハルカニュースでお会いしましょう！",
+    "audio": "/audio/long/long-ending.wav",
     "style": {
-      "fontSize": 96,
+      "fontSize": 50,
+      "lineHeight": 1.28,
       "color": "#123b63",
       "zIndex": 100
     }
-  },
-  "slides": [
-    {
-      "caption": "米津玄師、新曲発表！サッカーファンも音楽ファンも注目です！",
-      "characterExpression": "happy",
-      "character": "happy-1",
-      "audio": "/audio/shorts/A.wav",
-      "startFrame": 0,
-      "durationFrames": 150,
-      "characterDurationSeconds": 5,
-      "audioStartFrame": 0,
-      "text": "米津玄師さんが新曲を発表。\nスポーツと音楽の話題として注目が集まっています。",
-      "textStyle": {
-        "x": 650,
-        "y": 820,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 820,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      },
-      "slideStyle": {
-        "x": 760,
-        "y": 260,
-        "width": 1040,
-        "height": 510,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "slideFrameStyle": {
-        "x": 760,
-        "y": 260,
-        "width": 1040,
-        "height": 510,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      }
-    },
-    {
-      "caption": "米津玄師さんが新曲『烏（からす）』を発表しました。",
-      "characterExpression": "thinking",
-      "character": "thinking-1",
-      "audio": "/audio/shorts/B.wav",
-      "startFrame": 150,
-      "durationFrames": 530,
-      "characterDurationSeconds": 19,
-      "audioStartFrame": 150,
-      "text": "楽曲の世界観や映像表現にも注目。\nSNSでも反響が広がりそうです。",
-      "textStyle": {
-        "x": 650,
-        "y": 820,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 820,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      },
-      "slideStyle": {
-        "x": 760,
-        "y": 260,
-        "width": 1040,
-        "height": 510,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      }
-    },
-    {
-      "caption": "あなたはもう聴いた？コメントで教えて！",
-      "characterExpression": "happy",
-      "character": "happy-2",
-      "audio": "/audio/shorts/C.wav",
-      "startFrame": 680,
-      "durationFrames": 300,
-      "characterDurationSeconds": 10,
-      "audioStartFrame": 680,
-      "text": "気になるポイントを短く整理。\n続報もハルカニュースでお届けします。",
-      "textStyle": {
-        "x": 650,
-        "y": 820,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 820,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      },
-      "slideStyle": {
-        "x": 760,
-        "y": 260,
-        "width": 1040,
-        "height": 510,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      }
-    }
-  ]
+  }
 }
