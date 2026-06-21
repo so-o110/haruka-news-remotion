@@ -1,12 +1,11 @@
 {
-  "title": "米津玄師、新曲発表！",
-  "topic": "サッカーと音楽",
+  "title": "日本がチュニジアに圧勝",
   "ending": {
     "enabled": true,
-    "startFrame": 780,
+    "startFrame": 870,
     "durationFrames": 90,
     "text": "ハルカニュース",
-    "audio": "/audio/shorts/ending.wav",
+    "audio": "/audio/shorts/e.wav",
     "audioStartFrame": 810,
     "style": {
       "x": 210,
@@ -18,18 +17,18 @@
   },
   "slides": [
     {
-      "text": "aas",
-      "caption": "米津玄師、新曲発表！サッカーファンも音楽ファンも注目です！",
+
+      "caption": "サッカーワールドカップで日本が大暴れ！チュニジア相手に4対0の快勝！",
       "characterExpression": "happy",
       "character": "happy-1",
-      "audio": "/audio/shorts/A.wav",
+      "audio": "/audio/shorts/a.wav",
       "startFrame": 0,
-      "durationFrames": 150,
-      "characterDurationSeconds": 5,
+      "durationFrames": 270,
+      "characterDurationSeconds": 10,
       "audioStartFrame": 0,
       "textStyle": {
         "x": 58,
-        "y": 800,
+        "y": 1150,
         "width": 964,
         "fontSize": 56,
         "lineHeight": 1.2,
@@ -63,39 +62,48 @@
         "zIndex": 10
       },
       "slideFrameStyle": {
-        "x": 90,
-        "y": 500,
-        "width": 890,
-        "height": 600,
+        "x": 40,
+        "y": 320,
+        "width": 1000,
+        "height": 800,
         "borderRadius": 0,
         "overflow": "hidden",
         "zIndex": 10
       },
       "slides": [
         {
-          "src": "A.png",
+          "src": "a.png",
           "start": 0,
-          "duration": 5,
+          "duration": 9,
           "objectFit": "contain",
           "objectPosition": "center"
         }
       ]
     },
     {
-      "text": "",
-      "caption": "米津玄師さんが新曲『烏（からす）』を発表しました。",
+      "caption": "6月21日の試合で日本はチュニジアを4対0で撃破！攻撃も守備も安定し、世界に強さをアピールしました。",
       "characterExpression": "thinking",
       "character": "thinking-1",
-      "audio": "/audio/shorts/B.wav",
-      "startFrame": 150,
-      "durationFrames": 530,
-      "characterDurationSeconds": 19,
-      "audioStartFrame": 150,
+      "audio": "/audio/shorts/b.wav",
+      "startFrame": 270,
+      "durationFrames": 370,
+      "characterDurationSeconds": 14,
+      "audioStartFrame": 270,
+      "textStyle": {
+        "x": 58,
+        "y": 1150,
+        "width": 964,
+        "fontSize": 56,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
       "captionStyle": {
         "x": 65,
         "y": 1200,
         "width": 950,
-        "height": 220,
+        "height": 300,
         "padding": 32,
         "fontSize": 48,
         "lineHeight": 1.22,
@@ -108,34 +116,43 @@
         "zIndex": 30
       },
       "slideFrameStyle": {
-        "x": 90,
-        "y": 500,
-        "width": 890,
-        "height": 600,
+        "x": 40,
+        "y": 320,
+        "width": 1000,
+        "height": 800,
         "borderRadius": 0,
         "overflow": "hidden",
         "zIndex": 10
       },
       "slides": [
         {
-          "src": "B.png",
+          "src": "b.png",
           "start": 0,
-          "duration": 19,
+          "duration": 14,
           "objectFit": "contain",
           "objectPosition": "center"
         }
       ]
     },
     {
-      "text": "",
-      "caption": "あなたはもう聴いた？コメントで教えて！",
+      "caption": "みなさんは日本代表の今大会、どこまで行くと思いますか",
       "characterExpression": "happy",
       "character": "happy-2",
-      "audio": "/audio/shorts/C.wav",
-      "startFrame": 680,
+      "audio": "/audio/shorts/c.wav",
+      "startFrame": 640,
       "durationFrames": 300,
       "characterDurationSeconds": 10,
-      "audioStartFrame": 680,
+      "audioStartFrame": 640,
+      "textStyle": {
+        "x": 58,
+        "y": 1150,
+        "width": 964,
+        "fontSize": 56,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
       "captionStyle": {
         "x": 65,
         "y": 1200,
@@ -153,17 +170,17 @@
         "zIndex": 30
       },
       "slideFrameStyle": {
-        "x": 90,
-        "y": 500,
-        "width": 890,
-        "height": 600,
+        "x": 40,
+        "y": 320,
+        "width": 1000,
+        "height": 800,
         "borderRadius": 0,
         "overflow": "hidden",
         "zIndex": 10
       },
       "slides": [
         {
-          "src": "C.png",
+          "src": "c.png",
           "start": 0,
           "duration": 10,
           "objectFit": "contain",

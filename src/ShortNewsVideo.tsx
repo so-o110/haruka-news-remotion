@@ -179,6 +179,7 @@ type AssetStatus = {
 const shortNews = shortNewsData as ShortNewsData;
 const fps = 30;
 const characterBasePath = "/characters/ryunosuke";
+const shortSlideBasePath = "slides/shorts";
 const defaultCharacterImage: CharacterImageName = "normal-1.png";
 const newsTheme = {
   sky: "#dff5ff",
@@ -202,11 +203,19 @@ const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
 const getSlideAssetPath = (path: string) => {
   const normalized = normalizePublicPath(path);
 
+  if (normalized.startsWith("slides/")) {
+    return normalized;
+  }
+
+  if (normalized.startsWith("shorts/")) {
+    return `slides/${normalized}`;
+  }
+
   if (normalized.includes("/")) {
     return normalized;
   }
 
-  return `slides/${normalized}`;
+  return `${shortSlideBasePath}/${normalized}`;
 };
 const getFileName = (path: string) => path.split("/").pop() ?? path;
 const normalizeCharacterImageName = (imageName: string | undefined) => {
@@ -343,7 +352,7 @@ const SafeSlideImage = ({
     return null;
   }
 
-  return <Img src={src} style={style} durationInFrames={571} />;
+  return <Img src={src} style={style} durationInFrames={475} />;
 };
 
 const EndingScreen = ({
@@ -495,7 +504,7 @@ const CharacterImage = ({
           filter: "drop-shadow(0 20px 28px rgba(18,59,99,0.22))",
           translate: "-6.3px 118.7px",
         }}
-        durationInFrames={573}
+        durationInFrames={391}
       />
     </div>
   );
@@ -794,7 +803,7 @@ const SlideText = ({
   );
 };
 
-export const SHORT_NEWS_DURATION_IN_FRAMES = 29 * fps;
+export const SHORT_NEWS_DURATION_IN_FRAMES = 31 * fps;
 
 export const ShortNewsVideo = () => {
   const frame = useCurrentFrame();
@@ -1001,6 +1010,7 @@ export const ShortNewsVideo = () => {
               name={`character-${index + 1}-${characterFileName}`}
               layout="none"
               durationInFrames={characterDuration}
+              from={-27}
             >
               <CharacterImage
                 imagePath={characterImagePath}
@@ -1021,7 +1031,7 @@ export const ShortNewsVideo = () => {
             from={audioFrom}
             name={`audio-${index + 1}-${audioFileName}`}
             layout="none"
-            durationInFrames={527}
+            durationInFrames={369}
           >
             <SafeAudio path={slide.audio} />
           </Sequence>
