@@ -11,22 +11,19 @@ import {
   staticFile,
   useCurrentFrame,
 } from "remotion";
+import {
+  defaultCharacterFallbackPath,
+  defaultCharacterPath,
+  getCharacterImagePath as getCharacterAssetPath,
+  getFileName,
+  normalizePublicPath,
+} from "./characterAssets";
 import newsData from "./data/news.json";
 
 type ObjectFit = "cover" | "contain" | "fill";
 type ObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 type Overflow = "hidden" | "visible";
 type CharacterExpression = "normal" | "happy" | "serious" | "thinking";
-type CharacterImageName =
-  | "normal-1.png"
-  | "normal-2.png"
-  | "happy-1.png"
-  | "happy-2.png"
-  | "serious-1.png"
-  | "serious-2.png"
-  | "thinking-1.png"
-  | "thinking-2.png";
-
 type LayoutStyle = {
   x?: number;
   y?: number;
@@ -73,6 +70,10 @@ type TimedSlide = ImageStyle & {
 };
 
 type NewsSlide = {
+  id?: string;
+  title?: string;
+  start?: number;
+  duration?: number;
   text?: string;
   caption?: string;
   subtitle?: string;
@@ -100,6 +101,9 @@ type NewsSlide = {
 
 type Ending = {
   enabled?: boolean;
+  start?: number;
+  duration?: number;
+  title?: string;
   startFrame?: number;
   durationFrames?: number;
   text?: string;
@@ -130,6 +134,10 @@ type LegacyTopic = {
 };
 
 type NewsData = {
+  video?: {
+    duration?: number;
+    fps?: number;
+  };
   title?: string;
   programTitle?: string;
   dateLabel?: string;
@@ -139,6 +147,7 @@ type NewsData = {
     headline?: string;
   };
   ending?: Ending;
+  scenes?: NewsSlide[];
   slides?: NewsSlide[];
   topics?: LegacyTopic[];
 };
@@ -149,7 +158,9 @@ type AssetStatus = {
 };
 
 const news = newsData as NewsData;
-const fps = 30;
+export const HARUKA_NEWS_FPS = news.video?.fps ?? 30;
+const fps = HARUKA_NEWS_FPS;
+const defaultDurationSeconds = 540;
 const theme = {
   sky: "#dff5ff",
   skyLight: "#f8fdff",
@@ -157,20 +168,6 @@ const theme = {
   blueAccent: "#145d99",
   brown: "#7a3f17",
 };
-const characterBasePath = "/characters/ryunosuke";
-const defaultCharacterImage: CharacterImageName = "normal-1.png";
-const availableCharacterImages = new Set<CharacterImageName>([
-  "normal-1.png",
-  "normal-2.png",
-  "happy-1.png",
-  "happy-2.png",
-  "serious-1.png",
-  "serious-2.png",
-  "thinking-1.png",
-  "thinking-2.png",
-]);
-
-const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
 const getSlideAssetPath = (path: string) => {
   const normalized = normalizePublicPath(path);
 
@@ -180,47 +177,12 @@ const getSlideAssetPath = (path: string) => {
 
   return `slides/${normalized}`;
 };
-const getFileName = (path: string) => path.split("/").pop() ?? path;
-const normalizeCharacterImageName = (imageName: string | undefined) => {
-  if (!imageName) {
-    return defaultCharacterImage;
-  }
-
-  const rawFileName = getFileName(imageName);
-  const baseName = rawFileName.endsWith(".png")
-    ? rawFileName.replace(/\.png$/, "")
-    : rawFileName;
-  const normalizedBaseName = baseName.includes("-")
-    ? baseName
-    : `${baseName}-1`;
-  const fileName = `${normalizedBaseName}.png`;
-
-  if (availableCharacterImages.has(fileName as CharacterImageName)) {
-    return fileName as CharacterImageName;
-  }
-
-  return defaultCharacterImage;
-};
 const getCharacterImagePath = (slide: NewsSlide) =>
-  `${characterBasePath}/${normalizeCharacterImageName(
+  getCharacterAssetPath(
     slide.characterImage ?? slide.character ?? slide.characterExpression,
-  )}`;
-const getOpeningCharacterImagePath = (imagePath: string | undefined) => {
-  if (!imagePath) {
-    return `${characterBasePath}/${defaultCharacterImage}`;
-  }
-
-  const normalized = normalizePublicPath(imagePath);
-
-  if (
-    normalized.startsWith("characters/ryunosuke/") ||
-    normalized.startsWith("characters/short-ryunosuke/")
-  ) {
-    return normalized;
-  }
-
-  return `${characterBasePath}/${normalizeCharacterImageName(normalized)}`;
-};
+  );
+const getOpeningCharacterImagePath = (imagePath: string | undefined) =>
+  getCharacterAssetPath(imagePath);
 
 const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
   (topics ?? []).map((topic, index) => ({
@@ -257,8 +219,10 @@ const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
     },
   }));
 
-const slides =
-  news.slides && news.slides.length > 0
+const usesAbsoluteScenes = Boolean(news.scenes && news.scenes.length > 0);
+const slides = usesAbsoluteScenes
+  ? (news.scenes ?? [])
+  : news.slides && news.slides.length > 0
     ? news.slides
     : legacyTopicsToSlides(news.topics);
 
@@ -266,10 +230,56 @@ const getSlideDuration = (slide: NewsSlide) =>
   Math.max(
     1,
     slide.durationFrames ??
+      (slide.duration !== undefined
+        ? Math.round(slide.duration * fps)
+        : undefined) ??
       (slide.durationSeconds !== undefined
         ? Math.round(slide.durationSeconds * fps)
         : 8 * fps),
   );
+
+const getSequentialStartFrame = (targetIndex: number) =>
+  slides
+    .slice(0, targetIndex)
+    .reduce((total, current) => total + getSlideDuration(current), 0);
+
+const getSlideStartFrame = (slide: NewsSlide, index: number) => {
+  if (slide.startFrame !== undefined) {
+    return slide.startFrame;
+  }
+
+  if (slide.start !== undefined) {
+    return Math.round(slide.start * fps);
+  }
+
+  return getSequentialStartFrame(index);
+};
+
+const getTimelineOffsetFrames = () =>
+  usesAbsoluteScenes ? 0 : getOpeningDurationFrames();
+
+const getEndingDurationFrames = (ending: Ending | undefined) =>
+  Math.max(
+    1,
+    ending?.durationFrames ??
+      (ending?.duration !== undefined ? Math.round(ending.duration * fps) : 90),
+  );
+
+const getEndingStartFrame = (ending: Ending | undefined) => {
+  const slideEnd =
+    slides.length === 0
+      ? 0
+      : Math.max(
+          ...slides.map(
+            (slide, index) => getSlideStartFrame(slide, index) + getSlideDuration(slide),
+          ),
+        );
+
+  return (
+    ending?.startFrame ??
+    (ending?.start !== undefined ? Math.round(ending.start * fps) : slideEnd)
+  );
+};
 
 const getOpeningConfig = () => news.opening;
 const getOpeningDurationFrames = () => {
@@ -283,17 +293,17 @@ const getOpeningDurationFrames = () => {
 };
 
 const getTotalFrames = () => {
+  if (news.video?.duration !== undefined) {
+    return Math.max(1, Math.round(news.video.duration * fps));
+  }
+
   const openingFrames = getOpeningDurationFrames();
   const slideEnd =
     slides.length === 0
-      ? 12 * fps
+      ? 0
       : Math.max(
           ...slides.map((slide, index) => {
-            const from =
-              slide.startFrame ??
-              slides
-                .slice(0, index)
-                .reduce((total, current) => total + getSlideDuration(current), 0);
+            const from = getSlideStartFrame(slide, index);
             return from + getSlideDuration(slide);
           }),
         );
@@ -301,9 +311,16 @@ const getTotalFrames = () => {
   const endingEnd =
     ending?.enabled === false
       ? 0
-      : (ending?.startFrame ?? slideEnd) + (ending?.durationFrames ?? 0);
+      : getEndingStartFrame(ending) + getEndingDurationFrames(ending);
+  const contentEnd = usesAbsoluteScenes
+    ? Math.max(openingFrames, slideEnd, endingEnd)
+    : openingFrames + Math.max(slideEnd, endingEnd);
+  const hasTimelineContent = slides.length > 0 || Boolean(ending);
 
-  return Math.max(openingFrames + Math.max(slideEnd, endingEnd), 1);
+  return Math.max(
+    hasTimelineContent ? contentEnd : Math.round(defaultDurationSeconds * fps),
+    1,
+  );
 };
 
 export const HARUKA_NEWS_DURATION_IN_FRAMES = getTotalFrames();
@@ -361,6 +378,31 @@ const SafeImage = ({
   const { exists, src } = usePublicAsset(path);
 
   if (!exists) {
+    return null;
+  }
+
+  return <Img src={src} style={style} />;
+};
+
+const SafeCharacterImage = ({
+  path,
+  style,
+}: {
+  path: string;
+  style: CSSProperties;
+}) => {
+  const primary = usePublicAsset(path);
+  const defaultAsset = usePublicAsset(defaultCharacterPath);
+  const fallbackAsset = usePublicAsset(defaultCharacterFallbackPath);
+  const src = primary.exists
+    ? primary.src
+    : defaultAsset.exists
+      ? defaultAsset.src
+      : fallbackAsset.exists
+        ? fallbackAsset.src
+        : null;
+
+  if (!src) {
     return null;
   }
 
@@ -506,7 +548,7 @@ const Character = ({ slide, localFrame }: { slide: NewsSlide; localFrame: number
         zIndex: 24,
       }}
     >
-      <SafeImage
+      <SafeCharacterImage
         path={imagePath}
         style={{
           maxWidth: 520,
@@ -603,6 +645,7 @@ const SlideFrame = ({ slide, enter }: { slide: NewsSlide; enter: number }) => {
   const overflow = style?.overflow ?? "hidden";
   const zIndex = style?.zIndex ?? 10;
   const bodyText = slide.text ?? "";
+  const bodyTitle = slide.title;
 
   return (
     <section
@@ -660,7 +703,7 @@ const SlideFrame = ({ slide, enter }: { slide: NewsSlide; enter: number }) => {
           }}
         />
       ))}
-      {!slide.slideImage && bodyText ? (
+      {!slide.slideImage && (bodyTitle || bodyText) ? (
         <div
           style={{
             color: theme.blue,
@@ -672,7 +715,20 @@ const SlideFrame = ({ slide, enter }: { slide: NewsSlide; enter: number }) => {
             zIndex: 2,
           }}
         >
-          {bodyText}
+          {bodyTitle ? (
+            <div
+              style={{
+                marginBottom: bodyText ? 24 : 0,
+                fontSize: 42,
+                lineHeight: 1.2,
+                fontWeight: 950,
+                textAlign: "center",
+              }}
+            >
+              {bodyTitle}
+            </div>
+          ) : null}
+          {bodyText ? <div>{bodyText}</div> : null}
         </div>
       ) : null}
     </section>
@@ -788,7 +844,7 @@ const EndingScreen = ({
           textAlign: style?.textAlign ?? "center",
         }}
       >
-        {ending?.text ?? "ハルカニュース"}
+        {ending?.text ?? ending?.title ?? "ハルカニュース"}
       </div>
     </AbsoluteFill>
   );
@@ -976,7 +1032,7 @@ const OpeningScreen = ({
             zIndex: 6,
           }}
         >
-          <SafeImage
+          <SafeCharacterImage
             path={getOpeningCharacterImagePath(opening?.characterImage)}
             style={{
               maxWidth: 390,
@@ -994,16 +1050,14 @@ const OpeningScreen = ({
 
 export const HarukaNewsVideo = () => {
   const frame = useCurrentFrame();
-  let cursor = 0;
   const title = news.title ?? news.programTitle ?? "ハルカニュース";
   const opening = getOpeningConfig();
   const openingFrames = getOpeningDurationFrames();
+  const timelineOffset = getTimelineOffsetFrames();
   const ending = news.ending;
   const shouldShowEnding = ending?.enabled ?? Boolean(ending);
-  const endingStart =
-    ending?.startFrame ??
-    slides.reduce((total, slide) => total + getSlideDuration(slide), 0);
-  const endingDuration = ending?.durationFrames ?? 90;
+  const endingStart = getEndingStartFrame(ending);
+  const endingDuration = getEndingDurationFrames(ending);
 
   return (
     <AbsoluteFill
@@ -1052,16 +1106,15 @@ export const HarukaNewsVideo = () => {
         </Sequence>
       ) : null}
       {slides.map((slide, index) => {
-        const from = slide.startFrame ?? cursor;
+        const from = getSlideStartFrame(slide, index);
         const duration = getSlideDuration(slide);
-        cursor = from + duration;
 
         return (
           <Sequence
-            key={`landscape-visual-${index}-${slide.caption ?? slide.text ?? ""}`}
-            from={openingFrames + from}
+            key={`landscape-visual-${index}-${slide.id ?? slide.caption ?? slide.text ?? ""}`}
+            from={timelineOffset + from}
             durationInFrames={duration}
-            name={`landscape-slide-${index + 1}`}
+            name={`landscape-slide-${slide.id ?? index + 1}`}
           >
             <Scene slide={slide} />
           </Sequence>
@@ -1072,17 +1125,13 @@ export const HarukaNewsVideo = () => {
           return null;
         }
 
-        const visualFrom =
-          slide.startFrame ??
-          slides
-            .slice(0, index)
-            .reduce((total, current) => total + getSlideDuration(current), 0);
+        const visualFrom = getSlideStartFrame(slide, index);
         const audioFrom = slide.audioStartFrame ?? visualFrom;
 
         return (
           <Sequence
             key={`landscape-audio-${index}-${slide.audio}`}
-            from={openingFrames + audioFrom}
+            from={timelineOffset + audioFrom}
             durationInFrames={getSlideDuration(slide)}
             layout="none"
             name={`landscape-audio-${index + 1}-${getFileName(slide.audio)}`}
@@ -1093,12 +1142,12 @@ export const HarukaNewsVideo = () => {
       })}
       {shouldShowEnding ? (
         <Sequence
-          from={openingFrames + endingStart}
+          from={timelineOffset + endingStart}
           durationInFrames={endingDuration}
           name="landscape-ending-screen"
         >
           <EndingScreen
-            localFrame={frame - openingFrames - endingStart}
+            localFrame={frame - timelineOffset - endingStart}
             durationFrames={endingDuration}
             ending={ending}
           />
@@ -1106,7 +1155,7 @@ export const HarukaNewsVideo = () => {
       ) : null}
       {shouldShowEnding && ending?.audio ? (
         <Sequence
-          from={openingFrames + (ending.audioStartFrame ?? endingStart)}
+          from={timelineOffset + (ending.audioStartFrame ?? endingStart)}
           durationInFrames={endingDuration}
           layout="none"
           name={`landscape-ending-audio-${getFileName(ending.audio)}`}

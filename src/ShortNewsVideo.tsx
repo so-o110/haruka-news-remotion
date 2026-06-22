@@ -12,21 +12,19 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import {
+  defaultCharacterFallbackPath,
+  defaultCharacterPath,
+  getCharacterImagePath as getCharacterAssetPath,
+  getFileName,
+  normalizePublicPath,
+} from "./characterAssets";
 import shortNewsData from "../public/data/short-news.json";
 
 type ShortNewsObjectFit = "cover" | "contain" | "fill";
 type ShortNewsObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 type ShortNewsOverflow = "hidden" | "visible";
 type CharacterExpression = "normal" | "happy" | "serious" | "thinking";
-type CharacterImageName =
-  | "normal-1.png"
-  | "normal-2.png"
-  | "happy-1.png"
-  | "happy-2.png"
-  | "serious-1.png"
-  | "serious-2.png"
-  | "thinking-1.png"
-  | "thinking-2.png";
 
 type ShortNewsSlideImage = {
   src: string;
@@ -178,9 +176,7 @@ type AssetStatus = {
 
 const shortNews = shortNewsData as ShortNewsData;
 const fps = 30;
-const characterBasePath = "/characters/ryunosuke";
 const shortSlideBasePath = "slides/shorts";
-const defaultCharacterImage: CharacterImageName = "normal-1.png";
 const newsTheme = {
   sky: "#dff5ff",
   skyLight: "#f8fdff",
@@ -188,18 +184,6 @@ const newsTheme = {
   blueAccent: "#145d99",
   brown: "#7a3f17",
 };
-const availableCharacterImages = new Set<CharacterImageName>([
-  "normal-1.png",
-  "normal-2.png",
-  "happy-1.png",
-  "happy-2.png",
-  "serious-1.png",
-  "serious-2.png",
-  "thinking-1.png",
-  "thinking-2.png",
-]);
-
-const normalizePublicPath = (path: string) => path.replace(/^\/+/, "");
 const getSlideAssetPath = (path: string) => {
   const normalized = normalizePublicPath(path);
 
@@ -217,26 +201,10 @@ const getSlideAssetPath = (path: string) => {
 
   return `${shortSlideBasePath}/${normalized}`;
 };
-const getFileName = (path: string) => path.split("/").pop() ?? path;
-const normalizeCharacterImageName = (imageName: string | undefined) => {
-  if (!imageName) {
-    return defaultCharacterImage;
-  }
-
-  const fileName = getFileName(imageName).endsWith(".png")
-    ? getFileName(imageName)
-    : `${getFileName(imageName)}.png`;
-
-  if (availableCharacterImages.has(fileName as CharacterImageName)) {
-    return fileName as CharacterImageName;
-  }
-
-  return defaultCharacterImage;
-};
 const getCharacterImagePath = (slide: ShortNewsSlide) =>
-  `${characterBasePath}/${normalizeCharacterImageName(
-    slide.characterImage ?? slide.character,
-  )}`;
+  getCharacterAssetPath(
+    slide.characterImage ?? slide.character ?? slide.characterExpression,
+  );
 
 const HighlightedNewsText = ({ text }: { text: string }) => {
   const parts = text.split(/(\d+億人|\d+万人|\d+人|\d+億|\d+万)/g);
@@ -355,6 +323,33 @@ const SafeSlideImage = ({
   return <Img src={src} style={style} durationInFrames={475} />;
 };
 
+const SafeCharacterImage = ({
+  path,
+  style,
+  durationInFrames,
+}: {
+  path: string;
+  style: CSSProperties;
+  durationInFrames?: number;
+}) => {
+  const primary = usePublicAsset(path);
+  const defaultAsset = usePublicAsset(defaultCharacterPath);
+  const fallbackAsset = usePublicAsset(defaultCharacterFallbackPath);
+  const src = primary.exists
+    ? primary.src
+    : defaultAsset.exists
+      ? defaultAsset.src
+      : fallbackAsset.exists
+        ? fallbackAsset.src
+        : null;
+
+  if (!src) {
+    return null;
+  }
+
+  return <Img src={src} style={style} durationInFrames={durationInFrames} />;
+};
+
 const EndingScreen = ({
   localFrame,
   durationFrames,
@@ -471,7 +466,6 @@ const CharacterImage = ({
   imagePath: string;
   localFrame: number;
 }) => {
-  const src = staticFile(normalizePublicPath(imagePath));
   const fadeIn = 1;
   const enter = interpolate(localFrame, [0, 24], [90, 0], {
     extrapolateLeft: "clamp",
@@ -494,8 +488,8 @@ const CharacterImage = ({
         transform: `translateY(${enter + float}px)`,
       }}
     >
-      <Img
-        src={src}
+      <SafeCharacterImage
+        path={imagePath}
         style={{
           maxWidth: 760,
           maxHeight: 650,
