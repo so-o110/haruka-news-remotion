@@ -1,499 +1,63 @@
 {
-  "video": {
-    "duration": 540,
-    "fps": 30
-  },
-  "title": "日本代表・任天堂・米不足を深掘り",
   "programTitle": "ハルカニュース",
-  "dateLabel": "2026年6月20日",
+  "dateLabel": "2026年6月22日",
   "anchorName": "西村龍之介",
   "opening": {
-    "enabled": true,
-    "duration": 4,
-    "title": "ハルカニュース",
-    "subtitle": "AI NEWS REPORT",
-    "label": "今日のニュース",
-    "showCharacter": true,
-    "characterImage": "/characters/ryunosuke/normal-1.png"
+    "headline": "ゲーム業界，SNS規制，日本発AI研究を深掘り",
+    "subtitle": "Xboxの大規模再編，イギリスの16歳未満SNS規制，サカナAIの最新モデルを見ていきます。"
   },
-  "scenes": [
+  "topics": [
     {
-      "id": "opening-talk",
-      "start": 4,
-      "duration": 36,
-      "title": "今日のテーマ",
-      "caption": "今日のテーマはこちら！3つの話題を深掘りします。",
-      "characterImage": "/characters/ryunosuke/normal-1.png",
-      "audio": "/audio/long/long-opening.wav",
-      "text": "こんにちは、ハルカニュースです！\n今日のテーマはこちら！\n日本代表はベスト8に行けるのか？\n任天堂はなぜ勝ち続けるのか？\nなぜ日本は米不足になったのか？\n今話題のニュースを、事実だけでなく“なぜそうなっているのか”まで見ていきましょう！",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
+      "title": "Xbox大規模リストラ騒動",
+      "category": "Game",
+      "durationSeconds": 158,
+      "expression": "serious",
+      "summary": "Xbox部門で大規模なリストラやスタジオ再編の報道が相次ぎ，ゲーム業界に衝撃が走っています。人気スタジオの閉鎖や売却の可能性も報じられています。",
+      "bullets": [
+        "大型投資や買収が続く一方で，開発費の高騰と収益性の課題が重くなっています。",
+        "複数の開発スタジオが閉鎖や売却の対象として検討されているとの報道があります。",
+        "大作ゲーム重視と中小スタジオの挑戦，どちらを応援したいかが問われています。"
+      ],
+      "telop": "Xbox再編，ゲーム業界に広がる衝撃"
     },
     {
-      "id": "topic1-opening",
-      "start": 40,
-      "duration": 45,
-      "title": "日本代表はベスト8に行けるのか？",
-      "caption": "日本代表、ベスト8へ前進？",
-      "characterImage": "/characters/ryunosuke/happy-1.png",
-      "slideImage": "/slides/topic1-opening.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-01.wav",
-      "text": "サッカー日本代表がワールドカップで強豪オランダと2対2で引き分けました！\n日本は初戦で勝利し、オランダ戦でも勝ち点を獲得。グループリーグ突破へ大きく前進しています。\nSNSでは「日本強すぎる」「今回はベスト8あるぞ」という声も増えています。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
+      "title": "イギリス，16歳未満SNS禁止へ",
+      "category": "Society",
+      "durationSeconds": 158,
+      "expression": "thinking",
+      "summary": "イギリスで，16歳未満の利用者が多くのSNSサービスを使えなくなる方針が発表され，世界中で注目を集めています。",
+      "bullets": [
+        "対象には動画共有やSNSサービスなどが含まれ，子どものメンタルヘルス対策が目的です。",
+        "SNS企業側からは，若者がより危険なサービスへ流れる可能性への懸念も出ています。",
+        "年齢確認の仕組みや実効性をどう確保するか，議論が続いています。"
+      ],
+      "telop": "16歳未満SNS制限，賛否広がる"
     },
     {
-      "id": "topic1-middle",
-      "start": 85,
-      "duration": 70,
-      "title": "日本代表はベスト8に行けるのか？",
-      "caption": "過去最高クラスの戦力で、壁に挑む",
-      "characterImage": "/characters/ryunosuke/serious-1.png",
-      "slideImage": "/slides/topic1-middle.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-02.wav",
-      "text": "これまで日本代表は何度もベスト16まで進んできましたが、ベスト8の壁を突破したことはありません。\nしかし今回の代表は、欧州の強豪クラブで活躍する選手が過去最多クラスです。\n実際にオランダ相手にも互角の試合を見せており、世界との差は確実に縮まっています。\nただし決勝トーナメントではフランスやアルゼンチンなど世界トップクラスとの対戦も予想されます。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 40,
-        "lineHeight": 1.18,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
+      "title": "サカナAIのフグ，海外トップ級に匹敵？",
+      "category": "AI",
+      "durationSeconds": 158,
+      "expression": "normal",
+      "summary": "日本発のAI企業サカナAIが公開した最新AIモデル，フグが，複数のベンチマークで海外トップクラスのモデルに匹敵するとして話題です。",
+      "bullets": [
+        "複数の最先端AIモデルを小さな司令塔モデルが協調させる，独自の手法が使われています。",
+        "科学的推論やコーディングなどで，海外先進モデルと肩を並べる性能が報告されています。",
+        "日本から世界レベルの生成AI技術が生まれる可能性に期待が集まっています。"
+      ],
+      "telop": "日本発AI，世界トップ級へ挑戦"
     },
     {
-      "id": "topic1-ending",
-      "start": 155,
-      "duration": 45,
-      "title": "日本代表はベスト8に行けるのか？",
-      "caption": "出場する時代から、勝ち進む時代へ",
-      "characterImage": "/characters/ryunosuke/thinking-1.png",
-      "slideImage": "/slides/topic1-ending.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-03.wav",
-      "text": "昔は「ワールドカップに出るだけですごい」と言われていましたが、今は「どこまで勝てるか」を語る時代になりました。\n今回こそ日本サッカーの歴史が変わる瞬間を見てみたいですね。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
-    },
-    {
-      "id": "topic2-opening",
-      "start": 200,
-      "duration": 45,
-      "title": "任天堂はなぜ勝ち続けるのか？",
-      "caption": "Switch 2で、任天堂の強さに再注目",
-      "characterImage": "/characters/ryunosuke/normal-1.png",
-      "slideImage": "/slides/topic2-opening.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-04.wav",
-      "text": "Nintendo Switch 2の発売が大きな話題になっています。\nゲーム業界では「Switch2は成功するのか」という議論が続いています。\n一方で任天堂は20年以上にわたり、マリオやポケモンなどの人気シリーズを生み出し続けています。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
-    },
-    {
-      "id": "topic2-middle",
-      "start": 245,
-      "duration": 70,
-      "title": "任天堂はなぜ勝ち続けるのか？",
-      "caption": "強さの理由は、性能よりも体験づくり",
-      "characterImage": "/characters/ryunosuke/serious-2.png",
-      "slideImage": "/slides/topic2-middle.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-05.wav",
-      "text": "任天堂の強さは、性能競争をあまりしないことです。\nソニーやPCゲームが高性能化を進める中、任天堂は“誰でも楽しめるゲーム体験”を重視しています。\nさらにマリオ、ゼルダ、ポケモンなど世界的なIPを多数保有しています。\nゲーム機を売るだけでなく、映画やテーマパークなどにも展開しているのが大きな強みです。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 40,
-        "lineHeight": 1.18,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
-    },
-    {
-      "id": "topic2-ending",
-      "start": 315,
-      "duration": 45,
-      "title": "任天堂はなぜ勝ち続けるのか？",
-      "caption": "変わらない中心は「面白さ」",
-      "characterImage": "/characters/ryunosuke/happy-2.png",
-      "slideImage": "/slides/topic2-ending.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-06.wav",
-      "text": "ゲーム業界は流行の変化が激しいですが、任天堂は「面白さ」を中心に考え続けています。\nだからこそ何十年も世界中のファンを獲得し続けているのかもしれません。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
-    },
-    {
-      "id": "topic3-opening",
-      "start": 360,
-      "duration": 45,
-      "title": "なぜ日本は米不足になったのか？",
-      "caption": "お米の価格上昇が、家庭に影響",
-      "characterImage": "/characters/ryunosuke/thinking-2.png",
-      "slideImage": "/slides/topic3-opening.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-07.wav",
-      "text": "最近、お米の価格上昇が大きなニュースになっています。\nスーパーでは以前より高い価格で販売されるケースが増え、多くの家庭に影響が出ています。\nSNSでも「お米高すぎる」という声が相次いでいます。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
-    },
-    {
-      "id": "topic3-middle",
-      "start": 405,
-      "duration": 70,
-      "title": "なぜ日本は米不足になったのか？",
-      "caption": "不作だけでなく、農業全体の課題も",
-      "characterImage": "/characters/ryunosuke/serious-1.png",
-      "slideImage": "/slides/topic3-middle.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-08.wav",
-      "text": "米価格上昇の背景には複数の理由があります。\n猛暑による収穫量への影響、生産コストの上昇、農家の高齢化などです。\nさらに長年続いてきた農業政策や、国内の生産体制の問題も指摘されています。\nつまり単純な不作だけではなく、日本の農業全体が抱える課題が表面化しているとも言えます。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 40,
-        "lineHeight": 1.18,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
-    },
-    {
-      "id": "topic3-ending",
-      "start": 475,
-      "duration": 45,
-      "title": "なぜ日本は米不足になったのか？",
-      "caption": "お米から、日本の農業の未来を考える",
-      "characterImage": "/characters/ryunosuke/normal-2.png",
-      "slideImage": "/slides/topic3-ending.png",
-      "slideImageStyle": {
-        "objectFit": "contain",
-        "objectPosition": "center"
-      },
-      "audio": "/audio/long/long-09.wav",
-      "text": "普段当たり前に食べているお米ですが、その裏では多くの課題が積み重なっています。\n今回の問題をきっかけに、日本の農業の未来について考える人が増えるかもしれません。",
-      "slideStyle": {
-        "x": 650,
-        "y": 230,
-        "width": 1120,
-        "height": 570,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "textStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "fontSize": 42,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 650,
-        "y": 830,
-        "width": 1120,
-        "height": 150,
-        "padding": 28,
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      }
+      "title": "今日のまとめ",
+      "category": "Summary",
+      "durationSeconds": 54,
+      "expression": "happy",
+      "summary": "今回は，Xboxの大規模リストラ騒動，イギリスの16歳未満SNS禁止方針，そしてサカナAIのフグについてお届けしました。",
+      "bullets": [
+        "ゲーム業界では，大型化する開発費とスタジオ再編が大きな焦点です。",
+        "SNS規制では，子どもの安全と自由な利用のバランスが問われています。",
+        "日本発AIが世界トップクラスになれるのか，今後の展開に注目です。"
+      ],
+      "telop": "一番気になったニュースをコメントで教えてください"
     }
-  ],
-  "ending": {
-    "enabled": true,
-    "start": 520,
-    "duration": 20,
-    "title": "みなさんはどう思いましたか？\n日本代表はベスト8に行けると思う？\nSwitch2は成功すると思う？\n米不足問題はどう解決すべきだと思う？\nぜひコメントで教えてください！\nそれではまた次回のハルカニュースでお会いしましょう！",
-    "audio": "/audio/long/long-ending.wav",
-    "style": {
-      "fontSize": 50,
-      "lineHeight": 1.28,
-      "color": "#123b63",
-      "zIndex": 100
-    }
-  }
+  ]
 }
