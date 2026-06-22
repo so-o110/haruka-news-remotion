@@ -3,9 +3,9 @@
     "duration": 540,
     "fps": 30
   },
-  "title": "日本代表・任天堂・米不足を深掘り",
+  "title": "Xbox・SNS規制・日本発AI研究",
   "programTitle": "ハルカニュース",
-  "dateLabel": "2026年6月20日",
+  "dateLabel": "2026年6月22日",
   "anchorName": "西村龍之介",
   "opening": {
     "enabled": true,
@@ -14,7 +14,7 @@
     "subtitle": "AI NEWS REPORT",
     "label": "今日のニュース",
     "showCharacter": true,
-    "characterImage": "/characters/ryunosuke/normal-1.png"
+    "characterImage": "/characters/rn1.png"
   },
   "scenes": [
     {
@@ -22,10 +22,10 @@
       "start": 4,
       "duration": 36,
       "title": "今日のテーマ",
-      "caption": "今日のテーマはこちら！3つの話題を深掘りします。",
-      "characterImage": "/characters/ryunosuke/normal-1.png",
-      "audio": "/audio/long/long-opening.wav",
-      "text": "こんにちは、ハルカニュースです！\n今日のテーマはこちら！\n日本代表はベスト8に行けるのか？\n任天堂はなぜ勝ち続けるのか？\nなぜ日本は米不足になったのか？\n今話題のニュースを、事実だけでなく“なぜそうなっているのか”まで見ていきましょう！",
+      "caption": "ゲーム業界、SNS規制、AI研究の注目ニュースです。",
+      "characterImage": "/characters/ryunosuke/rn1.png",
+      "audio": "/audio/long/o.wav",
+      "text": "みなさんこんにちは、ハルカニュースです！\n今日はゲーム業界、SNS規制、そして話題のAI研究について見ていきます。\nどれも直近1か月で注目を集めたニュースです。\nそれでは早速いきましょう！",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -63,16 +63,16 @@
       "id": "topic1-opening",
       "start": 40,
       "duration": 45,
-      "title": "日本代表はベスト8に行けるのか？",
-      "caption": "日本代表、ベスト8へ前進？",
-      "characterImage": "/characters/ryunosuke/happy-1.png",
-      "slideImage": "/slides/topic1-opening.png",
+      "title": "Xbox大規模リストラ騒動",
+      "caption": "Xboxに大きな動きです。",
+      "characterImage": "/characters/rh1.png",
+      "slideImage": "/slides/aa.png",
       "slideImageStyle": {
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/long-01.wav",
-      "text": "サッカー日本代表がワールドカップで強豪オランダと2対2で引き分けました！\n日本は初戦で勝利し、オランダ戦でも勝ち点を獲得。グループリーグ突破へ大きく前進しています。\nSNSでは「日本強すぎる」「今回はベスト8あるぞ」という声も増えています。",
+      "audio": "/audio/long/aa.wav",
+      "text": "Xboxに大きな動きです。\nXbox部門で大規模なリストラやスタジオ再編の報道が相次ぎ、ゲーム業界に衝撃が走っています。\n人気スタジオの閉鎖や売却の可能性も報じられています。",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -110,8 +110,8 @@
       "id": "topic1-middle",
       "start": 85,
       "duration": 70,
-      "title": "日本代表はベスト8に行けるのか？",
-      "caption": "過去最高クラスの戦力で、壁に挑む",
+      "title": "Xbox大規模リストラ騒動",
+      "caption": "大型投資の裏で進む事業再編",
       "characterImage": "/characters/ryunosuke/serious-1.png",
       "slideImage": "/slides/topic1-middle.png",
       "slideImageStyle": {
@@ -119,7 +119,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-02.wav",
-      "text": "これまで日本代表は何度もベスト16まで進んできましたが、ベスト8の壁を突破したことはありません。\nしかし今回の代表は、欧州の強豪クラブで活躍する選手が過去最多クラスです。\n実際にオランダ相手にも互角の試合を見せており、世界との差は確実に縮まっています。\nただし決勝トーナメントではフランスやアルゼンチンなど世界トップクラスとの対戦も予想されます。",
+      "text": "Xboxでは近年、多額の投資や大型買収が続いていました。\nしかしゲーム開発費の高騰や収益性の課題から、事業の立て直しが進められているとみられています。\n一部報道では、複数の開発スタジオが閉鎖や売却の対象として検討されているとされています。\nゲーム業界全体でも人員削減が続いており、厳しい競争環境が続いています。",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -157,8 +157,8 @@
       "id": "topic1-ending",
       "start": 155,
       "duration": 45,
-      "title": "日本代表はベスト8に行けるのか？",
-      "caption": "出場する時代から、勝ち進む時代へ",
+      "title": "Xbox大規模リストラ騒動",
+      "caption": "開発費高騰時代のゲーム産業",
       "characterImage": "/characters/ryunosuke/thinking-1.png",
       "slideImage": "/slides/topic1-ending.png",
       "slideImageStyle": {
@@ -166,7 +166,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-03.wav",
-      "text": "昔は「ワールドカップに出るだけですごい」と言われていましたが、今は「どこまで勝てるか」を語る時代になりました。\n今回こそ日本サッカーの歴史が変わる瞬間を見てみたいですね。",
+      "text": "ゲームが大ヒットしていても、開発費が増え続ける時代になっています。\n皆さんは大作ゲーム重視と、さまざまな中小スタジオの挑戦、どちらを応援したいですか？\nコメントで教えてください。",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -204,8 +204,8 @@
       "id": "topic2-opening",
       "start": 200,
       "duration": 45,
-      "title": "任天堂はなぜ勝ち続けるのか？",
-      "caption": "Switch 2で、任天堂の強さに再注目",
+      "title": "イギリス「16歳未満SNS禁止」へ",
+      "caption": "イギリスで大きなSNS規制",
       "characterImage": "/characters/ryunosuke/normal-1.png",
       "slideImage": "/slides/topic2-opening.png",
       "slideImageStyle": {
@@ -213,7 +213,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-04.wav",
-      "text": "Nintendo Switch 2の発売が大きな話題になっています。\nゲーム業界では「Switch2は成功するのか」という議論が続いています。\n一方で任天堂は20年以上にわたり、マリオやポケモンなどの人気シリーズを生み出し続けています。",
+      "text": "イギリスで大きなSNS規制が発表されました。\n16歳未満の利用者について、多くのSNSサービスを利用できなくする方針です。\n世界中で注目を集めています。",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -251,8 +251,8 @@
       "id": "topic2-middle",
       "start": 245,
       "duration": 70,
-      "title": "任天堂はなぜ勝ち続けるのか？",
-      "caption": "強さの理由は、性能よりも体験づくり",
+      "title": "イギリス「16歳未満SNS禁止」へ",
+      "caption": "子どもの安全と年齢確認の課題",
       "characterImage": "/characters/ryunosuke/serious-2.png",
       "slideImage": "/slides/topic2-middle.png",
       "slideImageStyle": {
@@ -260,7 +260,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-05.wav",
-      "text": "任天堂の強さは、性能競争をあまりしないことです。\nソニーやPCゲームが高性能化を進める中、任天堂は“誰でも楽しめるゲーム体験”を重視しています。\nさらにマリオ、ゼルダ、ポケモンなど世界的なIPを多数保有しています。\nゲーム機を売るだけでなく、映画やテーマパークなどにも展開しているのが大きな強みです。",
+      "text": "対象には動画共有やSNSサービスなどが含まれます。\n政府は、子どものメンタルヘルスやネット依存への対策を目的としています。\n一方で、SNS企業側からは『若者がより危険なサービスへ流れる可能性がある』という懸念も出ています。\n年齢確認の仕組みや実効性についても議論が続いています。",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -298,8 +298,8 @@
       "id": "topic2-ending",
       "start": 315,
       "duration": 45,
-      "title": "任天堂はなぜ勝ち続けるのか？",
-      "caption": "変わらない中心は「面白さ」",
+      "title": "イギリス「16歳未満SNS禁止」へ",
+      "caption": "SNS時代の難しい選択",
       "characterImage": "/characters/ryunosuke/happy-2.png",
       "slideImage": "/slides/topic2-ending.png",
       "slideImageStyle": {
@@ -307,7 +307,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-06.wav",
-      "text": "ゲーム業界は流行の変化が激しいですが、任天堂は「面白さ」を中心に考え続けています。\nだからこそ何十年も世界中のファンを獲得し続けているのかもしれません。",
+      "text": "スマホやSNSが当たり前の時代だからこそ難しい問題です。\n皆さんは16歳未満のSNS利用制限に賛成ですか？\nそれとも別の方法で対策すべきだと思いますか？",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -345,8 +345,8 @@
       "id": "topic3-opening",
       "start": 360,
       "duration": 45,
-      "title": "なぜ日本は米不足になったのか？",
-      "caption": "お米の価格上昇が、家庭に影響",
+      "title": "サカナAI フグ ミュトスに匹敵？",
+      "caption": "日本発AI企業が再び話題に",
       "characterImage": "/characters/ryunosuke/thinking-2.png",
       "slideImage": "/slides/topic3-opening.png",
       "slideImageStyle": {
@@ -354,7 +354,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-07.wav",
-      "text": "最近、お米の価格上昇が大きなニュースになっています。\nスーパーでは以前より高い価格で販売されるケースが増え、多くの家庭に影響が出ています。\nSNSでも「お米高すぎる」という声が相次いでいます。",
+      "text": "日本発のAI企業『サカナ AI』が、再び大きな話題になっています。\n本日公開された最新AIモデル『フグ（Fugu Ultra）』が、複数のベンチマークで海外トップクラスのモデルに匹敵する性能を示したとして注目を集めています。",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -392,8 +392,8 @@
       "id": "topic3-middle",
       "start": 405,
       "duration": 70,
-      "title": "なぜ日本は米不足になったのか？",
-      "caption": "不作だけでなく、農業全体の課題も",
+      "title": "サカナAI フグ ミュトスに匹敵？",
+      "caption": "独自のマルチエージェント手法",
       "characterImage": "/characters/ryunosuke/serious-1.png",
       "slideImage": "/slides/topic3-middle.png",
       "slideImageStyle": {
@@ -401,7 +401,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-08.wav",
-      "text": "米価格上昇の背景には複数の理由があります。\n猛暑による収穫量への影響、生産コストの上昇、農家の高齢化などです。\nさらに長年続いてきた農業政策や、国内の生産体制の問題も指摘されています。\nつまり単純な不作だけではなく、日本の農業全体が抱える課題が表面化しているとも言えます。",
+      "text": "サカナAIは、日本発の生成AI開発企業です。\n今回のフグは、複数の最先端AIモデルを小さなオーケストレーターモデルが動的に協調させる独自のマルチエージェント手法を活用しています。\n公開されたベンチマークでは、海外先進モデルと肩を並べる、または一部で上回る高い性能を示したと報告されています。\n日本から世界レベルのAI技術が生まれる可能性に期待が集まっています。",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -439,8 +439,8 @@
       "id": "topic3-ending",
       "start": 475,
       "duration": 45,
-      "title": "なぜ日本は米不足になったのか？",
-      "caption": "お米から、日本の農業の未来を考える",
+      "title": "サカナAI フグ ミュトスに匹敵？",
+      "caption": "日本製AIへの期待",
       "characterImage": "/characters/ryunosuke/normal-2.png",
       "slideImage": "/slides/topic3-ending.png",
       "slideImageStyle": {
@@ -448,7 +448,7 @@
         "objectPosition": "center"
       },
       "audio": "/audio/long/long-09.wav",
-      "text": "普段当たり前に食べているお米ですが、その裏では多くの課題が積み重なっています。\n今回の問題をきっかけに、日本の農業の未来について考える人が増えるかもしれません。",
+      "text": "これまで生成AIは海外企業が中心でした。\nもし日本発のAIが世界トップクラスになったら面白いですよね。\n皆さんは日本製AIに期待していますか？",
       "slideStyle": {
         "x": 650,
         "y": 230,
@@ -487,7 +487,7 @@
     "enabled": true,
     "start": 520,
     "duration": 20,
-    "title": "みなさんはどう思いましたか？\n日本代表はベスト8に行けると思う？\nSwitch2は成功すると思う？\n米不足問題はどう解決すべきだと思う？\nぜひコメントで教えてください！\nそれではまた次回のハルカニュースでお会いしましょう！",
+    "title": "今回はXboxの大規模リストラ騒動。\nイギリスの16歳未満SNS禁止方針。\nそして、サカナAIのフグについてお届けしました。\n皆さんが一番気になったニュースはどれだったでしょうか。\nぜひコメント欄で意見を聞かせてください。\nそれではまた次回のハルカニュースでお会いしましょう！",
     "audio": "/audio/long/long-ending.wav",
     "style": {
       "fontSize": 50,
