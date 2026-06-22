@@ -99,6 +99,11 @@ type NewsSlide = {
   slides?: TimedSlide[];
 };
 
+type ComputedNewsSlide = NewsSlide & {
+  computedStartFrame: number;
+  computedDurationFrames: number;
+};
+
 type Ending = {
   enabled?: boolean;
   start?: number;
@@ -124,13 +129,14 @@ type OpeningConfig = {
 };
 
 type LegacyTopic = {
-  title: string;
+  title?: string;
   category?: string;
-  durationSeconds: number;
+  durationSeconds?: number;
   expression?: CharacterExpression;
   summary?: string;
   bullets?: string[];
   telop?: string;
+  scenes?: NewsSlide[];
 };
 
 type NewsData = {
@@ -192,11 +198,11 @@ const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
     ]
       .filter(Boolean)
       .join("\n"),
-    caption: topic.telop ?? topic.title,
+    caption: topic.telop ?? topic.title ?? "",
     characterExpression: topic.expression ?? "normal",
     character: topic.expression ?? "normal-1",
     startFrame: undefined,
-    durationFrames: Math.round(topic.durationSeconds * fps),
+    durationFrames: Math.round((topic.durationSeconds ?? 8) * fps),
     slideStyle: {
       x: 760,
       y: 260,
@@ -219,13 +225,6 @@ const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
     },
   }));
 
-const usesAbsoluteScenes = Boolean(news.scenes && news.scenes.length > 0);
-const slides = usesAbsoluteScenes
-  ? (news.scenes ?? [])
-  : news.slides && news.slides.length > 0
-    ? news.slides
-    : legacyTopicsToSlides(news.topics);
-
 const getSlideDuration = (slide: NewsSlide) =>
   Math.max(
     1,
@@ -238,25 +237,62 @@ const getSlideDuration = (slide: NewsSlide) =>
         : 8 * fps),
   );
 
-const getSequentialStartFrame = (targetIndex: number) =>
-  slides
-    .slice(0, targetIndex)
-    .reduce((total, current) => total + getSlideDuration(current), 0);
+const getTopicSlides = (topics: LegacyTopic[] | undefined) =>
+  (topics ?? []).flatMap((topic) => topic.scenes ?? []);
+const getSourceSlides = () => {
+  const topicSlides = getTopicSlides(news.topics);
 
-const getSlideStartFrame = (slide: NewsSlide, index: number) => {
-  if (slide.startFrame !== undefined) {
-    return slide.startFrame;
+  if (news.scenes && news.scenes.length > 0) {
+    return news.scenes;
   }
 
-  if (slide.start !== undefined) {
-    return Math.round(slide.start * fps);
+  if (news.slides && news.slides.length > 0) {
+    return news.slides;
   }
 
-  return getSequentialStartFrame(index);
+  if (topicSlides.length > 0) {
+    return topicSlides;
+  }
+
+  return legacyTopicsToSlides(news.topics);
+};
+const getComputedSlides = (sourceSlides: NewsSlide[]): ComputedNewsSlide[] => {
+  let cursor = 0;
+
+  return sourceSlides.map((slide) => {
+    const computedDurationFrames = getSlideDuration(slide);
+    const computedSlide = {
+      ...slide,
+      computedStartFrame: cursor,
+      computedDurationFrames,
+    };
+
+    cursor += computedDurationFrames;
+
+    return computedSlide;
+  });
 };
 
-const getTimelineOffsetFrames = () =>
-  usesAbsoluteScenes ? 0 : getOpeningDurationFrames();
+const slides = getComputedSlides(getSourceSlides());
+
+const getSlideStartFrame = (slide: ComputedNewsSlide) =>
+  slide.computedStartFrame;
+const getComputedAudioStartFrame = (slide: ComputedNewsSlide) => {
+  if (slide.audioStartFrame === undefined) {
+    return slide.computedStartFrame;
+  }
+
+  const legacyStartFrame =
+    slide.startFrame ??
+    (slide.start !== undefined
+      ? Math.round(slide.start * fps)
+      : slide.computedStartFrame);
+  const audioOffset = slide.audioStartFrame - legacyStartFrame;
+
+  return slide.computedStartFrame + audioOffset;
+};
+
+const getTimelineOffsetFrames = () => getOpeningDurationFrames();
 
 const getEndingDurationFrames = (ending: Ending | undefined) =>
   Math.max(
@@ -271,7 +307,7 @@ const getEndingStartFrame = (ending: Ending | undefined) => {
       ? 0
       : Math.max(
           ...slides.map(
-            (slide, index) => getSlideStartFrame(slide, index) + getSlideDuration(slide),
+            (slide) => getSlideStartFrame(slide) + slide.computedDurationFrames,
           ),
         );
 
@@ -302,9 +338,9 @@ const getTotalFrames = () => {
     slides.length === 0
       ? 0
       : Math.max(
-          ...slides.map((slide, index) => {
-            const from = getSlideStartFrame(slide, index);
-            return from + getSlideDuration(slide);
+          ...slides.map((slide) => {
+            const from = getSlideStartFrame(slide);
+            return from + slide.computedDurationFrames;
           }),
         );
   const ending = news.ending;
@@ -312,9 +348,7 @@ const getTotalFrames = () => {
     ending?.enabled === false
       ? 0
       : getEndingStartFrame(ending) + getEndingDurationFrames(ending);
-  const contentEnd = usesAbsoluteScenes
-    ? Math.max(openingFrames, slideEnd, endingEnd)
-    : openingFrames + Math.max(slideEnd, endingEnd);
+  const contentEnd = openingFrames + Math.max(slideEnd, endingEnd);
   const hasTimelineContent = slides.length > 0 || Boolean(ending);
 
   return Math.max(
@@ -1106,8 +1140,8 @@ export const HarukaNewsVideo = () => {
         </Sequence>
       ) : null}
       {slides.map((slide, index) => {
-        const from = getSlideStartFrame(slide, index);
-        const duration = getSlideDuration(slide);
+        const from = getSlideStartFrame(slide);
+        const duration = slide.computedDurationFrames;
 
         return (
           <Sequence
@@ -1125,14 +1159,13 @@ export const HarukaNewsVideo = () => {
           return null;
         }
 
-        const visualFrom = getSlideStartFrame(slide, index);
-        const audioFrom = slide.audioStartFrame ?? visualFrom;
+        const audioFrom = getComputedAudioStartFrame(slide);
 
         return (
           <Sequence
             key={`landscape-audio-${index}-${slide.audio}`}
             from={timelineOffset + audioFrom}
-            durationInFrames={getSlideDuration(slide)}
+            durationInFrames={slide.computedDurationFrames}
             layout="none"
             name={`landscape-audio-${index + 1}-${getFileName(slide.audio)}`}
           >
