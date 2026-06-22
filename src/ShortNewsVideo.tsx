@@ -162,6 +162,11 @@ type ShortNewsSlide = {
   images?: ShortNewsSlideImage[];
 };
 
+type ComputedShortNewsSlide = ShortNewsSlide & {
+  computedStartFrame: number;
+  computedDurationFrames: number;
+};
+
 type ShortNewsData = {
   title: string;
   topic: string;
@@ -205,6 +210,43 @@ const getCharacterImagePath = (slide: ShortNewsSlide) =>
   getCharacterAssetPath(
     slide.characterImage ?? slide.character ?? slide.characterExpression,
   );
+const getComputedSlides = (
+  slides: ShortNewsSlide[],
+  totalFrames: number,
+): ComputedShortNewsSlide[] => {
+  let cursor = 0;
+
+  return slides.map((slide, index) => {
+    const isLastSlide = index === slides.length - 1;
+    const remainingFrames = Math.max(1, totalFrames - cursor);
+    const computedDurationFrames = Math.max(
+      1,
+      slide.durationFrames ??
+        (isLastSlide
+          ? remainingFrames
+          : Math.floor(totalFrames / Math.max(1, slides.length))),
+    );
+    const computedSlide = {
+      ...slide,
+      computedStartFrame: cursor,
+      computedDurationFrames,
+    };
+
+    cursor += computedDurationFrames;
+
+    return computedSlide;
+  });
+};
+const getComputedAudioStartFrame = (slide: ComputedShortNewsSlide) => {
+  if (slide.audioStartFrame === undefined) {
+    return slide.computedStartFrame;
+  }
+
+  const legacyStartFrame = slide.startFrame ?? slide.computedStartFrame;
+  const audioOffset = slide.audioStartFrame - legacyStartFrame;
+
+  return slide.computedStartFrame + audioOffset;
+};
 
 const HighlightedNewsText = ({ text }: { text: string }) => {
   const parts = text.split(/(\d+億人|\d+万人|\d+人|\d+億|\d+万)/g);
@@ -802,11 +844,10 @@ export const SHORT_NEWS_DURATION_IN_FRAMES = 31 * fps;
 export const ShortNewsVideo = () => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const slides = shortNews.slides.length > 0 ? shortNews.slides : [];
-  const slideDuration =
-    slides.length > 0
-      ? Math.max(1, Math.floor(durationInFrames / slides.length))
-      : durationInFrames;
+  const slides = getComputedSlides(
+    shortNews.slides.length > 0 ? shortNews.slides : [],
+    durationInFrames,
+  );
   const titleProgress = interpolate(frame, [0, 26], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -974,12 +1015,8 @@ export const ShortNewsVideo = () => {
       </header>
       <CharacterShadow />
       {slides.map((slide, index) => {
-        const from = slide.startFrame ?? index * slideDuration;
-        const duration =
-          slide.durationFrames ??
-          (index === slides.length - 1
-            ? durationInFrames - from
-            : slideDuration);
+        const from = slide.computedStartFrame;
+        const duration = slide.computedDurationFrames;
         const characterDuration = Math.max(
           1,
           slide.characterDurationFrames ??
@@ -1015,8 +1052,7 @@ export const ShortNewsVideo = () => {
         );
       })}
       {slides.map((slide, index) => {
-        const visualFrom = slide.startFrame ?? index * slideDuration;
-        const audioFrom = slide.audioStartFrame ?? visualFrom;
+        const audioFrom = getComputedAudioStartFrame(slide);
         const audioFileName = getFileName(slide.audio);
 
         return (
