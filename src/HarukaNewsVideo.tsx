@@ -1,7 +1,9 @@
 import { type CSSProperties, useEffect, useMemo, useState } from "react";
+import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import {
   AbsoluteFill,
   Audio,
+  CalculateMetadataFunction,
   continueRender,
   delayRender,
   Easing,
@@ -82,6 +84,8 @@ type NewsSlide = {
   character?: string;
   characterImage?: string;
   audio?: string;
+  audioPath?: string;
+  audioFile?: string;
   startFrame?: number;
   durationFrames?: number;
   durationSeconds?: number;
@@ -113,6 +117,8 @@ type Ending = {
   durationFrames?: number;
   text?: string;
   audio?: string;
+  audioPath?: string;
+  audioFile?: string;
   audioStartFrame?: number;
   style?: TextStyle;
 };
@@ -120,12 +126,15 @@ type Ending = {
 type OpeningConfig = {
   enabled?: boolean;
   duration?: number;
+  durationFrames?: number;
   title?: string;
   subtitle?: string;
   label?: string;
   showCharacter?: boolean;
   characterImage?: string;
   audio?: string;
+  audioPath?: string;
+  audioFile?: string;
 };
 
 type LegacyTopic = {
@@ -139,7 +148,7 @@ type LegacyTopic = {
   scenes?: NewsSlide[];
 };
 
-type NewsData = {
+export type NewsData = {
   video?: {
     duration?: number;
     fps?: number;
@@ -158,13 +167,17 @@ type NewsData = {
   topics?: LegacyTopic[];
 };
 
+export type HarukaNewsVideoProps = {
+  news?: NewsData;
+};
+
 type AssetStatus = {
   exists: boolean;
   src: string;
 };
 
-const news = newsData as NewsData;
-export const HARUKA_NEWS_FPS = news.video?.fps ?? 30;
+const defaultNews = newsData as NewsData;
+export const HARUKA_NEWS_FPS = defaultNews.video?.fps ?? 30;
 const fps = HARUKA_NEWS_FPS;
 const defaultDurationSeconds = 540;
 const theme = {
@@ -189,6 +202,25 @@ const getCharacterImagePath = (slide: NewsSlide) =>
   );
 const getOpeningCharacterImagePath = (imagePath: string | undefined) =>
   getCharacterAssetPath(imagePath);
+const getLongAudioAssetPath = (path: string) => {
+  const normalized = normalizePublicPath(path);
+
+  if (normalized.includes("/")) {
+    return normalized;
+  }
+
+  return `audio/long/${normalized}`;
+};
+const getAudioPath = (
+  audioConfig:
+    | { audio?: string; audioPath?: string; audioFile?: string }
+    | undefined,
+) => {
+  const path =
+    audioConfig?.audio ?? audioConfig?.audioPath ?? audioConfig?.audioFile;
+
+  return path ? getLongAudioAssetPath(path) : undefined;
+};
 
 const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
   (topics ?? []).map((topic, index) => ({
@@ -239,22 +271,22 @@ const getSlideDuration = (slide: NewsSlide) =>
 
 const getTopicSlides = (topics: LegacyTopic[] | undefined) =>
   (topics ?? []).flatMap((topic) => topic.scenes ?? []);
-const getSourceSlides = () => {
-  const topicSlides = getTopicSlides(news.topics);
+const getSourceSlides = (currentNews: NewsData) => {
+  const topicSlides = getTopicSlides(currentNews.topics);
 
-  if (news.scenes && news.scenes.length > 0) {
-    return news.scenes;
+  if (currentNews.scenes && currentNews.scenes.length > 0) {
+    return currentNews.scenes;
   }
 
-  if (news.slides && news.slides.length > 0) {
-    return news.slides;
+  if (currentNews.slides && currentNews.slides.length > 0) {
+    return currentNews.slides;
   }
 
   if (topicSlides.length > 0) {
     return topicSlides;
   }
 
-  return legacyTopicsToSlides(news.topics);
+  return legacyTopicsToSlides(currentNews.topics);
 };
 const getComputedSlides = (sourceSlides: NewsSlide[]): ComputedNewsSlide[] => {
   let cursor = 0;
@@ -273,8 +305,6 @@ const getComputedSlides = (sourceSlides: NewsSlide[]): ComputedNewsSlide[] => {
   });
 };
 
-const slides = getComputedSlides(getSourceSlides());
-
 const getSlideStartFrame = (slide: ComputedNewsSlide) =>
   slide.computedStartFrame;
 const getComputedAudioStartFrame = (slide: ComputedNewsSlide) => {
@@ -292,7 +322,8 @@ const getComputedAudioStartFrame = (slide: ComputedNewsSlide) => {
   return slide.computedStartFrame + audioOffset;
 };
 
-const getTimelineOffsetFrames = () => getOpeningDurationFrames();
+const getTimelineOffsetFrames = (currentNews: NewsData) =>
+  getOpeningDurationFrames(currentNews);
 
 const getEndingDurationFrames = (ending: Ending | undefined) =>
   Math.max(
@@ -301,63 +332,160 @@ const getEndingDurationFrames = (ending: Ending | undefined) =>
       (ending?.duration !== undefined ? Math.round(ending.duration * fps) : 90),
   );
 
-const getEndingStartFrame = (ending: Ending | undefined) => {
+const getEndingStartFrame = (
+  ending: Ending | undefined,
+  computedSlides: ComputedNewsSlide[],
+) => {
   const slideEnd =
-    slides.length === 0
+    computedSlides.length === 0
       ? 0
       : Math.max(
-          ...slides.map(
+          ...computedSlides.map(
             (slide) => getSlideStartFrame(slide) + slide.computedDurationFrames,
           ),
         );
 
-  return (
-    ending?.startFrame ??
-    (ending?.start !== undefined ? Math.round(ending.start * fps) : slideEnd)
-  );
+  return slideEnd;
 };
 
-const getOpeningConfig = () => news.opening;
-const getOpeningDurationFrames = () => {
-  const opening = getOpeningConfig();
+const getOpeningConfig = (currentNews: NewsData) => currentNews.opening;
+const getOpeningDurationFrames = (currentNews: NewsData) => {
+  const opening = getOpeningConfig(currentNews);
 
   if (opening?.enabled === false) {
     return 0;
   }
 
-  return Math.max(1, Math.round((opening?.duration ?? 4) * fps));
+  return Math.max(
+    1,
+    opening?.durationFrames ?? Math.round((opening?.duration ?? 4) * fps),
+  );
 };
 
-const getTotalFrames = () => {
-  if (news.video?.duration !== undefined) {
-    return Math.max(1, Math.round(news.video.duration * fps));
-  }
-
-  const openingFrames = getOpeningDurationFrames();
+const getTotalFrames = (currentNews: NewsData) => {
+  const computedSlides = getComputedSlides(getSourceSlides(currentNews));
+  const openingFrames = getOpeningDurationFrames(currentNews);
   const slideEnd =
-    slides.length === 0
+    computedSlides.length === 0
       ? 0
       : Math.max(
-          ...slides.map((slide) => {
+          ...computedSlides.map((slide) => {
             const from = getSlideStartFrame(slide);
             return from + slide.computedDurationFrames;
           }),
         );
-  const ending = news.ending;
+  const ending = currentNews.ending;
   const endingEnd =
     ending?.enabled === false
       ? 0
-      : getEndingStartFrame(ending) + getEndingDurationFrames(ending);
+      : getEndingStartFrame(ending, computedSlides) +
+        getEndingDurationFrames(ending);
   const contentEnd = openingFrames + Math.max(slideEnd, endingEnd);
-  const hasTimelineContent = slides.length > 0 || Boolean(ending);
+  const hasTimelineContent = computedSlides.length > 0 || Boolean(ending);
 
-  return Math.max(
-    hasTimelineContent ? contentEnd : Math.round(defaultDurationSeconds * fps),
-    1,
-  );
+  if (hasTimelineContent) {
+    return Math.max(contentEnd, 1);
+  }
+
+  if (currentNews.video?.duration !== undefined) {
+    return Math.max(1, Math.round(currentNews.video.duration * fps));
+  }
+
+  return Math.max(Math.round(defaultDurationSeconds * fps), 1);
 };
 
-export const HARUKA_NEWS_DURATION_IN_FRAMES = getTotalFrames();
+export const HARUKA_NEWS_DURATION_IN_FRAMES = getTotalFrames(defaultNews);
+
+type AudioTimedConfig = {
+  audio?: string;
+  audioPath?: string;
+  audioFile?: string;
+  durationFrames?: number;
+};
+
+const getAudioDurationFrames = async (
+  audioConfig: AudioTimedConfig | undefined,
+) => {
+  const audioPath = getAudioPath(audioConfig);
+
+  if (!audioPath) {
+    return undefined;
+  }
+
+  try {
+    const audioDurationSeconds = await getAudioDurationInSeconds(
+      staticFile(audioPath),
+    );
+
+    return {
+      audio: audioPath,
+      durationFrames: Math.max(1, Math.ceil(audioDurationSeconds * fps)),
+    };
+  } catch (error) {
+    throw new Error(
+      `横長動画の音声ファイルが読み込めません: public/${audioPath}. ` +
+        `news.json の audio / audioPath / audioFile と public/audio/long/ のwavファイル名を確認してください。` +
+        `\n原因: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+};
+
+const resolveAudioTiming = async <T extends AudioTimedConfig>(
+  audioConfig: T,
+): Promise<T> => {
+  const audioTiming = await getAudioDurationFrames(audioConfig);
+
+  if (!audioTiming) {
+    return audioConfig;
+  }
+
+  return {
+    ...audioConfig,
+    audio: audioTiming.audio,
+    durationFrames: audioTiming.durationFrames,
+  };
+};
+
+export const resolveLandscapeNewsAudioDurations = async (
+  currentNews: NewsData,
+): Promise<NewsData> => ({
+  ...currentNews,
+  opening: currentNews.opening
+    ? await resolveAudioTiming(currentNews.opening)
+    : currentNews.opening,
+  ending: currentNews.ending
+    ? await resolveAudioTiming(currentNews.ending)
+    : currentNews.ending,
+  scenes: currentNews.scenes
+    ? await Promise.all(currentNews.scenes.map(resolveAudioTiming))
+    : currentNews.scenes,
+  slides: currentNews.slides
+    ? await Promise.all(currentNews.slides.map(resolveAudioTiming))
+    : currentNews.slides,
+  topics: currentNews.topics
+    ? await Promise.all(
+        currentNews.topics.map(async (topic) => ({
+          ...topic,
+          scenes: topic.scenes
+            ? await Promise.all(topic.scenes.map(resolveAudioTiming))
+            : topic.scenes,
+        })),
+      )
+    : currentNews.topics,
+});
+
+export const calculateHarukaNewsMetadata: CalculateMetadataFunction<
+  HarukaNewsVideoProps
+> = async () => {
+  const resolvedNews = await resolveLandscapeNewsAudioDurations(defaultNews);
+
+  return {
+    durationInFrames: getTotalFrames(resolvedNews),
+    props: {
+      news: resolvedNews,
+    },
+  };
+};
 
 const usePublicAsset = (path: string): AssetStatus => {
   const src = useMemo(() => staticFile(normalizePublicPath(path)), [path]);
@@ -887,9 +1015,11 @@ const EndingScreen = ({
 const OpeningScreen = ({
   opening,
   durationFrames,
+  news,
 }: {
   opening?: OpeningConfig;
   durationFrames: number;
+  news: NewsData;
 }) => {
   const frame = useCurrentFrame();
   const title = opening?.title ?? news.programTitle ?? "ハルカニュース";
@@ -1077,20 +1207,23 @@ const OpeningScreen = ({
           />
         </div>
       ) : null}
-      {opening?.audio ? <SafeAudio path={opening.audio} /> : null}
+      {opening?.audio ? (
+        <SafeAudio path={getLongAudioAssetPath(opening.audio)} />
+      ) : null}
     </AbsoluteFill>
   );
 };
 
-export const HarukaNewsVideo = () => {
+export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) => {
   const frame = useCurrentFrame();
   const title = news.title ?? news.programTitle ?? "ハルカニュース";
-  const opening = getOpeningConfig();
-  const openingFrames = getOpeningDurationFrames();
-  const timelineOffset = getTimelineOffsetFrames();
+  const slides = getComputedSlides(getSourceSlides(news));
+  const opening = getOpeningConfig(news);
+  const openingFrames = getOpeningDurationFrames(news);
+  const timelineOffset = getTimelineOffsetFrames(news);
   const ending = news.ending;
   const shouldShowEnding = ending?.enabled ?? Boolean(ending);
-  const endingStart = getEndingStartFrame(ending);
+  const endingStart = getEndingStartFrame(ending, slides);
   const endingDuration = getEndingDurationFrames(ending);
 
   return (
@@ -1126,17 +1259,21 @@ export const HarukaNewsVideo = () => {
           durationInFrames={openingFrames}
           name="landscape-opening"
         >
-          <OpeningScreen opening={opening} durationFrames={openingFrames} />
+          <OpeningScreen
+            opening={opening}
+            durationFrames={openingFrames}
+            news={news}
+          />
         </Sequence>
       ) : null}
       {news.audio ? (
         <Sequence
           from={openingFrames}
-          durationInFrames={HARUKA_NEWS_DURATION_IN_FRAMES - openingFrames}
+          durationInFrames={getTotalFrames(news) - openingFrames}
           layout="none"
           name={`landscape-main-audio-${getFileName(news.audio)}`}
         >
-          <SafeAudio path={news.audio} />
+          <SafeAudio path={getLongAudioAssetPath(news.audio)} />
         </Sequence>
       ) : null}
       {slides.map((slide, index) => {
@@ -1169,7 +1306,7 @@ export const HarukaNewsVideo = () => {
             layout="none"
             name={`landscape-audio-${index + 1}-${getFileName(slide.audio)}`}
           >
-            <SafeAudio path={slide.audio} />
+            <SafeAudio path={getLongAudioAssetPath(slide.audio)} />
           </Sequence>
         );
       })}
@@ -1193,7 +1330,7 @@ export const HarukaNewsVideo = () => {
           layout="none"
           name={`landscape-ending-audio-${getFileName(ending.audio)}`}
         >
-          <SafeAudio path={ending.audio} />
+          <SafeAudio path={getLongAudioAssetPath(ending.audio)} />
         </Sequence>
       ) : null}
     </AbsoluteFill>

@@ -21,11 +21,10 @@
       "id": "opening-talk",
       "start": 4,
       "duration": 34,
-      "durationFrames": 1020,
       "title": "今日のテーマ",
       "caption": "ゲーム業界、SNS規制、AI研究の注目ニュースです。",
       "characterImage": "/characters/ryunosuke/rn1.png",
-      "audio": "/audio/long/o.wav",
+      "audio": "o.wav",
       "text": "みなさんこんにちは、ハルカニュースです！\n今日はゲーム業界、SNS規制、そして話題のAI研究について見ていきます。\nどれも直近1か月で注目を集めたニュースです。\nそれでは早速いきましょう！",
       "slideStyle": {
         "x": 650,
@@ -64,7 +63,6 @@
       "id": "topic1-opening",
       "start": 40,
       "duration": 45,
-      "durationFrames": 1350,
       "title": "Xbox大規模リストラ騒動",
       "caption": "Xboxに大きな動きです。",
       "characterImage": "/characters/rh1.png",
@@ -73,7 +71,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/aa.wav",
+      "audio": "aa.wav",
       "text": "Xboxに大きな動きです。\nXbox部門で大規模なリストラやスタジオ再編の報道が相次ぎ、ゲーム業界に衝撃が走っています。\n人気スタジオの閉鎖や売却の可能性も報じられています。",
       "slideStyle": {
         "x": 655,
@@ -112,7 +110,6 @@
       "id": "topic1-middle",
       "start": 85,
       "duration": 70,
-      "durationFrames": 2100,
       "title": "Xbox大規模リストラ騒動",
       "caption": "大型投資の裏で進む事業再編",
       "characterImage": "/characters/ryunosuke/rs1.png",
@@ -121,7 +118,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/ab.wav",
+      "audio": "ab.wav",
       "text": "Xboxでは近年、多額の投資や大型買収が続いていました。\nしかしゲーム開発費の高騰や収益性の課題から、事業の立て直しが進められているとみられています。\n一部報道では、複数の開発スタジオが閉鎖や売却の対象として検討されているとされています。\nゲーム業界全体でも人員削減が続いており、厳しい競争環境が続いています。",
       "slideStyle": {
         "x": 655,
@@ -160,7 +157,6 @@
       "id": "topic1-ending",
       "start": 155,
       "duration": 45,
-      "durationFrames": 1350,
       "title": "Xbox大規模リストラ騒動",
       "caption": "開発費高騰時代のゲーム産業",
       "characterImage": "/characters/ryunosuke/rt1.png",
@@ -169,7 +165,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/ac.wav",
+      "audio": "ac.wav",
       "text": "ゲームが大ヒットしていても、開発費が増え続ける時代になっています。\n皆さんは大作ゲーム重視と、さまざまな中小スタジオの挑戦、どちらを応援したいですか？\nコメントで教えてください。",
       "slideStyle": {
         "x": 655,
@@ -208,7 +204,6 @@
       "id": "topic2-opening",
       "start": 200,
       "duration": 45,
-      "durationFrames": 1350,
       "title": "イギリス「16歳未満SNS禁止」へ",
       "caption": "イギリスで大きなSNS規制",
       "characterImage": "/characters/ryunosuke/rn1.png",
@@ -217,7 +212,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/ba.wav",
+      "audio": "ba.wav",
       "text": "イギリスで大きなSNS規制が発表されました。\n16歳未満の利用者について、多くのSNSサービスを利用できなくする方針です。\n世界中で注目を集めています。",
       "slideStyle": {
         "x": 655,
@@ -256,7 +251,6 @@
       "id": "topic2-middle",
       "start": 245,
       "duration": 70,
-      "durationFrames": 2100,
       "title": "イギリス「16歳未満SNS禁止」へ",
       "caption": "子どもの安全と年齢確認の課題",
       "characterImage": "/characters/ryunosuke/rs2.png",
@@ -265,7 +259,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/bb.wav",
+      "audio": "bb.wav",
       "text": "対象には動画共有やSNSサービスなどが含まれます。\n政府は、子どものメンタルヘルスやネット依存への対策を目的としています。\n一方で、SNS企業側からは『若者がより危険なサービスへ流れる可能性がある』という懸念も出ています。\n年齢確認の仕組みや実効性についても議論が続いています。",
       "slideStyle": {
         "x": 655,
@@ -304,7 +298,6 @@
       "id": "topic2-ending",
       "start": 315,
       "duration": 45,
-      "durationFrames": 1350,
       "title": "イギリス「16歳未満SNS禁止」へ",
       "caption": "SNS時代の難しい選択",
       "characterImage": "/characters/ryunosuke/rh2.png",
@@ -313,7 +306,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/bc.wav",
+      "audio": "bc.wav",
       "text": "スマホやSNSが当たり前の時代だからこそ難しい問題です。\n皆さんは16歳未満のSNS利用制限に賛成ですか？\nそれとも別の方法で対策すべきだと思いますか？",
       "slideStyle": {
         "x": 655,
@@ -352,7 +345,6 @@
       "id": "topic3-opening",
       "start": 360,
       "duration": 45,
-      "durationFrames": 1350,
       "title": "サカナAI フグ ミュトスに匹敵？",
       "caption": "日本発AI企業が再び話題に",
       "characterImage": "/characters/ryunosuke/rt2.png",
@@ -361,7 +353,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/ca.wav",
+      "audio": "ca.wav",
       "text": "日本発のAI企業『サカナ AI』が、再び大きな話題になっています。\n本日公開された最新AIモデル『フグ（Fugu Ultra）』が、複数のベンチマークで海外トップクラスのモデルに匹敵する性能を示したとして注目を集めています。",
       "slideStyle": {
         "x": 655,
@@ -400,7 +392,6 @@
       "id": "topic3-middle",
       "start": 405,
       "duration": 70,
-      "durationFrames": 2100,
       "title": "サカナAI フグ ミュトスに匹敵？",
       "caption": "独自のマルチエージェント手法",
       "characterImage": "/characters/ryunosuke/rs1.png",
@@ -409,7 +400,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/cb.wav",
+      "audio": "cb.wav",
       "text": "サカナAIは、日本発の生成AI開発企業です。\n今回のフグは、複数の最先端AIモデルを小さなオーケストレーターモデルが動的に協調させる独自のマルチエージェント手法を活用しています。\n公開されたベンチマークでは、海外先進モデルと肩を並べる、または一部で上回る高い性能を示したと報告されています。\n日本から世界レベルのAI技術が生まれる可能性に期待が集まっています。",
       "slideStyle": {
         "x": 655,
@@ -448,7 +439,6 @@
       "id": "topic3-ending",
       "start": 475,
       "duration": 45,
-      "durationFrames": 1350,
       "title": "サカナAI フグ ミュトスに匹敵？",
       "caption": "日本製AIへの期待",
       "characterImage": "/characters/ryunosuke/rn2.png",
@@ -457,7 +447,7 @@
         "objectFit": "contain",
         "objectPosition": "center"
       },
-      "audio": "/audio/long/cc.wav",
+      "audio": "cc.wav",
       "text": "これまで生成AIは海外企業が中心でした。\nもし日本発のAIが世界トップクラスになったら面白いですよね。\n皆さんは日本製AIに期待していますか？",
       "slideStyle": {
         "x": 655,
@@ -497,9 +487,8 @@
     "enabled": true,
     "start": 520,
     "duration": 20,
-    "durationFrames": 600,
     "title": "今回はXboxの大規模リストラ騒動。\nイギリスの16歳未満SNS禁止方針。\nそして、サカナAIのフグについてお届けしました。\n皆さんが一番気になったニュースはどれだったでしょうか。\nぜひコメント欄で意見を聞かせてください。\nそれではまた次回のハルカニュースでお会いしましょう！",
-    "audio": "/audio/long/e.wav",
+    "audio": "e.wav",
     "style": {
       "fontSize": 50,
       "lineHeight": 1.28,

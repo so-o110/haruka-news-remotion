@@ -57,11 +57,13 @@ The landscape composition `HarukaNews` reads its data from:
 src/data/news.json
 ```
 
-`HarukaNews` uses the same slide-oriented fields as the short template where possible: `title`, `slides`, `caption`, `text`, `character`, `characterImage`, `characterExpression`, `audio`, `startFrame`, `durationFrames`, `durationSeconds`, `audioStartFrame`, `characterDurationFrames`, `characterDurationSeconds`, `slideImage`, `slideImageStyle`, `slideImages`, `slides` for timed images, `slideStyle`, `slideFrameStyle`, `captionStyle`, `textStyle`, and `ending`.
+`HarukaNews` defaults to a 9-minute video. Set `video.duration` in seconds to override the fallback duration, for example `{ "video": { "duration": 540, "fps": 30 } }`. If `scenes` or `ending` exist, the composition duration is resolved from the last scene / ending end time first, then `video.duration`, then the 540-second default.
+
+For long landscape videos, prefer `scenes`. Scene `startFrame` values are ignored and calculated automatically from the previous scene duration. If a scene, opening, or ending has `audio`, `audioPath`, or `audioFile`, a bare filename such as `"aa.wav"` is loaded from `public/audio/long/aa.wav`, and its wav length is converted to `durationFrames` with `Math.ceil(seconds * fps)`. Audio-derived duration wins over manual `durationFrames`; scenes without audio still fall back to `durationFrames`, then `duration` seconds. Scene fields mirror the short template where possible: `id`, `title`, `caption`, `text`, `character`, `characterImage`, `characterExpression`, `audio`, `slideImage`, `slideImageStyle`, `slideImages`, `slides` for timed images, `slideStyle`, `slideFrameStyle`, `captionStyle`, and `textStyle`.
 
 Older `topics` JSON is still accepted as a fallback, but new landscape videos should use the `slides` array so timing, captions, character images, audio, and slide frames can be adjusted the same way as `ShortNewsVideo`.
 
-`opening` controls the landscape intro. Use `enabled: false` to skip it. `duration` is in seconds and defaults to `4`. `title`, `subtitle`, `label`, `showCharacter`, `characterImage`, and optional `audio` can be set per video. Slide `startFrame` and `audioStartFrame` remain relative to the main story; the renderer automatically offsets them by the opening duration.
+`opening` controls the landscape intro. Use `enabled: false` to skip it. `duration` is in seconds and defaults to `4`. `title`, `subtitle`, `label`, `showCharacter`, `characterImage`, and optional `audio` can be set per video. With `scenes`, scene `start` values are absolute video times. With older `slides`, `startFrame` and `audioStartFrame` remain relative to the main story and the renderer automatically offsets them by the opening duration.
 
 **Upgrade Remotion**
 
