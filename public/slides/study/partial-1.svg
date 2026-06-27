@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="570" viewBox="0 0 1350 570">
+  <rect width="1350" height="570" fill="#ffffff"/>
+  <text x="675" y="125" text-anchor="middle" fill="#123b63" font-family="Yu Gothic, sans-serif" font-size="54" font-weight="700">変数が2つある関数</text>
+  <text x="675" y="315" text-anchor="middle" fill="#7a3f17" font-family="Arial, sans-serif" font-size="116" font-weight="700">z = f(x, y)</text>
+  <text x="675" y="445" text-anchor="middle" fill="#145d99" font-family="Yu Gothic, sans-serif" font-size="42" font-weight="700">どちらの変化を調べる？</text>
+</svg>

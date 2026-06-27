@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="570" viewBox="0 0 1350 570">
+  <rect width="1350" height="570" fill="#ffffff"/>
+  <text x="675" y="105" text-anchor="middle" fill="#123b63" font-family="Yu Gothic, sans-serif" font-size="50" font-weight="700">偏微分 = 1方向の変化率</text>
+  <path d="M310 440 C430 140 920 140 1040 440" fill="none" stroke="#123b63" stroke-width="12"/>
+  <line x1="480" y1="390" x2="850" y2="220" stroke="#7a3f17" stroke-width="12"/>
+  <circle cx="665" cy="305" r="22" fill="#145d99"/>
+  <text x="905" y="235" fill="#7a3f17" font-family="Arial, sans-serif" font-size="82" font-weight="700">∂</text>
+  <text x="675" y="525" text-anchor="middle" fill="#145d99" font-family="Yu Gothic, sans-serif" font-size="38" font-weight="700">注目する方向を1つ選ぶ</text>
+</svg>

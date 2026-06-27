@@ -16,11 +16,39 @@
     "showCharacter": true,
     "characterImage": "/characters/rn1.png"
   },
+  "cutIns": [
+    {
+      "id": "cutin-topic1",
+      "after": "opening-talk",
+      "label": "NEXT TOPIC",
+      "title": "話題1",
+      "durationFrames": 42
+    },
+    {
+      "id": "cutin-topic2",
+      "after": "topic1-ending",
+      "label": "NEXT TOPIC",
+      "title": "話題2",
+      "durationFrames": 42
+    },
+    {
+      "id": "cutin-topic3",
+      "after": "topic2-ending",
+      "label": "NEXT TOPIC",
+      "title": "話題3",
+      "durationFrames": 42
+    },
+    {
+      "id": "cutin-ending",
+      "after": "before-ending",
+      "label": "ENDING",
+      "title": "まとめ",
+      "durationFrames": 42
+    }
+  ],
   "scenes": [
     {
       "id": "opening-talk",
-      "start": 4,
-      "duration": 34,
       "title": "今日のテーマ",
       "caption": "ゲーム業界、SNS規制、AI研究の注目ニュースです。",
       "characterImage": "/characters/ryunosuke/rn1.png",
@@ -61,8 +89,6 @@
     },
     {
       "id": "topic1-opening",
-      "start": 40,
-      "duration": 45,
       "title": "Xbox大規模リストラ騒動",
       "caption": "Xboxに大きな動きです。",
       "characterImage": "/characters/rh1.png",
@@ -108,8 +134,6 @@
     },
     {
       "id": "topic1-middle",
-      "start": 85,
-      "duration": 70,
       "title": "Xbox大規模リストラ騒動",
       "caption": "大型投資の裏で進む事業再編",
       "characterImage": "/characters/ryunosuke/rs1.png",
@@ -155,8 +179,6 @@
     },
     {
       "id": "topic1-ending",
-      "start": 155,
-      "duration": 45,
       "title": "Xbox大規模リストラ騒動",
       "caption": "開発費高騰時代のゲーム産業",
       "characterImage": "/characters/ryunosuke/rt1.png",
@@ -202,8 +224,6 @@
     },
     {
       "id": "topic2-opening",
-      "start": 200,
-      "duration": 45,
       "title": "イギリス「16歳未満SNS禁止」へ",
       "caption": "イギリスで大きなSNS規制",
       "characterImage": "/characters/ryunosuke/rn1.png",
@@ -249,8 +269,6 @@
     },
     {
       "id": "topic2-middle",
-      "start": 245,
-      "duration": 70,
       "title": "イギリス「16歳未満SNS禁止」へ",
       "caption": "子どもの安全と年齢確認の課題",
       "characterImage": "/characters/ryunosuke/rs2.png",
@@ -296,8 +314,6 @@
     },
     {
       "id": "topic2-ending",
-      "start": 315,
-      "duration": 45,
       "title": "イギリス「16歳未満SNS禁止」へ",
       "caption": "SNS時代の難しい選択",
       "characterImage": "/characters/ryunosuke/rh2.png",
@@ -343,8 +359,6 @@
     },
     {
       "id": "topic3-opening",
-      "start": 360,
-      "duration": 45,
       "title": "サカナAI フグ ミュトスに匹敵？",
       "caption": "日本発AI企業が再び話題に",
       "characterImage": "/characters/ryunosuke/rt2.png",
@@ -390,8 +404,6 @@
     },
     {
       "id": "topic3-middle",
-      "start": 405,
-      "duration": 70,
       "title": "サカナAI フグ ミュトスに匹敵？",
       "caption": "独自のマルチエージェント手法",
       "characterImage": "/characters/ryunosuke/rs1.png",
@@ -437,8 +449,6 @@
     },
     {
       "id": "topic3-ending",
-      "start": 475,
-      "duration": 45,
       "title": "サカナAI フグ ミュトスに匹敵？",
       "caption": "日本製AIへの期待",
       "characterImage": "/characters/ryunosuke/rn2.png",
@@ -485,8 +495,6 @@
   ],
   "ending": {
     "enabled": true,
-    "start": 520,
-    "duration": 20,
     "title": "今回はXboxの大規模リストラ騒動。\nイギリスの16歳未満SNS禁止方針。\nそして、サカナAIのフグについてお届けしました。\n皆さんが一番気になったニュースはどれだったでしょうか。\nぜひコメント欄で意見を聞かせてください。\nそれではまた次回のハルカニュースでお会いしましょう！",
     "audio": "e.wav",
     "style": {

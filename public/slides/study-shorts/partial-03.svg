@@ -1,0 +1,16 @@
+<svg width="1000" height="586" viewBox="0 0 1000 586" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="586" fill="#F6FBFF"/>
+  <rect x="46" y="44" width="908" height="498" fill="white" stroke="#145D99" stroke-width="8"/>
+  <text x="500" y="116" fill="#123B63" font-family="Meiryo, sans-serif" font-size="46" font-weight="900" text-anchor="middle">方向ごとの変化率を見る</text>
+  <path d="M210 410C314 252 456 206 618 294C706 342 778 332 846 248" stroke="#7A3F17" stroke-width="22" stroke-linecap="round"/>
+  <path d="M202 420C318 296 470 270 612 334C716 382 782 364 852 292" stroke="#145D99" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="510" cy="310" r="24" fill="#FFF1A8" stroke="#7A3F17" stroke-width="8"/>
+  <path d="M510 310L650 250" stroke="#123B63" stroke-width="10" stroke-linecap="round"/>
+  <path d="M650 250L622 246M650 250L632 274" stroke="#123B63" stroke-width="10" stroke-linecap="round"/>
+  <text x="666" y="238" fill="#123B63" font-family="Meiryo, sans-serif" font-size="34" font-weight="900">x方向</text>
+  <path d="M510 310L436 204" stroke="#7A3F17" stroke-width="10" stroke-linecap="round"/>
+  <path d="M436 204L462 218M436 204L438 234" stroke="#7A3F17" stroke-width="10" stroke-linecap="round"/>
+  <text x="318" y="194" fill="#7A3F17" font-family="Meiryo, sans-serif" font-size="34" font-weight="900">y方向</text>
+  <rect x="230" y="454" width="540" height="58" fill="#FFF1A8"/>
+  <text x="500" y="496" fill="#123B63" font-family="Meiryo, sans-serif" font-size="34" font-weight="900" text-anchor="middle">∂ = 方向を決めて傾きを見る</text>
+</svg>

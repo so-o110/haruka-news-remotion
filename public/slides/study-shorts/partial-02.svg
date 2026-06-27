@@ -1,0 +1,15 @@
+<svg width="1000" height="586" viewBox="0 0 1000 586" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="586" fill="#F6FBFF"/>
+  <rect x="48" y="46" width="904" height="494" fill="white" stroke="#145D99" stroke-width="8"/>
+  <text x="500" y="120" fill="#123B63" font-family="Meiryo, sans-serif" font-size="46" font-weight="900" text-anchor="middle">xで偏微分するとき</text>
+  <text x="500" y="222" fill="#7A3F17" font-family="Arial, sans-serif" font-size="78" font-weight="900" text-anchor="middle">∂f / ∂x</text>
+  <g>
+    <rect x="120" y="304" width="300" height="116" fill="#FFF1A8" stroke="#7A3F17" stroke-width="6"/>
+    <text x="270" y="376" fill="#123B63" font-family="Meiryo, sans-serif" font-size="42" font-weight="900" text-anchor="middle">x は動かす</text>
+  </g>
+  <g>
+    <rect x="580" y="304" width="300" height="116" fill="#E8F7FF" stroke="#145D99" stroke-width="6"/>
+    <text x="730" y="376" fill="#123B63" font-family="Meiryo, sans-serif" font-size="42" font-weight="900" text-anchor="middle">y は固定</text>
+  </g>
+  <path d="M452 362H548" stroke="#123B63" stroke-width="8" stroke-linecap="round" stroke-dasharray="18 18"/>
+</svg>

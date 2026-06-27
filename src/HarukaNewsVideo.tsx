@@ -20,6 +20,11 @@ import {
   getFileName,
   normalizePublicPath,
 } from "./characterAssets";
+import {
+  getActiveTimedCaption,
+  getTimedCaptionOpacity,
+  type TimedCaption,
+} from "./timedCaptions";
 import newsData from "./data/news.json";
 
 type ObjectFit = "cover" | "contain" | "fill";
@@ -74,10 +79,9 @@ type TimedSlide = ImageStyle & {
 type NewsSlide = {
   id?: string;
   title?: string;
-  start?: number;
-  duration?: number;
   text?: string;
   caption?: string;
+  captions?: TimedCaption[];
   subtitle?: string;
   characterExpression?: CharacterExpression;
   expression?: CharacterExpression;
@@ -86,12 +90,9 @@ type NewsSlide = {
   audio?: string;
   audioPath?: string;
   audioFile?: string;
-  startFrame?: number;
-  durationFrames?: number;
-  durationSeconds?: number;
+  audioDurationFrames?: number;
   characterDurationFrames?: number;
   characterDurationSeconds?: number;
-  audioStartFrame?: number;
   slideImage?: string;
   slideImageStyle?: ImageStyle;
   textStyle?: TextStyle;
@@ -108,18 +109,28 @@ type ComputedNewsSlide = NewsSlide & {
   computedDurationFrames: number;
 };
 
+type CutInConfig = {
+  id?: string;
+  after: "before-ending" | string;
+  label?: string;
+  title?: string;
+  durationFrames?: number;
+  durationSeconds?: number;
+};
+
+type ComputedCutIn = CutInConfig & {
+  computedStartFrame: number;
+  computedDurationFrames: number;
+};
+
 type Ending = {
   enabled?: boolean;
-  start?: number;
-  duration?: number;
   title?: string;
-  startFrame?: number;
-  durationFrames?: number;
   text?: string;
   audio?: string;
   audioPath?: string;
   audioFile?: string;
-  audioStartFrame?: number;
+  audioDurationFrames?: number;
   style?: TextStyle;
 };
 
@@ -135,6 +146,7 @@ type OpeningConfig = {
   audio?: string;
   audioPath?: string;
   audioFile?: string;
+  audioDurationFrames?: number;
 };
 
 type LegacyTopic = {
@@ -162,6 +174,7 @@ export type NewsData = {
     headline?: string;
   };
   ending?: Ending;
+  cutIns?: CutInConfig[];
   scenes?: NewsSlide[];
   slides?: NewsSlide[];
   topics?: LegacyTopic[];
@@ -233,8 +246,6 @@ const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
     caption: topic.telop ?? topic.title ?? "",
     characterExpression: topic.expression ?? "normal",
     character: topic.expression ?? "normal-1",
-    startFrame: undefined,
-    durationFrames: Math.round((topic.durationSeconds ?? 8) * fps),
     slideStyle: {
       x: 760,
       y: 260,
@@ -258,16 +269,7 @@ const legacyTopicsToSlides = (topics: LegacyTopic[] | undefined): NewsSlide[] =>
   }));
 
 const getSlideDuration = (slide: NewsSlide) =>
-  Math.max(
-    1,
-    slide.durationFrames ??
-      (slide.duration !== undefined
-        ? Math.round(slide.duration * fps)
-        : undefined) ??
-      (slide.durationSeconds !== undefined
-        ? Math.round(slide.durationSeconds * fps)
-        : 8 * fps),
-  );
+  Math.max(1, slide.audioDurationFrames ?? 8 * fps);
 
 const getTopicSlides = (topics: LegacyTopic[] | undefined) =>
   (topics ?? []).flatMap((topic) => topic.scenes ?? []);
@@ -307,30 +309,152 @@ const getComputedSlides = (sourceSlides: NewsSlide[]): ComputedNewsSlide[] => {
 
 const getSlideStartFrame = (slide: ComputedNewsSlide) =>
   slide.computedStartFrame;
-const getComputedAudioStartFrame = (slide: ComputedNewsSlide) => {
-  if (slide.audioStartFrame === undefined) {
-    return slide.computedStartFrame;
+const getCutInDurationFrames = (cutIn: CutInConfig) =>
+  Math.max(
+    1,
+    cutIn.durationFrames ??
+      (cutIn.durationSeconds !== undefined
+        ? Math.round(cutIn.durationSeconds * fps)
+        : Math.round(1.4 * fps)),
+  );
+const getCutInBaseStartFrame = (
+  cutIn: CutInConfig,
+  computedSlides: ComputedNewsSlide[],
+  endingStartFrame: number,
+) => {
+  if (cutIn.after === "before-ending") {
+    return endingStartFrame;
   }
 
-  const legacyStartFrame =
-    slide.startFrame ??
-    (slide.start !== undefined
-      ? Math.round(slide.start * fps)
-      : slide.computedStartFrame);
-  const audioOffset = slide.audioStartFrame - legacyStartFrame;
+  const slide = computedSlides.find((candidate) => candidate.id === cutIn.after);
 
-  return slide.computedStartFrame + audioOffset;
+  if (!slide) {
+    throw new Error(
+      `横長動画のカットイン挿入先が見つかりません: ${cutIn.after}. news.json の cutIns[].after には "before-ending" または scenes[].id を指定してください。`,
+    );
+  }
+
+  return slide.computedStartFrame + slide.computedDurationFrames;
+};
+const getComputedCutIns = (
+  cutIns: CutInConfig[] | undefined,
+  computedSlides: ComputedNewsSlide[],
+  endingStartFrame: number,
+): ComputedCutIn[] =>
+  (cutIns ?? [])
+    .map((cutIn) => ({
+      ...cutIn,
+      computedStartFrame: getCutInBaseStartFrame(
+        cutIn,
+        computedSlides,
+        endingStartFrame,
+      ),
+      computedDurationFrames: getCutInDurationFrames(cutIn),
+    }))
+    .sort(
+      (first, second) =>
+        first.computedStartFrame - second.computedStartFrame,
+    );
+const getCutInOffsetBeforeFrame = (
+  cutIns: ComputedCutIn[],
+  frame: number,
+  includeSameFrame: boolean,
+) =>
+  cutIns
+    .filter((cutIn) =>
+      includeSameFrame
+        ? cutIn.computedStartFrame <= frame
+        : cutIn.computedStartFrame < frame,
+    )
+    .reduce((total, cutIn) => total + cutIn.computedDurationFrames, 0);
+const getTimelineFrameWithCutIns = (
+  frame: number,
+  cutIns: ComputedCutIn[],
+  includeSameFrame = true,
+) => frame + getCutInOffsetBeforeFrame(cutIns, frame, includeSameFrame);
+const getCutInTimelineStartFrame = (
+  cutIn: ComputedCutIn,
+  index: number,
+  cutIns: ComputedCutIn[],
+) =>
+  cutIn.computedStartFrame +
+  cutIns
+    .slice(0, index)
+    .filter(
+      (previousCutIn) =>
+        previousCutIn.computedStartFrame <= cutIn.computedStartFrame,
+    )
+    .reduce((total, previousCutIn) => {
+      return total + previousCutIn.computedDurationFrames;
+    }, 0);
+const getContentFrameFromTimelineFrame = (
+  timelineFrame: number,
+  cutIns: ComputedCutIn[],
+) => {
+  let contentFrame = timelineFrame;
+
+  for (const cutIn of cutIns) {
+    const cutInStart = getTimelineFrameWithCutIns(
+      cutIn.computedStartFrame,
+      cutIns,
+      false,
+    );
+    const cutInEnd = cutInStart + cutIn.computedDurationFrames;
+
+    if (timelineFrame >= cutInEnd) {
+      contentFrame -= cutIn.computedDurationFrames;
+    }
+  }
+
+  return Math.max(0, contentFrame);
+};
+const getCurrentHeaderTitle = ({
+  currentTimelineFrame,
+  slides,
+  cutIns,
+  fallbackTitle,
+}: {
+  currentTimelineFrame: number;
+  slides: ComputedNewsSlide[];
+  cutIns: ComputedCutIn[];
+  fallbackTitle: string;
+}) => {
+  const activeCutIn = cutIns.find((cutIn) => {
+    const cutInStart = getTimelineFrameWithCutIns(
+      cutIn.computedStartFrame,
+      cutIns,
+      false,
+    );
+
+    return (
+      currentTimelineFrame >= cutInStart &&
+      currentTimelineFrame < cutInStart + cutIn.computedDurationFrames
+    );
+  });
+
+  if (activeCutIn?.title) {
+    return activeCutIn.title;
+  }
+
+  const contentFrame = getContentFrameFromTimelineFrame(
+    currentTimelineFrame,
+    cutIns,
+  );
+  const activeSlide = slides.find(
+    (slide) =>
+      contentFrame >= slide.computedStartFrame &&
+      contentFrame <
+        slide.computedStartFrame + slide.computedDurationFrames,
+  );
+
+  return activeSlide?.title ?? fallbackTitle;
 };
 
 const getTimelineOffsetFrames = (currentNews: NewsData) =>
   getOpeningDurationFrames(currentNews);
 
 const getEndingDurationFrames = (ending: Ending | undefined) =>
-  Math.max(
-    1,
-    ending?.durationFrames ??
-      (ending?.duration !== undefined ? Math.round(ending.duration * fps) : 90),
-  );
+  Math.max(1, ending?.audioDurationFrames ?? 90);
 
 const getEndingStartFrame = (
   ending: Ending | undefined,
@@ -358,7 +482,9 @@ const getOpeningDurationFrames = (currentNews: NewsData) => {
 
   return Math.max(
     1,
-    opening?.durationFrames ?? Math.round((opening?.duration ?? 4) * fps),
+    opening?.audioDurationFrames ??
+      opening?.durationFrames ??
+      Math.round((opening?.duration ?? 4) * fps),
   );
 };
 
@@ -375,16 +501,27 @@ const getTotalFrames = (currentNews: NewsData) => {
           }),
         );
   const ending = currentNews.ending;
+  const endingStart = getEndingStartFrame(ending, computedSlides);
+  const cutIns = getComputedCutIns(
+    currentNews.cutIns,
+    computedSlides,
+    endingStart,
+  );
   const endingEnd =
     ending?.enabled === false
       ? 0
-      : getEndingStartFrame(ending, computedSlides) +
-        getEndingDurationFrames(ending);
-  const contentEnd = openingFrames + Math.max(slideEnd, endingEnd);
+      : endingStart + getEndingDurationFrames(ending);
   const hasTimelineContent = computedSlides.length > 0 || Boolean(ending);
 
   if (hasTimelineContent) {
-    return Math.max(contentEnd, 1);
+    const baseContentEnd = Math.max(slideEnd, endingEnd);
+    const cutInOffset = getCutInOffsetBeforeFrame(
+      cutIns,
+      baseContentEnd,
+      true,
+    );
+
+    return Math.max(openingFrames + baseContentEnd + cutInOffset, 1);
   }
 
   if (currentNews.video?.duration !== undefined) {
@@ -400,7 +537,7 @@ type AudioTimedConfig = {
   audio?: string;
   audioPath?: string;
   audioFile?: string;
-  durationFrames?: number;
+  audioDurationFrames?: number;
 };
 
 const getAudioDurationFrames = async (
@@ -419,7 +556,7 @@ const getAudioDurationFrames = async (
 
     return {
       audio: audioPath,
-      durationFrames: Math.max(1, Math.ceil(audioDurationSeconds * fps)),
+      audioDurationFrames: Math.max(1, Math.ceil(audioDurationSeconds * fps)),
     };
   } catch (error) {
     throw new Error(
@@ -442,7 +579,7 @@ const resolveAudioTiming = async <T extends AudioTimedConfig>(
   return {
     ...audioConfig,
     audio: audioTiming.audio,
-    durationFrames: audioTiming.durationFrames,
+    audioDurationFrames: audioTiming.audioDurationFrames,
   };
 };
 
@@ -897,7 +1034,15 @@ const SlideFrame = ({ slide, enter }: { slide: NewsSlide; enter: number }) => {
   );
 };
 
-const Caption = ({ slide, enter }: { slide: NewsSlide; enter: number }) => {
+const Caption = ({
+  slide,
+  enter,
+  localFrame,
+}: {
+  slide: NewsSlide;
+  enter: number;
+  localFrame: number;
+}) => {
   const textStyle = slide.textStyle;
   const captionStyle = slide.captionStyle;
   const width = textStyle?.width ?? captionStyle?.width ?? 1120;
@@ -906,6 +1051,9 @@ const Caption = ({ slide, enter }: { slide: NewsSlide; enter: number }) => {
   const height = textStyle?.height ?? captionStyle?.height ?? 150;
   const borderWidth = captionStyle?.borderWidth ?? 5;
   const borderColor = captionStyle?.borderColor ?? theme.brown;
+  const timedCaption = getActiveTimedCaption(slide.captions, localFrame);
+  const captionText = timedCaption?.text ?? slide.caption ?? slide.subtitle ?? "";
+  const captionOpacity = getTimedCaptionOpacity(timedCaption, localFrame);
 
   return (
     <section
@@ -937,9 +1085,12 @@ const Caption = ({ slide, enter }: { slide: NewsSlide; enter: number }) => {
           fontWeight: 950,
           textAlign: textStyle?.textAlign ?? captionStyle?.textAlign ?? "center",
           textShadow: "none",
+          opacity: captionOpacity,
+          whiteSpace: "pre-wrap",
+          overflowWrap: "break-word",
         }}
       >
-        {slide.caption ?? slide.subtitle ?? ""}
+        {captionText}
       </div>
     </section>
   );
@@ -956,8 +1107,137 @@ const Scene = ({ slide }: { slide: NewsSlide }) => {
   return (
     <AbsoluteFill>
       <SlideFrame slide={slide} enter={enter} />
-      <Caption slide={slide} enter={enter} />
+      <Caption slide={slide} enter={enter} localFrame={frame} />
       <Character slide={slide} localFrame={frame} />
+    </AbsoluteFill>
+  );
+};
+
+const CutIn = ({ cutIn }: { cutIn: ComputedCutIn }) => {
+  const frame = useCurrentFrame();
+  const durationFrames = cutIn.computedDurationFrames;
+  const wipe = interpolate(frame, [0, 14], [-1920, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+  });
+  const exit = interpolate(
+    frame,
+    [durationFrames - 12, durationFrames],
+    [0, 1920],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.bezier(0.7, 0, 0.84, 0),
+    },
+  );
+  const textOpacity = interpolate(
+    frame,
+    [6, 16, durationFrames - 12, durationFrames - 4],
+    [0, 1, 1, 0],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
+  const accentWidth = interpolate(frame, [8, 24], [0, 640], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+  });
+
+  return (
+    <AbsoluteFill
+      style={{
+        backgroundColor: theme.blue,
+        overflow: "hidden",
+        zIndex: 120,
+        transform: `translateX(${wipe + exit}px)`,
+      }}
+    >
+      <AbsoluteFill
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(223,245,255,0.16) 0%, rgba(223,245,255,0.04) 46%, rgba(122,63,23,0.24) 100%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: -160,
+          top: 0,
+          width: 520,
+          height: 1080,
+          backgroundColor: theme.brown,
+          transform: "skewX(-14deg)",
+          boxShadow: "28px 0 0 rgba(255,255,255,0.16)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          right: -240,
+          top: 0,
+          width: 620,
+          height: 1080,
+          borderLeft: `18px solid ${theme.brown}`,
+          transform: "skewX(-14deg)",
+          backgroundColor: "rgba(255,255,255,0.08)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 32,
+          border: `5px solid ${theme.brown}`,
+          boxSizing: "border-box",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 360,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          color: theme.skyLight,
+          opacity: textOpacity,
+          textShadow: "0 8px 18px rgba(0,0,0,0.18)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 46,
+            lineHeight: 1,
+            fontWeight: 950,
+            letterSpacing: 0,
+            color: "#ffffff",
+          }}
+        >
+          {cutIn.label ?? "NEXT TOPIC"}
+        </div>
+        <div
+          style={{
+            marginTop: 24,
+            fontSize: 104,
+            lineHeight: 1,
+            fontWeight: 950,
+            color: theme.skyLight,
+          }}
+        >
+          {cutIn.title ?? ""}
+        </div>
+        <div
+          style={{
+            marginTop: 36,
+            width: accentWidth,
+            height: 10,
+            background: `linear-gradient(90deg, ${theme.brown} 0%, ${theme.brown} 54%, #ffffff 54%, #ffffff 100%)`,
+          }}
+        />
+      </div>
     </AbsoluteFill>
   );
 };
@@ -1216,7 +1496,6 @@ const OpeningScreen = ({
 
 export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) => {
   const frame = useCurrentFrame();
-  const title = news.title ?? news.programTitle ?? "ハルカニュース";
   const slides = getComputedSlides(getSourceSlides(news));
   const opening = getOpeningConfig(news);
   const openingFrames = getOpeningDurationFrames(news);
@@ -1225,6 +1504,18 @@ export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) =>
   const shouldShowEnding = ending?.enabled ?? Boolean(ending);
   const endingStart = getEndingStartFrame(ending, slides);
   const endingDuration = getEndingDurationFrames(ending);
+  const cutIns = getComputedCutIns(news.cutIns, slides, endingStart);
+  const shiftedEndingStart = getTimelineFrameWithCutIns(endingStart, cutIns);
+  const fallbackTitle = news.title ?? news.programTitle ?? "ハルカニュース";
+  const headerTitle =
+    frame < openingFrames
+      ? fallbackTitle
+      : getCurrentHeaderTitle({
+          currentTimelineFrame: frame - timelineOffset,
+          slides,
+          cutIns,
+          fallbackTitle,
+        });
 
   return (
     <AbsoluteFill
@@ -1252,7 +1543,7 @@ export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) =>
           zIndex: 35,
         }}
       >
-        <HighlightedTitle text={title} />
+        <HighlightedTitle text={headerTitle} />
       </h1>
       {openingFrames > 0 ? (
         <Sequence
@@ -1277,7 +1568,10 @@ export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) =>
         </Sequence>
       ) : null}
       {slides.map((slide, index) => {
-        const from = getSlideStartFrame(slide);
+        const from = getTimelineFrameWithCutIns(
+          getSlideStartFrame(slide),
+          cutIns,
+        );
         const duration = slide.computedDurationFrames;
 
         return (
@@ -1296,12 +1590,12 @@ export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) =>
           return null;
         }
 
-        const audioFrom = getComputedAudioStartFrame(slide);
+        const audioFrom = slide.computedStartFrame;
 
         return (
           <Sequence
             key={`landscape-audio-${index}-${slide.audio}`}
-            from={timelineOffset + audioFrom}
+            from={timelineOffset + getTimelineFrameWithCutIns(audioFrom, cutIns)}
             durationInFrames={slide.computedDurationFrames}
             layout="none"
             name={`landscape-audio-${index + 1}-${getFileName(slide.audio)}`}
@@ -1310,14 +1604,27 @@ export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) =>
           </Sequence>
         );
       })}
+      {cutIns.map((cutIn, index) => (
+        <Sequence
+          key={`landscape-cutin-${cutIn.id ?? index}`}
+          from={
+            timelineOffset +
+            getCutInTimelineStartFrame(cutIn, index, cutIns)
+          }
+          durationInFrames={cutIn.computedDurationFrames}
+          name={`landscape-cutin-${cutIn.id ?? index + 1}`}
+        >
+          <CutIn cutIn={cutIn} />
+        </Sequence>
+      ))}
       {shouldShowEnding ? (
         <Sequence
-          from={timelineOffset + endingStart}
+          from={timelineOffset + shiftedEndingStart}
           durationInFrames={endingDuration}
           name="landscape-ending-screen"
         >
           <EndingScreen
-            localFrame={frame - timelineOffset - endingStart}
+            localFrame={frame - timelineOffset - shiftedEndingStart}
             durationFrames={endingDuration}
             ending={ending}
           />
@@ -1325,7 +1632,10 @@ export const HarukaNewsVideo = ({ news = defaultNews }: HarukaNewsVideoProps) =>
       ) : null}
       {shouldShowEnding && ending?.audio ? (
         <Sequence
-          from={timelineOffset + (ending.audioStartFrame ?? endingStart)}
+          from={
+            timelineOffset +
+            getTimelineFrameWithCutIns(endingStart, cutIns)
+          }
           durationInFrames={endingDuration}
           layout="none"
           name={`landscape-ending-audio-${getFileName(ending.audio)}`}

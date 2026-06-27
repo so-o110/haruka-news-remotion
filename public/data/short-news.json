@@ -1,65 +1,59 @@
 {
-  "title": "日本がチュニジアに圧勝",
+  "title": "生成AIとは？",
+  "topic": "生成AIの基本",
   "ending": {
     "enabled": true,
-    "startFrame": 870,
-    "durationFrames": 90,
     "text": "ハルカニュース",
     "audio": "/audio/shorts/e.wav",
-    "audioStartFrame": 810,
     "style": {
       "x": 210,
       "y": 800,
-      "fontSize": 100,
+      "fontSize": 70,
       "color": "#123b63",
       "zIndex": 100
     }
   },
   "slides": [
     {
-
-      "caption": "サッカーワールドカップで日本が大暴れ！チュニジア相手に4対0の快勝！",
-      "characterExpression": "happy",
-      "character": "happy-1",
-      "audio": "/audio/shorts/a.wav",
-      "startFrame": 0,
-      "durationFrames": 270,
-      "characterDurationSeconds": 10,
-      "audioStartFrame": 0,
+      "text": "生成AIは新しい内容を作るAI",
+      "caption": "生成AIは、文章や画像などの新しい内容を作るAIです。",
+      "character": "hn1",
+      "audio": "/audio/shorts/scene-1.wav",
+      "captions": [
+        {
+          "text": "生成AIは、質問に答えるだけではありません。",
+          "durationFrames": 150
+        },
+        {
+          "text": "文章・画像・音声など、新しい内容を作るAIです。",
+          "durationFrames": 210
+        }
+      ],
       "textStyle": {
         "x": 58,
         "y": 1150,
         "width": 964,
-        "fontSize": 56,
-        "lineHeight": 1.2,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 65,
-        "y": 1200,
-        "width": 950,
-        "height": 220,
-        "padding": 32,
         "fontSize": 54,
         "lineHeight": 1.2,
         "textAlign": "center",
         "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 65,
+        "y": 1200,
+        "width": 950,
+        "height": 240,
+        "padding": 32,
+        "fontSize": 52,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
         "backgroundColor": "rgba(255, 255, 255, 0.9)",
         "borderColor": "#7a3f17",
         "borderWidth": 5,
         "borderRadius": 0,
         "zIndex": 30
-      },
-      "slideStyle": {
-        "x": 58,
-        "y": 470,
-        "width": 964,
-        "height": 300,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
       },
       "slideFrameStyle": {
         "x": 40,
@@ -72,29 +66,39 @@
       },
       "slides": [
         {
-          "src": "a.png",
+          "src": "scene-1.png",
           "start": 0,
-          "duration": 9,
+          "duration": 12,
           "objectFit": "contain",
           "objectPosition": "center"
         }
       ]
     },
     {
-      "caption": "6月21日の試合で日本はチュニジアを4対0で撃破！攻撃も守備も安定し、世界に強さをアピールしました。",
-      "characterExpression": "thinking",
-      "character": "thinking-1",
-      "audio": "/audio/shorts/b.wav",
-      "startFrame": 270,
-      "durationFrames": 370,
-      "characterDurationSeconds": 14,
-      "audioStartFrame": 270,
+      "text": "大量のデータからパターンを学ぶ",
+      "caption": "学習したパターンを使って、次に続く内容を組み立てます。",
+      "character": "rt1",
+      "audio": "/audio/shorts/scene-2.wav",
+      "captions": [
+        {
+          "text": "生成AIは、大量のデータからパターンを学びます。",
+          "durationFrames": 180
+        },
+        {
+          "text": "そして次に続きそうな言葉や形を予測します。",
+          "durationFrames": 180
+        },
+        {
+          "text": "その予測を重ねて、新しい内容を組み立てます。",
+          "durationFrames": 180
+        }
+      ],
       "textStyle": {
         "x": 58,
         "y": 1150,
         "width": 964,
-        "fontSize": 56,
-        "lineHeight": 1.2,
+        "fontSize": 50,
+        "lineHeight": 1.22,
         "textAlign": "center",
         "color": "#123b63",
         "zIndex": 30
@@ -103,7 +107,7 @@
         "x": 65,
         "y": 1200,
         "width": 950,
-        "height": 300,
+        "height": 260,
         "padding": 32,
         "fontSize": 48,
         "lineHeight": 1.22,
@@ -126,28 +130,38 @@
       },
       "slides": [
         {
-          "src": "b.png",
+          "src": "scene-2.png",
           "start": 0,
-          "duration": 14,
+          "duration": 18,
           "objectFit": "contain",
           "objectPosition": "center"
         }
       ]
     },
     {
-      "caption": "みなさんは日本代表の今大会、どこまで行くと思いますか",
-      "characterExpression": "happy",
-      "character": "happy-2",
-      "audio": "/audio/shorts/c.wav",
-      "startFrame": 640,
-      "durationFrames": 300,
-      "characterDurationSeconds": 10,
-      "audioStartFrame": 640,
+      "text": "便利だけど確認が必要",
+      "caption": "生成AIの答えは、必ず人が確認して使いましょう。",
+      "character": "hsu1",
+      "audio": "/audio/shorts/scene-3.wav",
+      "captions": [
+        {
+          "text": "生成AIは便利ですが、間違えることもあります。",
+          "durationFrames": 170
+        },
+        {
+          "text": "事実確認と、著作権・個人情報への配慮が大切です。",
+          "durationFrames": 220
+        },
+        {
+          "text": "最後は人が確認して、上手に使いましょう。",
+          "durationFrames": 170
+        }
+      ],
       "textStyle": {
         "x": 58,
         "y": 1150,
         "width": 964,
-        "fontSize": 56,
+        "fontSize": 52,
         "lineHeight": 1.2,
         "textAlign": "center",
         "color": "#123b63",
@@ -157,7 +171,7 @@
         "x": 65,
         "y": 1200,
         "width": 950,
-        "height": 220,
+        "height": 260,
         "padding": 32,
         "fontSize": 48,
         "lineHeight": 1.22,
@@ -180,9 +194,9 @@
       },
       "slides": [
         {
-          "src": "c.png",
+          "src": "scene-3.png",
           "start": 0,
-          "duration": 10,
+          "duration": 19,
           "objectFit": "contain",
           "objectPosition": "center"
         }
