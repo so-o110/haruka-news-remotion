@@ -1,39 +1,30 @@
 {
   "title": "生成AIとは？",
-  "topic": "生成AIの基本",
+  "topic": "生成AIとは？",
   "ending": {
-    "enabled": true,
-    "text": "ハルカニュース",
-    "audio": "/audio/shorts/e.wav",
-    "style": {
-      "x": 210,
-      "y": 800,
-      "fontSize": 70,
-      "color": "#123b63",
-      "zIndex": 100
-    }
+    "enabled": false
   },
   "slides": [
     {
-      "text": "生成AIは新しい内容を作るAI",
-      "caption": "生成AIは、文章や画像などの新しい内容を作るAIです。",
+      "text": "生成AIとは？：ポイント1",
+      "caption": "シーン1の字幕を入力してください。",
       "character": "hn1",
+      "startFrame": 0,
+      "durationFrames": 300,
+      "audioStartFrame": 0,
+      "audioDurationFrames": 300,
       "audio": "/audio/shorts/scene-1.wav",
       "captions": [
         {
-          "text": "生成AIは、質問に答えるだけではありません。",
-          "durationFrames": 150
-        },
-        {
-          "text": "文章・画像・音声など、新しい内容を作るAIです。",
-          "durationFrames": 210
+          "text": "シーン1の字幕を入力してください。",
+          "durationFrames": 300
         }
       ],
       "textStyle": {
         "x": 58,
         "y": 1150,
         "width": 964,
-        "fontSize": 54,
+        "fontSize": 52,
         "lineHeight": 1.2,
         "textAlign": "center",
         "color": "#123b63",
@@ -45,7 +36,7 @@
         "width": 950,
         "height": 240,
         "padding": 32,
-        "fontSize": 52,
+        "fontSize": 50,
         "lineHeight": 1.2,
         "textAlign": "center",
         "color": "#123b63",
@@ -66,95 +57,27 @@
       },
       "slides": [
         {
-          "src": "scene-1.png",
+          "src": "/slides/generative-ai-slide-1.png",
           "start": 0,
-          "duration": 12,
+          "duration": 10,
           "objectFit": "contain",
           "objectPosition": "center"
         }
       ]
     },
     {
-      "text": "大量のデータからパターンを学ぶ",
-      "caption": "学習したパターンを使って、次に続く内容を組み立てます。",
+      "text": "生成AIとは？：ポイント2",
+      "caption": "シーン2の字幕を入力してください。",
       "character": "rt1",
+      "startFrame": 300,
+      "durationFrames": 300,
+      "audioStartFrame": 300,
+      "audioDurationFrames": 300,
       "audio": "/audio/shorts/scene-2.wav",
       "captions": [
         {
-          "text": "生成AIは、大量のデータからパターンを学びます。",
-          "durationFrames": 180
-        },
-        {
-          "text": "そして次に続きそうな言葉や形を予測します。",
-          "durationFrames": 180
-        },
-        {
-          "text": "その予測を重ねて、新しい内容を組み立てます。",
-          "durationFrames": 180
-        }
-      ],
-      "textStyle": {
-        "x": 58,
-        "y": 1150,
-        "width": 964,
-        "fontSize": 50,
-        "lineHeight": 1.22,
-        "textAlign": "center",
-        "color": "#123b63",
-        "zIndex": 30
-      },
-      "captionStyle": {
-        "x": 65,
-        "y": 1200,
-        "width": 950,
-        "height": 260,
-        "padding": 32,
-        "fontSize": 48,
-        "lineHeight": 1.22,
-        "textAlign": "center",
-        "color": "#123b63",
-        "backgroundColor": "rgba(255, 255, 255, 0.9)",
-        "borderColor": "#7a3f17",
-        "borderWidth": 5,
-        "borderRadius": 0,
-        "zIndex": 30
-      },
-      "slideFrameStyle": {
-        "x": 40,
-        "y": 320,
-        "width": 1000,
-        "height": 800,
-        "borderRadius": 0,
-        "overflow": "hidden",
-        "zIndex": 10
-      },
-      "slides": [
-        {
-          "src": "scene-2.png",
-          "start": 0,
-          "duration": 18,
-          "objectFit": "contain",
-          "objectPosition": "center"
-        }
-      ]
-    },
-    {
-      "text": "便利だけど確認が必要",
-      "caption": "生成AIの答えは、必ず人が確認して使いましょう。",
-      "character": "hsu1",
-      "audio": "/audio/shorts/scene-3.wav",
-      "captions": [
-        {
-          "text": "生成AIは便利ですが、間違えることもあります。",
-          "durationFrames": 170
-        },
-        {
-          "text": "事実確認と、著作権・個人情報への配慮が大切です。",
-          "durationFrames": 220
-        },
-        {
-          "text": "最後は人が確認して、上手に使いましょう。",
-          "durationFrames": 170
+          "text": "シーン2の字幕を入力してください。",
+          "durationFrames": 300
         }
       ],
       "textStyle": {
@@ -171,10 +94,10 @@
         "x": 65,
         "y": 1200,
         "width": 950,
-        "height": 260,
+        "height": 240,
         "padding": 32,
-        "fontSize": 48,
-        "lineHeight": 1.22,
+        "fontSize": 50,
+        "lineHeight": 1.2,
         "textAlign": "center",
         "color": "#123b63",
         "backgroundColor": "rgba(255, 255, 255, 0.9)",
@@ -194,9 +117,69 @@
       },
       "slides": [
         {
-          "src": "scene-3.png",
+          "src": "/slides/generative-ai-slide-2.png",
           "start": 0,
-          "duration": 19,
+          "duration": 10,
+          "objectFit": "contain",
+          "objectPosition": "center"
+        }
+      ]
+    },
+    {
+      "text": "生成AIとは？：ポイント3",
+      "caption": "シーン3の字幕を入力してください。",
+      "character": "hsu1",
+      "startFrame": 600,
+      "durationFrames": 300,
+      "audioStartFrame": 600,
+      "audioDurationFrames": 300,
+      "audio": "/audio/shorts/scene-3.wav",
+      "captions": [
+        {
+          "text": "シーン3の字幕を入力してください。",
+          "durationFrames": 300
+        }
+      ],
+      "textStyle": {
+        "x": 58,
+        "y": 1150,
+        "width": 964,
+        "fontSize": 52,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "zIndex": 30
+      },
+      "captionStyle": {
+        "x": 65,
+        "y": 1200,
+        "width": 950,
+        "height": 240,
+        "padding": 32,
+        "fontSize": 50,
+        "lineHeight": 1.2,
+        "textAlign": "center",
+        "color": "#123b63",
+        "backgroundColor": "rgba(255, 255, 255, 0.9)",
+        "borderColor": "#7a3f17",
+        "borderWidth": 5,
+        "borderRadius": 0,
+        "zIndex": 30
+      },
+      "slideFrameStyle": {
+        "x": 40,
+        "y": 320,
+        "width": 1000,
+        "height": 800,
+        "borderRadius": 0,
+        "overflow": "hidden",
+        "zIndex": 10
+      },
+      "slides": [
+        {
+          "src": "/slides/generative-ai-slide-3.png",
+          "start": 0,
+          "duration": 10,
           "objectFit": "contain",
           "objectPosition": "center"
         }

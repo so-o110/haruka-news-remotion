@@ -1,56 +1,219 @@
 {
   "programTitle": "ハルカ授業",
-  "subject": "数学",
-  "lessonTitle": "偏微分とは？",
+  "subject": "AI・テクノロジー",
+  "lessonTitle": "AIとは何か？本質から考える",
   "teacherName": "西村龍之介",
   "opening": {
     "headline": "今日のテーマ",
-    "subtitle": "偏微分とは？"
+    "subtitle": "AIとは何か？"
   },
   "sections": [
     {
-      "title": "偏微分は難しくない",
-      "category": "数学",
+      "title": "『AIって何？』は少しズレている",
+      "category": "AI入門",
       "characterImage": "rn1.png",
-      "audio": "/audio/study/section-1.wav",
-      "durationFrames": 240,
+      "audio": "/audio/study/a.wav",
+      "durationFrames": 510,
       "slides": [
-        {"image": "partial-1.svg", "durationFrames": 240}
+        {"image": "/slides/study/ai-1.png", "durationFrames": 510}
       ],
       "captions": [
-        {"text": "偏微分って、聞くと難しそうですよね。", "durationFrames": 100},
-        {"text": "でも考え方は、普通の微分とよく似ています。", "durationFrames": 140}
+        {
+          "text": "『AIって何ですか？』この質問は、多くの人がします。",
+          "durationFrames": 150
+        },
+        {
+          "text": "でも『インターネットはTCP/IPです』と言われても、本質は分かりませんよね。",
+          "durationFrames": 240
+        },
+        {
+          "text": "重要なのは、AIによって何が変わるのかです。",
+          "durationFrames": 120
+        }
       ]
     },
     {
-      "title": "1つの変数だけを動かす",
-      "category": "数学",
+      "title": "人類は何を代替してきたのか",
+      "category": "技術史",
       "characterImage": "rt1.png",
-      "audio": "/audio/study/section-2.wav",
-      "durationFrames": 300,
+      "audio": "/audio/study/b.wav",
+      "durationFrames": 630,
       "slides": [
-        {"image": "partial-2.svg", "durationFrames": 150},
-        {"image": "partial-2b.svg", "durationFrames": 150}
+        {"image": "/slides/study/ai-2.png", "durationFrames": 630}
       ],
       "captions": [
-        {"text": "xとyがある式で、xだけを動かしてみます。", "durationFrames": 120},
-        {"text": "このとき、yは定数として固定します。", "durationFrames": 110},
-        {"text": "これがxについての偏微分です。", "durationFrames": 70}
+        {
+          "text": "人類はこれまで、何度も大きな技術革命を起こしてきました。",
+          "durationFrames": 120
+        },
+        {
+          "text": "産業革命では、機械が人間の筋力を代替しました。",
+          "durationFrames": 180
+        },
+        {
+          "text": "パソコンは、人間の計算能力を代替しました。",
+          "durationFrames": 150
+        },
+        {
+          "text": "そしてAIは、人間の知的労働を代替し始めました。これがAI革命です。",
+          "durationFrames": 180
+        }
       ]
     },
     {
-      "title": "1方向の変化率を見る",
-      "category": "数学",
-      "characterImage": "rh1.png",
-      "audio": "/audio/study/section-3.wav",
-      "durationFrames": 270,
+      "title": "知的労働とは何か",
+      "category": "仕事",
+      "characterImage": "rn2.png",
+      "audio": "/audio/study/c.wav",
+      "durationFrames": 690,
       "slides": [
-        {"image": "partial-3.svg", "durationFrames": 270}
+        {"image": "/slides/study/ai-3.png", "durationFrames": 690}
       ],
       "captions": [
-        {"text": "偏微分は、たくさんある変数のうち、", "durationFrames": 100},
-        {"text": "1つの方向だけを見る微分です。", "durationFrames": 100},
-        {"text": "記号には ∂ を使います。", "durationFrames": 70}
+        {
+          "text": "では、知的労働とは何でしょうか。",
+          "durationFrames": 120
+        },
+        {
+          "text": "文章を書く、翻訳する、プログラムを書く、デザインや企画を考える。",
+          "durationFrames": 240
+        },
+        {
+          "text": "資料をまとめる、質問に答える。いわゆる『頭を使う仕事』です。",
+          "durationFrames": 150
+        },
+        {
+          "text": "つまりAIとは、知識を扱う仕事を自動化できる技術です。",
+          "durationFrames": 180
+        }
+      ]
+    },
+    {
+      "title": "AIは知識を持っているのか",
+      "category": "仕組み",
+      "characterImage": "rt2.png",
+      "audio": "/audio/study/d.wav",
+      "durationFrames": 570,
+      "slides": [
+        {"image": "/slides/study/ai-4.png", "durationFrames": 570}
+      ],
+      "captions": [
+        {
+          "text": "なぜAIは文章を書き、絵を描き、音楽まで作れるのでしょうか。",
+          "durationFrames": 180
+        },
+        {
+          "text": "AIが人間のような『知識』を持っているからではありません。",
+          "durationFrames": 180
+        },
+        {
+          "text": "AIは、膨大なデータから規則性を見つける機械なのです。",
+          "durationFrames": 210
+        }
+      ]
+    },
+    {
+      "title": "私たちも予測している",
+      "category": "予測",
+      "characterImage": "ra1.png",
+      "audio": "/audio/study/e.wav",
+      "durationFrames": 480,
+      "slides": [
+        {"image": "/slides/study/ai-5.png", "durationFrames": 480}
+      ],
+      "captions": [
+        {
+          "text": "『こんいちは』と言われたら、次に何と言いますか？おそらく『こんにちは』ですよね。",
+          "durationFrames": 210
+        },
+        {
+          "text": "これは深く考えているというより、経験から次を予測しています。",
+          "durationFrames": 150
+        },
+        {
+          "text": "AIが行っていることも、基本的には同じです。",
+          "durationFrames": 120
+        }
+      ]
+    },
+    {
+      "title": "ChatGPTが会話できる理由",
+      "category": "生成AI",
+      "characterImage": "rn3.png",
+      "audio": "/audio/study/f.wav",
+      "durationFrames": 630,
+      "slides": [
+        {"image": "/slides/study/ai-6.png", "durationFrames": 630}
+      ],
+      "captions": [
+        {
+          "text": "ChatGPTは、インターネット上にある膨大な文章からパターンを学びました。",
+          "durationFrames": 210
+        },
+        {
+          "text": "そして、次に来そうな言葉を何兆回も予測する学習を繰り返しました。",
+          "durationFrames": 240
+        },
+        {
+          "text": "だから会話できるように見えるのです。AIの中心にあるのは予測です。",
+          "durationFrames": 180
+        }
+      ]
+    },
+    {
+      "title": "現在のAIの正体",
+      "category": "本質",
+      "characterImage": "rsu1.png",
+      "audio": "/audio/study/g.wav",
+      "durationFrames": 570,
+      "slides": [
+        {"image": "/slides/study/ai-7.png", "durationFrames": 570}
+      ],
+      "captions": [
+        {
+          "text": "AIとは、世界中のデータから規則性を学ぶ機械です。",
+          "durationFrames": 180
+        },
+        {
+          "text": "学んだ規則性を使って、言葉や画像などの次の状態を予測します。",
+          "durationFrames": 210
+        },
+        {
+          "text": "これが現在のAIの正体です。でも、本当に重要なのはここからです。",
+          "durationFrames": 180
+        }
+      ]
+    },
+    {
+      "title": "知的労働のコストが下がる",
+      "category": "AI革命",
+      "characterImage": "rh1.png",
+      "audio": "/audio/study/h.wav",
+      "durationFrames": 1020,
+      "slides": [
+        {"image": "/slides/study/ai-8.png", "durationFrames": 1020}
+      ],
+      "captions": [
+        {
+          "text": "AIそのものより重要なのは、知的労働のコストが一気に下がったことです。",
+          "durationFrames": 210
+        },
+        {
+          "text": "昔はプログラマーが必要だったホームページも、今はAIに頼めば数分で作れます。",
+          "durationFrames": 210
+        },
+        {
+          "text": "何年も練習が必要だったイラストも、AIなら数十秒で作れます。",
+          "durationFrames": 210
+        },
+        {
+          "text": "何時間もかかった動画編集も、AIによって数分まで短縮され始めています。",
+          "durationFrames": 240
+        },
+        {
+          "text": "AIは、知識を使うコストをほぼゼロに近づけています。だから世界中が熱狂しているのです。",
+          "durationFrames": 150
+        }
       ]
     }
   ]
