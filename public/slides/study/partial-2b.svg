@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="570" viewBox="0 0 1350 570">
-  <rect width="1350" height="570" fill="#ffffff"/>
-  <text x="675" y="110" text-anchor="middle" fill="#123b63" font-family="Yu Gothic, sans-serif" font-size="50" font-weight="700">その間、yは固定</text>
-  <rect x="405" y="190" width="540" height="235" rx="18" fill="#dff5ff" stroke="#7a3f17" stroke-width="5"/>
-  <text x="675" y="335" text-anchor="middle" fill="#7a3f17" font-family="Arial, sans-serif" font-size="96" font-weight="700">y = constant</text>
-  <text x="675" y="500" text-anchor="middle" fill="#145d99" font-family="Yu Gothic, sans-serif" font-size="38" font-weight="700">ほかの変数は動かさない</text>
-</svg>

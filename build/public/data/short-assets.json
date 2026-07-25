@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "videoTitle": "生成AIとは？",
+  "baseDirectory": "public/slides/shorts",
+  "generationNotes": [
+    "YouTubeショートで一目で内容が伝わる、シンプルで高コントラストな図解にする",
+    "青・茶色・白を中心に、ハルカニュースの画面になじむ配色にする",
+    "画像内に文章、ロゴ、透かしを入れない",
+    "重要な被写体は中央に置き、上下左右に十分な余白を残す"
+  ],
+  "assets": [
+    {
+      "path": "scene-1.png",
+      "scene": "生成AIが新しい内容を作る",
+      "prompt": "A clean editorial illustration explaining generative AI, a central glowing AI interface producing a document, an image, a music waveform, and a small video frame, clear visual hierarchy, blue brown and white color palette, generous empty space, no text, no logos, no watermark",
+      "width": 1000,
+      "height": 800
+    },
+    {
+      "path": "scene-2.png",
+      "scene": "データからパターンを学び予測する",
+      "prompt": "A clear educational diagram of generative AI learning patterns, many small data cards flowing into a neural network and emerging as a newly composed image and document, simple arrows, blue brown and white color palette, centered composition, no text, no logos, no watermark",
+      "width": 1000,
+      "height": 800
+    },
+    {
+      "path": "scene-3.png",
+      "scene": "人が確認して安全に使う",
+      "prompt": "A human reviewer carefully checking AI generated content with a checklist, a fact-check symbol, a copyright document, and a privacy shield, calm trustworthy editorial illustration, blue brown and white color palette, generous margins, no text, no logos, no watermark",
+      "width": 1000,
+      "height": 800
+    }
+  ]
+}
