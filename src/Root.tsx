@@ -11,16 +11,6 @@ import {
   ShortNewsVideo,
   SHORT_NEWS_DURATION_IN_FRAMES,
 } from "./ShortNewsVideo";
-import {
-  calculateStudyShortMetadata,
-  STUDY_SHORT_DURATION_IN_FRAMES,
-  StudyShortVideo,
-} from "./StudyShortVideo";
-import {
-  calculateStudyVideoMetadata,
-  STUDY_VIDEO_DURATION_IN_FRAMES,
-  StudyVideo,
-} from "./StudyVideo";
 
 export const RemotionRoot = () => {
   return (
@@ -42,24 +32,6 @@ export const RemotionRoot = () => {
         width={1080}
         height={1920}
         calculateMetadata={calculateShortNewsMetadata}
-      />
-      <Composition
-        id="StudyShortVideo"
-        component={StudyShortVideo}
-        durationInFrames={STUDY_SHORT_DURATION_IN_FRAMES}
-        fps={30}
-        width={1080}
-        height={1920}
-        calculateMetadata={calculateStudyShortMetadata}
-      />
-      <Composition
-        id="StudyVideo"
-        component={StudyVideo}
-        durationInFrames={STUDY_VIDEO_DURATION_IN_FRAMES}
-        fps={30}
-        width={1920}
-        height={1080}
-        calculateMetadata={calculateStudyVideoMetadata}
       />
     </>
   );
